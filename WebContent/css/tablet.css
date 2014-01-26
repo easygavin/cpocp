@@ -1,0 +1,280 @@
+@charset "utf-8";
+/* CSS Document */
+.mlr5{margin:0 5px}
+.f16{font-size:16px}
+.p15{padding:10px 15px}
+.mlr10{margin:0 10px}
+.mt5{margin-top:5px}
+
+.loginBg,.proclaimed,.lotteryInfo,.rechargeDraw,.moreBg,.toHallBg,.back,.radioBox,.menu,.shake,.delete,.sure,.username,.password,.popup li.click,.personBg,.rechargeBg,.tkBg,.mxBg,.gcjlBg,.adrensBg,.bandkBg,.bandpBg,.xgpasBg,.refresh,.czdelete,.sj,.share,.hmBg,.gcBg,.kjBg,.wfBg,.czZfb,.czYl,.czLkl,.hmBtn,.gmBtn,.phone,.computer,.zhTb,.nhBg,.closeAll{background:url(../images/bg.png) no-repeat;display:inline-block;opacity:0.9;filter:alpha(opacity:90);-moz-opacity:0.9}
+.lineA,.lineB,.lineC{background:url(../images/bg.png) repeat-x;display:inline-block}
+.ssqLogo,.dltLogo,.djLogo,.moreLogo{background:url(../images/cz.png) repeat-x;display:inline-block}
+
+/*头部*/
+.header{position:fixed;top:0;width:100%;background:#009983;color:#fff;z-index:10;}
+.header h1{font-size:36px;padding:0 20px;font-weight: normal;height:80px;line-height:80px}
+.header h1 a{color:#fff}
+
+/*尾部*/
+.footer{position: fixed !important;bottom: 0px !important;left: 0px !important;width:100%;z-index: 10;}
+.footer .tzBox{padding:0 10px;height:80px;line-height:80px;color:#fff;background:#009983;font-size:26px;text-align:center;}
+
+/*删除，确定按钮*/
+.delete,.sure,.hmBtn,.gmBtn,.computer,.zhTb{width:50px;height:80px}
+.zhTb{background-position:-11px -3101px;float:left}
+.computer{background-position:-12px -3158px;float:left}
+.delete{background-position:0 -705px;float:left}
+.sure{background-position:0 -781px;float:right;}
+.hmBtn{background-position:-8px -2812px;float:left}
+.gmBtn{background-position:-7px -2883px;float:right}
+
+/*内容容器*/
+.box{width:100%;overflow:hidden;margin:80px auto 0;}
+.mBox{width:100%;overflow:hidden;margin:140px auto 0;}
+.lBox{width:100%;overflow:hidden;margin:200px auto 0;}
+
+/*二级菜单*/
+.btnMenu{position:fixed;top:80px;width:100%;height:60px;line-height:60px;vertical-align:middle;background:#333;font-size:26px;overflow:hidden;z-index: 10;display:-webkit-box;display:-moz-box;display:box;}
+.btnMenu a{display:block;-webkit-box-flex:1;-moz-box-flex:1;box-flex:1;height:60px;line-height:60px;vertical-align:middle;text-align:center;color:#ccc;border-left:1px solid #414141;border-right:1px solid #2c2a2a}
+.gcjl .click{background: #000;color:#fff;}
+
+/*选球期号*/
+.ballIssue{position:fixed;top:80px;width:100%;background:#FFF;z-index:10;}
+.listIssue{position:fixed;top:140px;width:100%;background:#FFF;z-index:10;}
+
+/*滚动广告*/
+.bunner{width:100%;height:7.5em;overflow:hidden;text-align:left;position:relative;text-align:center}
+.bunner .ctx{width:100%;height:7.5em;overflow:hidden;}
+.bunner .notice{height:7.5em;position: absolute;}
+.grayBg{width:100%;height:36px;position:absolute;background:#368d89;opacity:0.5;filter:alpha(opacity:50);-moz-opacity:0.5;bottom:0;z-index:1}
+.title{line-height:36px;position:absolute;padding:0 10px;left:0;bottom:0;font-size:16px;color:#fff;z-index:2}
+.next{position:absolute;z-index:2;bottom:0;right:0;padding:12px 5px 12px 0}
+.next dd{width:7px;height:7px;background:#a9a89d;border:1px solid #44433f;float:left;margin-right:5px;cursor:pointer}
+.next dd.click{background:#1681c0;border:1px solid #012f4a}
+
+/*菜单栏*/
+.nav{margin:0 auto;height:100px;background:#333;font-size:20px;overflow:hidden}
+.nav li{width:25%;float:left;text-align:center;padding: 2px 0;}
+.nav li a{display:inline-block;width:100%;color:#999}
+.nav li a:hover{color:#ccc}
+.nav li a:hover b{opacity:1;filter:alpha(opacity:100);-moz-opacity:1}
+.loginBg,.proclaimed,.lotteryInfo,.rechargeDraw{width:52px;height:52px;display:block;margin:10px auto 2px auto;background-color:#eee;border-radius:26px;box-shadow:3px 5px 0 #fff inset;opacity:0.8;filter:alpha(opacity:80);-moz-opacity:0.8}
+.loginBg{background-position:0 0}
+.proclaimed{background-position:0 -51px}
+.lotteryInfo{background-position:0 -102px}
+.rechargeDraw{background-position:0 -150px}
+.lineA{width:100%;height:5px;background-position:0 -204px;float:left;margin:0 auto;line-height:4px;overflow:hidden}
+
+/*彩种列表*/
+.czList{background:#fff;border-radius:5px;overflow:hidden;margin:30px 5px 15px 5px;box-shadow:0 2px 3px #e3e1dc inset;padding-bottom:1px}
+.czList ul{border:1px solid #ccc;border-radius:5px}
+.czList ul li{cursor:pointer;border-bottom:1px solid #ccc;padding:15px;overflow:hidden;height:76px}
+.czList ul li.end{border:none}
+.czList ul li:hover,.personCenter li:hover,.detailsList li:hover,.detailsList dd:hover,.gzlist li:hover{background:#f5f5f5}
+.czList ul li:hover dt a,.delete:hover,.back:hover,.sure:hover,.menu:hover,.toHall h2 a:hover b,.share:hover,.refresh:hover,.radioBox:hover,.popup li:hover,.shake:hover,.hmBg:hover{opacity:1;filter:alpha(opacity:100);-moz-opacity:1}
+.czList h2{font:24px/40px "微软雅黑"}
+.ssqLogo,.dltLogo,.djLogo,.moreLogo{width:76px;height:76px;margin-right:0.44em}
+.ssqLogo{background-position:0 -154px}
+.dltLogo{background-position:0 -77px}
+.djLogo{background-position:0 0}
+.moreLogo{background-position:0 -231px}
+.more a{width:30px;height:76px;display:inline-block;text-align:center}
+.more a b{margin-top:25px}
+.moreBg{width:18px;height:27px;background-position:-120px -257px}
+.moreBg:hover{background-position:-120px -223px}
+
+/*合买大厅*/
+.toHall{margin:0 5px 10px 5px;overflow:hidden}
+.toHall h2{float:left;width:20%;height:125px;background:#fd6c00;border-radius:5px;box-shadow:0 1px 0 #d25a00 inset;border-bottom:1px solid #fff;text-align:center}
+.toHall h2:hover{background:#f56901}
+.toHall h2 a{width:100%;color:#fff;font:20px/30px "微软雅黑";display:inline-block}
+.toHallBg{width:40px;height:47px;background-position:-3px -271px;display:block;margin:20px auto 5px auto}
+.toHallCont{width:77%;height:124px;border-radius:5px;box-shadow:0 2px 3px #e3e1dc inset;padding-bottom:1px;background:#fff;float:right;font-size:16px}
+.toHallCont ul{height:92px;border:1px solid #ccc;border-radius:5px;padding:15px}
+.jdtBg{background:#ccc;height:12px;display:inline-block;width:95%}
+.jdtBg1{background:#21707f;display:inline-block;float:left;height:12px;width:50%;position:relative}
+.jdtBg1 i{position:absolute;right:-15px;top:20px;color:#f60;font-family:Verdana, Arial, Helvetica, sans-serif}
+
+/*数字彩*/
+.back{width:40px;height:80px;background-position:-10px -328px;float:left;cursor:pointer}
+.radioBox{height:80px;background-position:right -401px;padding-right:15px}
+.menu{width:40px;height:80px;background-position:0 -491px;cursor:pointer}
+.czInfo{background:#eee;line-height:40px;font-size:20px;padding:5px 10px;overflow:hidden;border-top:1px solid #fff}
+.czInfoS{background:#eee;line-height:40px;font-size:20px;padding:5px 10px;overflow:hidden;border-top:1px solid #fff}
+.shake{height:40px;background-position:-14px -585px;padding-left:30px}
+.shake:hover{background-position:-14px -646px}
+.lineB{height:5px;background-position:0 -868px;width:100%;display:block}
+
+.balls{margin-bottom: 100px;}
+
+.redBall{color:#e76161;overflow:hidden;margin:10px 0 0}
+.redBall li{width:95px;height:90px;float:left;}
+.redBall li .num{width:64px;height:64px;line-height:64px;vertical-align:middle;border-radius:5px;background:#f1eeee;border:1px solid #ccc;font-size:26px;font-weight: bold;text-align:center;cursor:pointer;margin:0 auto;}
+.redBall li .ext{width:66px;height:25px;line-height:25px;vertical-align:bottom;font-size:18px;text-align:center;margin:0 auto;}
+.redBall li .click{background:#c00;border:1px solid #c00;color:#fff}
+.redBall li .blue{background:#69c;border:1px solid #69c;color:#fff}
+
+.lineC{height:5px;background-position:0 -885px;width:100%;display:block;overflow:hidden}
+
+.blueBall{color:#69c;overflow:hidden;margin:10px 0}
+.blueBall li{width:95px;height:90px;float:left;}
+.blueBall li .num{width:64px;height:64px;line-height:64px;vertical-align:middle;border-radius:5px;background:#f1eeee;border:1px solid #ccc;font-size:26px;font-weight: bold;text-align:center;cursor:pointer;margin:0 auto;}
+.blueBall li .ext{width:66px;height:25px;line-height:25px;vertical-align:bottom;font-size:18px;text-align:center;margin:0 auto;}
+.blueBall li .click{background:#69c;border:1px solid #69c;color:#fff}
+.tipIconC{width:100%;height:30px;}
+.tipIcon{width:50px;height:30px;line-height:30px;vertical-align:middle;text-align:center;font-size:16px;background: #07A08D;color: #fff;float: right;}
+
+/*开奖号码*/
+.lotteryNum{font-size:30px}
+.lotteryNum i{margin:0 5px;font-family:Arial, Helvetica, sans-serif}
+.details{font-size:24px;line-height:40px;padding:20px;}
+.detailsList{margin:10px 20px 100px;box-shadow:0 2px 3px #e3e1dc inset;border:1px solid #ccc;border-radius:5px;font-size:20px;line-height:40px}
+.detailsList li{line-height:40px;border-bottom:1px solid #ccc;padding:10px}
+.detailsList dd{padding:0 10px}
+.detailsList i{margin:0 5px}
+
+/*开奖信息*/
+.listTab{font-size:30px;line-height:80px;text-align:center}
+.listTab td{border-bottom:1px solid #ccc}
+.listTab tbody tr:hover{background:#f0f0f0}
+
+.detailTab{font-size:20px;line-height:40px;}
+.detailTab td{border-bottom:1px solid #ccc}
+.detailTab tbody tr:hover{background:#f0f0f0}
+
+/*智能追号*/
+.smartHead thead tr{background: #333;color: #fff;font-size:24px;text-align:center;}
+.smartList{text-align:center;margin-bottom: 100px;}
+.smartList tbody td{border-bottom:1px solid #ccc;color: #e76161;font-size: 20px;}
+.smartList tbody tr:hover{background:#f0f0f0}
+.smartModBox{width: 100%;line-height: 50px;font-size:24px;background: #fff;display: none;}
+.smartModBox .ml{margin-left: 50px;}
+.smartModBox .red{width:20px;height:20px;display:inline-block;background:red;border-radius:10px;box-shadow:0px 2px 0px #ddd}
+.smartModBox .grey{width:20px;height:20px;display:inline-block;background:#ccc;border-radius:10px;box-shadow:0px 2px 0px #ddd}
+.lCover{position:absolute;top:80px;left:0;width:100%;z-index: 5;display: none;background:#000;opacity:0.5;filter:alpha(opacity:50);-moz-opacity:0.5}
+
+/*登陆 注册*/
+.loginTitle{font:18px "微软雅黑";height:50px;border-bottom:1px solid #ccc;background:#eee;padding:0 10px;color:#e76161;}
+.username,.password,.inputText,.phone{color:#999;width:100%;height:70px;border:none;padding:0;font:20px "微软雅黑"}
+.username{background-position:right -988px}
+.username:focus{background-position:right -907px}
+.password{background-position:right -1154px}
+.password:focus{background-position:right -1070px}
+.phone{background-position:right -2955px}
+.phone:focus{background-position:right -3014px}
+.loginCon{width:452px;margin:0 auto 20px auto}
+.loginBtn{width:100%;background:#009983;border:none;height:70px;line-height:70px;vertical-align:middle;font-size:30px;margin-top:20px;color:#fff;text-align:center;display: inline-block;border-radius:3px}
+
+/*弹出层*/
+.popup{display:none;margin:0 auto;position:fixed;width:95%;top:70px;border-bottom:1px solid #c6c6c6;box-shadow:0 1px 0px #f8f8f8;border-radius:5px;box-shadow:0 1px 3px #E3E1DC inset;border:1px solid #ccc;background:#fafafa;left:1%;z-index: 30;}
+.popup li{box-shadow:0 1px 0 #fff;background-color:#fff;border:2px solid #ccc;font-size:16px;width:135px;text-align:center;float:left;height:50px;line-height:50px;margin:10px;cursor:pointer}
+.popup li.click{background-position:right -1224px;border-color:#21707f;background-color:#fff;color:#21707F}
+.popup li:hover{border-color:#21707f}
+.menuBox{display:none;margin:0 auto;position:fixed;top:70px;border-bottom:1px solid #c6c6c6;box-shadow:0 1px 0px #f8f8f8;border-radius:5px;box-shadow:0 1px 3px #E3E1DC inset;border:1px solid #ccc;background:#eee;padding:5px 15px 15px 15px;right:10px;z-index:30;}
+.menuBox li{border-radius:5px;box-shadow:0 1px 0px #fff;background-color:#fff;font-size:26px;width:200px;height:70px;line-height:70px;margin-top:10px;cursor:pointer;border:1px solid #ccc}
+.hmBg,.gcBg,.kjBg,.wfBg{height:70px;padding-left:50px;margin-left:10px}
+.hmBg{background-position:0 -2046px}
+.hmBgxz,.hmBg:hover{background-position:0 -2133px}
+.menuBox li.click,.menuBox li:hover{background:#07a08d;border:1px solid #07a08d;color:#fff}
+.gcBg{background-position:0 -2218px}
+.gcBgxz,.gcBg:hover{background-position:0 -2301px}
+.kjBg{background-position:0 -2365px}
+.kjBgxz,.kjBg:hover{background-position:0 -2434px}
+.wfBg{background-position:0 -2501px}
+.wfBgxz,.wfBg:hover{background-position:0 -2572px}
+
+/*个人中心*/
+.rechargeBg,.tkBg,.mxBg,.gcjlBg,.adrensBg,.bandkBg,.bandpBg,.xgpasBg,.nhBg,.closeAll{width:48px;height:48px;background-color:#32B38C;float:left;margin-right:0.5em;overflow:hidden;border-radius:3px}
+.personBg{width:48px;height:48px;float:left;margin-right:0.5em;overflow:hidden;margin-left:7px;background-position:-2px -1305px}
+.rechargeBg{background-position:-2px -1361px}
+.tkBg{background-position:-1px -1418px}
+.mxBg{background-position:0 -1481px}
+.gcjlBg{background-position:-2px -1545px}
+.adrensBg{background-position:0 -1616px}
+.bandkBg{background-position:0 -1661px}
+.bandpBg{background-position:-1px -1716px}
+.xgpasBg{background-position:-1px -1775px}
+.czYl{background-position:-10px -2708px}
+.czZfb{background-position:-10px -2652px}
+.czLkl{background-position:-9px -2762px}
+.nhBg{background-position:-7px -3259px}
+.closeAll{background-position:-8px -3326px}
+.refresh{width:36px;height:80px;background-position:-3px -1825px}
+.radiusShadow{border-radius:5px;box-shadow:0 2px 3px #E3E1DC inset;margin:30px 5px 15px;border:1px solid #ccc;overflow:hidden}
+.personCenter li{padding:15px;height:48px;line-height:48px;font-size:26px;border-bottom:1px solid #ccc}
+.personCenter li .moreBg{margin-top:12px}
+.personCenter li.end,.loginBox li.end{border:none}
+.mt10{margin-top:10px}
+.czdelete{width:25px;height:26px;background-position:-155px -258px}
+.czdelete:hover{background-position:-156px -225px}
+.listTz{line-height:40px;font-size:26px;text-align:center;margin-bottom: 200px;}
+.listTz td{border-bottom:1px solid #ccc}
+.listTz td.ptb10{padding:10px 0}
+.protocol{height:40px;line-height:40px;vertical-align:top;background:#fff;text-align:center;font-size:26px;position: relative;}
+.txt{font-size:26px;margin: 10px 10px 100px;}
+.protocol .plus{position: absolute;bottom: 0;right: 10px;}
+.tzChose{height:40px;line-height:40px;border:1px solid #ccc;border-bottom:none;box-shadow:0 2px 3px #E3E1DC inset;padding:10px 0;background:#fff;text-align:center;font-size:26px}
+.shoutInp{width:70px;height:30px;text-align:center;border:1px solid #ccc;box-shadow:0 1px 3px #E3E1DC inset;font:20px "微软雅黑";color:#666;margin:0 5px}
+.sj{width:40px;height:40px;background-position:-3px -1909px;border-radius:20px;background-color:#333;box-shadow:0 1px 0 #000}
+.sjup{-moz-transform: rotate(180deg);-moz-transition: all 0.25s ease 0s;-webkit-transform: rotate(180deg);-webkit-transition: all 0.25s ease 0s;-o-transform: rotate(180deg);-o-transition: all 0.25s ease 0s;-ms-transform: rotate(180deg);-ms-transition: all 0.25s ease 0s;transform: rotate(180deg);transition: all 0.25s ease 0s;}
+.zjNum{border:1px solid #ccc;width:100%;text-align:center;line-height:60px;box-shadow:0 1px 3px #E3E1DC inset;font-size:26px; border-collapse:collapse}
+.zjNum td{border:1px solid #ccc}
+.zjNum tbody td{color:#999}
+.share{width:38px;height:80px;background-position:-7px -1954px}
+.zyA{display:inline-block;background:red;color:#fff;position:absolute;right:10px;top:10px;height:50px;line-height:50px;padding:0 10px}
+.zyA:hover{color:#fff}
+
+/*开奖信息*/
+.kjInformation{line-height:37px;font-size:26px;text-align:center}
+.kjInformation td{border-bottom:1px solid #ccc;padding:10px}
+
+/*开奖公告*/
+.gzlist li{font-size:30px;line-height:70px;border-bottom:1px solid #ccc;padding:0 10px}
+.gzlist li .moreBg{margin-top:23px}
+.f22{font-size:22px}
+
+/*登录*/
+.inputList{background:#fff;border-bottom:1px solid #fff;border-radius:5px;overflow:hidden;padding: 10px 15px 0;box-shadow:0 2px 3px #e3e1dc inset}
+.loginBox{border:1px solid #ccc;border-radius:5px;}
+.loginBox li{color:#999;border-bottom:1px solid #ccc;padding-left:10px;overflow: hidden;height: 70px;font:20px "微软雅黑"}
+.button{border-radius:5px;overflow:hidden;border-bottom:1px solid #fff;margin:10px 15px}
+.line30{line-height:50px;padding:0 15px;font-size:18px}
+.showTip{font-size: 18px;color:red;}
+.showTipM10{font-size: 18px;color:red;margin-left: 10px;}
+.toast{font-size: 18px;color:#fff;position:fixed;left:50%;top:50%;margin-left:-190px;width:380px;line-height:30px; vertical-align:middle;text-align:center;border-bottom:1px solid #c6c6c6;box-shadow:0 1px 0px #f8f8f8;border-radius:5px;box-shadow:0 1px 3px #E3E1DC inset;border:1px solid #ccc;background:#c00;z-index:30;display: none;padding: 5px;}
+.hidden{display: none;}
+
+/*帐户明细*/
+.zcBox,.srBox{width:126px;height:126px;line-height:126px;display:inline-block;color:#fff;border-radius:63px;font-size:30px;box-shadow:0px 2px 0px #ddd;margin:0 10px}
+.zcBox{background:#719c10}
+.fzc{font-size:18px;line-height:32px}
+.srBox{background:#f1b824}
+
+/*提示框*/
+.dialog, .prompt{width:350px;border:1px solid #ccc;position:fixed;color:#c00;background:#eee;left:50%;top:50%;margin-left:-200px;margin-top:-175px;z-index:30;box-shadow:0 0 0 5px #ddd;display: none;}
+.dialog .tit, .prompt .tit{font-size: 20px;margin:0 5%;line-height: 40px;vertical-align: bottom;display: none;}
+.dialog .cxt, .prompt .cxt{font-size: 20px;margin:5% 5% 0; line-height: 30px;vertical-align:baseline;}
+.prompt .btn{display:inline-block;width:120px;height:40px;font-size: 20px; line-height:40px;float:left;vertical-align:middle;background:#c00;color:#fff;text-align: center;}
+.prompt .l_btn{float: left;} .prompt .r_btn{float: right;}
+.dialog .btnG, .prompt .btnG{height:40px;;margin:5% 5%;text-align: center;}
+.dialog .btn{display:inline-block;width:120px;height:40px;font-size: 20px; line-height:40px;margin:0 auto;vertical-align:middle;background:#c00;color:#fff;text-align: center;}
+
+/*开奖详情*/
+.look{color:#e76161;overflow:hidden;margin:10px 0}
+.look li{width:75px;height:70px;float:left;}
+.look li .num{width:44px;height:44px;line-height:44px;vertical-align:middle;border-radius:5px;background:#f1eeee;border:1px solid #ccc;font-size:20px;font-weight: bold;text-align:center;cursor:pointer;margin:0 auto;}
+.look li .click{background:#c00;border:1px solid #c00;color:#fff}
+.look li .blue{background:#69c;border:1px solid #69c;color:#fff}
+/*select*/
+select{border:none;width:100%;height:70px;float:left;background:none;position: absolute;z-index: 1;opacity: 0}
+.loginBox li.pr label{position: absolute;left:10px;top:0;line-height: 70px;color: #999}
+.loginBox li.pr b{width: 0;height: 0;overflow: hidden;border:10px solid #fff;border-top: 10px solid #999;position: absolute;right: 10px;top: 34px}
+.loginBox li.pr  .inputT{position: absolute;left:10px;top:0;font:20px "微软雅黑";color:#000;line-height: 70px}
+
+/*活动公告*/
+.read{width:20px;height:20px;display:inline-block;background:red;border-radius:10px;box-shadow:0px 2px 0px #ddd}
+
+.czCbtn,.czFbtn{height:50px;display:inline-block;line-height: 50px;padding:0 10px;margin-right:20px}
+.czCbtn{background:red;color:#fff}
+.czFbtn {background:#ccc;color:#666}
+.first{ line-height: 5px;}

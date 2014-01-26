@@ -1,0 +1,82 @@
+<section id="luckAppendView">
+
+    <!--中国农业银行-->
+    <div class="header">
+        <h1>
+            <a class="back" title="返回"></a><span class="fl">十一运夺金智能追号</span>
+        </h1>
+    </div>
+    <!--表头-->
+    <div class="btnMenu">
+        <table width="100%" cellspacing="0" cellpadding="0" class="smartHead">
+            <colgroup>
+                <col width="20%">
+                <col width="20%">
+                <col width="20%">
+                <col width="20%">
+                <col width="20%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <td>期号</td>
+                    <td>倍数</td>
+                    <td>总投入</td>
+                    <td>总盈利</td>
+                    <td>盈利率</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class="mBox">
+        
+        <!--追期列表-->
+        <table width="100%" cellspacing="0" cellpadding="0" class="smartList">
+            <colgroup>
+                <col width="20%">
+                <col width="20%">
+                <col width="20%">
+                <col width="20%">
+                <col width="20%">
+            </colgroup>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!--尾部-->
+    <div class="footer">
+        <div class="smartModBox">
+            <div class="ml">
+                我要追
+                <input id="issueUnit" type="number" value="10" class="shoutInp" maxlength="2"/>
+                期&nbsp;&nbsp;
+                <label>
+                    <input id="stopBetting" type="checkbox" checked/>中奖停止追号
+                </label>
+            </div>
+            <div class="ml">
+                <span class="red"></span>
+                &nbsp;&nbsp;全部最小盈利率&nbsp;&nbsp;
+                <input id="minRate" type="number" value="30" class="shoutInp" maxlength="3"/>
+                &nbsp;&nbsp;%
+            </div>
+            <div class="ml">
+                <span class="grey"></span>
+                &nbsp;&nbsp;累计盈利不低于&nbsp;&nbsp;
+                <input id="minIncome" type="number" value="100" class="shoutInp"/>
+                &nbsp;&nbsp;元
+            </div>
+        </div>
+        <div class="tzBox">
+            <a id="operate" class="gmBtn" title="付款"></a> <a class="zhTb" title="修改"></a>
+            <span id="issueCount"></span> 期
+            <span id="pays"></span> 元
+        </div>
+    </div>
+
+    <div class="lCover">
+
+    </div>
+</section>

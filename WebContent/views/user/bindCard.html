@@ -1,0 +1,43 @@
+<!--绑定银行卡-->
+<div class="box">
+    <!--中国农业银行-->
+    <div class="header"><h1><a class="back" title="返回"></a><a  class="fl">绑定银行卡</a></h1></div>
+    <!--广告图片-->
+    <p class="line20 red">请填写真实资料，银行卡用户名必须与注册真实姓名一致</p>
+
+    <div class="inputList">
+        <div class="loginBox">
+            <ul>
+                <li><input id="userBankName" type="text" class="inputText " /></li>
+                <li class="pr">
+                    <input id="selectBank" type="text" class="inputText" readonly="true" value="中国农业银行"/>
+                </li>
+                <li class="pr">
+                    <b></b>
+                    <label id="displayProvince">请选择省份</label>
+                    <select id="selectProvince"></select>
+                </li>
+                <li class="pr">
+                    <b></b>
+                    <label id="displayCity">请选择城市</label>
+                    <select id="selectCity">
+                        <option value="请选择城市">请选择城市</option>
+                    </select>
+                </li>
+                <li>
+                    <input id="bankInfo" type="text" class="inputText " placeholder="支行名称"/>
+                </li>
+                <li>
+                    <input id="cardNo" type="text" class="inputText " placeholder="银行卡卡号"/>
+                </li>
+                <li>
+                    <input id="password" type="password" class="inputText " placeholder="提款密码 6-15个字符"/>
+                </li>
+                <li class="end">
+                    <input id="confirmPassword" type="password" class="inputText " placeholder="确认提款密码 6-15个字符"/>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="button"><a id="bandingBankCard" type="button" class="loginBtn">确认</a></div>
+</div>

@@ -1,0 +1,39 @@
+<!--提款-->
+<!--绑定银行卡-->
+<div class="box">
+    <!--中国农业银行-->
+    <div class="header"><h1><a class="back" title="返回"></a><a class="fl">提款</a></h1></div>
+    <div class="czInfo">
+        <i class="personBg"></i><i class="cf60"><span id="w_userName"></span></i><i class="mlr10">可用金额:<i
+            class="cf60 mlr5"><span id="w_balance"></span></i>元</i>
+    </div>
+    <div class="lineB"></div>
+
+    <div class="radiusShadow">
+        <div class="loginBox" style="border: none">
+            <ul>
+                <li><input id="w_trueName" type="text" class="inputText" readonly="true"/></li>
+                <li class="pr">
+                    <input id="w_availMoney" type="text" class="inputText" readonly="true" />
+                </li>
+                <li>
+                    <input id="w_bankInfo" type="text" class="inputText" readonly="true"/>
+                </li>
+                <li>
+                    <input id="w_cardNo" type="text" class="inputText" readonly="true"/>
+                </li>
+              <!--  <li>
+                   <input id="kcodeTeleNumber" type="text" class="inputText" placeholder="请您输入已开通K码支付的手机号码" />
+                </li>-->
+                <li>
+                   <input id="withDrawlMoney" type="text" class="inputText "  placeholder="提款金额(最少10元)"/>
+                </li>
+                <li class="end">
+                    <input id="drawPassword" placeholder="提款密码:" type="password" class="inputText "/>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="button"><a id="withdrawalNotes" type="button" class="loginBtn fl" style="width: 48%">提款须知</a><a id="confirmwithdrawal" type="button"  style="width: 48%" class="fr loginBtn">确认</a>
+    </div>
+</div>
