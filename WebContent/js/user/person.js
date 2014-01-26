@@ -50,13 +50,26 @@ define([
 
             userInfo = appConfig.getLocalUserInfo();
 
+            initHideShow();
+
             // 防止事件污染
             offBind();
 
             // 获取账号余额
             getBalance();
         };
-	
+
+        /**
+         * 授权登录不显示项
+         */
+        var initHideShow = function () {
+
+            if (userInfo.code != null && typeof userInfo.code != "undefined"
+                && $.trim(userInfo.code) != "") {
+                $("#editPassWord").closest("li").hide();
+                $("#logoutSys").closest("li").hide();
+            }
+        };
 
         /**
          * 获取账号余额

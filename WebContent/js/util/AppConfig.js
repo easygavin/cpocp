@@ -40,10 +40,6 @@ define([], function () {
 
     // 用户阅读过的活动公告id
     var NOTICE_READ_ID = "notice_read_id";
-    
-    // 十一夺金智能追号
-    var SMART_LUCK_KEY = "smart_luck";
-    
     /**
      * 获取用户真实姓名
      * @returns {*}
@@ -292,7 +288,6 @@ define([], function () {
         MAY_BUY_RED_BLUE_KEY: MAY_BUY_RED_BLUE_KEY,
         MAY_BUY_HAPPY_KEY: MAY_BUY_HAPPY_KEY,
         MAY_BUY_LUCK_KEY: MAY_BUY_LUCK_KEY,
-        SMART_LUCK_KEY: SMART_LUCK_KEY,
         getLocalUserName: getLocalUserName,
         setLocalUserName: setLocalUserName,
         getLocalUserInfo: getLocalUserInfo,

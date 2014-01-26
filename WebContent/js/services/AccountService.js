@@ -89,9 +89,34 @@ define([
         });
     };
 
+    /**
+     * 微博联名登录
+     * @param code
+     */
+    var unitWeiBoLogin = function(code, client_id, client_secret, redirect_uri, callback) {
+        var data = {
+            "code": code,
+            "channelNo": requestConfig.request.channelNo,
+            "platform": requestConfig.request.platform,
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "redirect_uri": redirect_uri
+        };
+
+        $.ajax({
+            type: "GET",
+            url: requestConfig.request.WEIBO_AUTH_LOGIN,
+            data: {data: JSON.stringify(data)},
+            dataType: "jsonp",
+            success: callback,
+            error: callback
+        });
+    };
+
     return {
         goLogin: goLogin,
         goRegister: goRegister,
-        checkAccountStatus: checkAccountStatus
+        checkAccountStatus: checkAccountStatus,
+        unitWeiBoLogin: unitWeiBoLogin
     };
 });

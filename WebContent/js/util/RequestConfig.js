@@ -80,7 +80,10 @@ define([], function() {
         // 活动公告列表接口
         NOTICE_LIST: NOTICE_SERVER_URL + "gjgonggao/app/notic_app!index.shtml",
         // 活动公告详情接口
-        NOTICE_DETAIL: NOTICE_SERVER_URL + "gjgonggao/app/notic_app!show.shtml"
+        NOTICE_DETAIL: NOTICE_SERVER_URL + "gjgonggao/app/notic_app!show.shtml",
+
+        // 新浪微博授权登录
+        WEIBO_AUTH_LOGIN: SERVER_URL + "gjuser/sinalogin!receiveCode.shtml"
     };
 
     /**

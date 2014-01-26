@@ -6,12 +6,11 @@ define([
     "util/Page",
 	"util/PageEvent",
     "services/DigitService",
-    "services/AppendService",
     "util/AppConfig",
 	"util/Calculate",
 	"util/Util",
     "util/ErrorHandler"
-], function(template, page, pageEvent, digitService, appendService, appConfig, calculate, util, errorHandler){
+], function(template, page, pageEvent, digitService, appConfig, calculate, util, errorHandler){
 
     // 彩种
     var lotteryType = "31";
@@ -249,7 +248,7 @@ define([
         mode = item.mode;
         var text = "", nos_text = "", mode_text = "";
 
-        var modeItem = appendService.modeMap[mode];
+        var modeItem = modeMap[mode];
         text = modeItem.title;
         if (parseInt(mode, 10) > 11) {
             // 机选不显示
@@ -545,23 +544,7 @@ define([
                 // 购买
                 toBuy();
             }
-            return true;
-        });
 
-        // 智能追号
-        $(".computer").on(pageEvent.touchStart, function(e) {
-            pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
-            return true;
-        });
-
-        $(".computer").on(pageEvent.activate, function(e) {
-            if (typeof issue.issueNo == "undefined") {
-                util.toast("无法获取到彩票期号");
-                return false;
-            }
-
-            // 智能追号检查
-            toAppend();
             return true;
         });
 
@@ -619,7 +602,7 @@ define([
         var content = "";
         $(".tl p").each(function(i, item) {
             if (i > 0) {content += "/";}
-            content +="[" + appendService.modeMap[mode].key + "]" + $(item).text();
+            content +="[" + modeMap[mode].key + "]" + $(item).text();
         });
         params.content = content.replace(/[ ]/g,"");
         // 玩法类型 1 直选， 2 复式, 5 胆拖
@@ -686,67 +669,35 @@ define([
         });
     };
 
-    var toAppend = function () {
-
-        // 检查方案数
-        var $p = $(".tl p");
-
-        if ($p.length > 1) {
-            util.toast("暂不支持多种方案计算，请保留一种方案");
-            return false;
-        }
-
-        var content = $p.text();
-        var balls = 0, dans = 0, tuos = 0;
-        var splitArr = content.split(";");
-        if (splitArr.length > 1) {
-            dans = splitArr[0].split(",").length;
-            tuos = splitArr[1].split(",").length;
-            balls = dans + tuos;
-        } else {
-            balls = content.split(",").length;
-        }
-
-        var opt = {};
-        $p.siblings("i").find(".red").each(function (i, item) {
-            if (i == 0) {
-                opt.bet = parseInt($(item).text(), 10);
-            } else if (i == 1) {
-                opt.money = parseInt($(item).text(), 10);
-            }
-        });
-
-        opt.bonus = appendService.modeMap[mode].bonus;
-        opt.issueNo = issue.issueNo;
-        opt.count = 10;
-        opt.sum = 78;
-        opt.mode = mode;
-        opt.balls = balls;
-        opt.dans = dans;
-        opt.tuos = tuos;
-
-        // 检查返回结果
-        var aResult = appendService.beforeHandler(opt);
-
-        if (typeof aResult.startIssue == "undefined") {
-            util.toast("你太贪心哦，人家满足不了你呢");
-            return false;
-        }
-
-        aResult.lotteryType = lotteryType;
-        aResult.content = content;
-        aResult.sum = 78;
-        aResult.mode = mode;
-        aResult.bet = opt.bet;
-
-        offBind();
-
-        appConfig.setMayBuyData(appConfig.SMART_LUCK_KEY, aResult);
-
-        page.initPage("luck/append", {}, 1);
-
+    /**
+     * 模式映射
+     * @type {Object}
+     */
+    var modeMap = {
+        "0": {title: "任一", key: "201"},
+        "1": {title: "任二", key: "202"},
+        "2": {title: "任三", key: "203"},
+        "3": {title: "任四", key: "204"},
+        "4": {title: "任五", key: "205"},
+        "5": {title: "任六", key: "206"},
+        "6": {title: "任七", key: "207"},
+        "7": {title: "任八", key: "208"},
+        "8": {title: "前三直选", key: "511"},
+        "9": {title: "前三组选", key: "501"},
+        "10": {title: "前二直选", key: "411"},
+        "11": {title: "前二组选", key: "401"},
+        "12": {title: "前三直选胆拖", key: "512"},
+        "13": {title: "前三组选胆拖", key: "502"},
+        "14": {title: "前二直选胆拖", key: "412"},
+        "15": {title: "前二组选胆拖", key: "402"},
+        "16": {title: "任二胆拖", key: "302"},
+        "17": {title: "任三胆拖", key: "303"},
+        "18": {title: "任四胆拖", key: "304"},
+        "19": {title: "任五胆拖", key: "305"},
+        "20": {title: "任六胆拖", key: "306"},
+        "21": {title: "任七胆拖", key: "307"},
+        "22": {title: "任八胆拖", key: "308"}
     };
-
 
     /**
      * 补0操作

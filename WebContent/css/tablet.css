@@ -142,17 +142,6 @@
 .detailTab td{border-bottom:1px solid #ccc}
 .detailTab tbody tr:hover{background:#f0f0f0}
 
-/*智能追号*/
-.smartHead thead tr{background: #333;color: #fff;font-size:24px;text-align:center;}
-.smartList{text-align:center;margin-bottom: 100px;}
-.smartList tbody td{border-bottom:1px solid #ccc;color: #e76161;font-size: 20px;}
-.smartList tbody tr:hover{background:#f0f0f0}
-.smartModBox{width: 100%;line-height: 50px;font-size:24px;background: #fff;display: none;}
-.smartModBox .ml{margin-left: 50px;}
-.smartModBox .red{width:20px;height:20px;display:inline-block;background:red;border-radius:10px;box-shadow:0px 2px 0px #ddd}
-.smartModBox .grey{width:20px;height:20px;display:inline-block;background:#ccc;border-radius:10px;box-shadow:0px 2px 0px #ddd}
-.lCover{position:absolute;top:80px;left:0;width:100%;z-index: 5;display: none;background:#000;opacity:0.5;filter:alpha(opacity:50);-moz-opacity:0.5}
-
 /*登陆 注册*/
 .loginTitle{font:18px "微软雅黑";height:50px;border-bottom:1px solid #ccc;background:#eee;padding:0 10px;color:#e76161;}
 .username,.password,.inputText,.phone{color:#999;width:100%;height:70px;border:none;padding:0;font:20px "微软雅黑"}
