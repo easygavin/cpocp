@@ -12,12 +12,6 @@
         <welcome-file>default.htm</welcome-file>
         <welcome-file>default.jsp</welcome-file>
     </welcome-file-list>
-<!--
-    <servlet>
-        <servlet-name>bandingBankCard</servlet-name>
-        <servlet-class>com.html5.user.bank.filter.BandingBankCardServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>-->
 
     <servlet>
         <servlet-name>abckpay</servlet-name>

@@ -32,6 +32,9 @@ define([
         		"#login",
                 canBack);
 
+        // 隐藏加载标示
+        util.hideLoading();
+
     };
 
     /**

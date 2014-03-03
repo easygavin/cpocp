@@ -5,8 +5,9 @@ define([
     "text!../views/protocol.html",
     "util/Page",
     "util/PageEvent",
-    "util/AppConfig"
-], function(template, page, pageEvent, appConfig) {
+    "util/AppConfig",
+    "util/Util"
+], function(template, page, pageEvent, appConfig, util) {
 
     /**
      * 初始化
@@ -32,6 +33,8 @@ define([
         		"#protocol" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
                 forward ? 1 : 0);
 
+        // 隐藏加载标示
+        util.hideLoading();
     };
 
     /**

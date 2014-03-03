@@ -43,7 +43,23 @@ define([], function () {
     
     // 十一夺金智能追号
     var SMART_LUCK_KEY = "smart_luck";
-    
+
+    // 福彩3D缓存数据标示
+    var MAY_BUY_3D_KEY = "3d";
+
+    // 幸运赛车缓存数据标示
+    var MAY_BUY_RACING_KEY = "racing";
+
+    // 竞彩篮球缓存数据标示
+    var MAY_BUY_JCLQ_KEY = "jclq";
+
+    // 竞彩足球缓存数据标示
+    var MAY_BUY_JCZQ_KEY = "jczq";
+
+    //竞彩足球,对阵情报信息缓存.
+
+    var JCZQ_AGAINST_INFO="jczq_against_info";
+
     /**
      * 获取用户真实姓名
      * @returns {*}
@@ -293,6 +309,10 @@ define([], function () {
         MAY_BUY_HAPPY_KEY: MAY_BUY_HAPPY_KEY,
         MAY_BUY_LUCK_KEY: MAY_BUY_LUCK_KEY,
         SMART_LUCK_KEY: SMART_LUCK_KEY,
+        MAY_BUY_3D_KEY: MAY_BUY_3D_KEY,
+        MAY_BUY_RACING_KEY: MAY_BUY_RACING_KEY,
+        MAY_BUY_JCLQ_KEY: MAY_BUY_JCLQ_KEY,
+        MAY_BUY_JCZQ_KEY: MAY_BUY_JCZQ_KEY,
         getLocalUserName: getLocalUserName,
         setLocalUserName: setLocalUserName,
         getLocalUserInfo: getLocalUserInfo,

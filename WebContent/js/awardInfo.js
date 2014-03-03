@@ -6,14 +6,15 @@ define([
     "util/Page",
     "util/PageEvent",
     "services/DigitService",
-    "util/AppConfig"
-], function(template, page, pageEvent, digitService, appConfig){
+    "util/AppConfig",
+    "util/Util"
+], function(template, page, pageEvent, digitService, appConfig, util){
 
     // 处理返回参数
     var canBack = 0;
 
-    // 彩种 双色球|大乐透|十一运夺金
-    var lotteryTypeArray = "11|13|31";
+    // 彩种 双色球|大乐透|十一运夺金|福彩3D|幸运赛车
+    var lotteryTypeArray = "11|13|31|12|14|36";
 
     /**
      * 初始化
@@ -61,6 +62,10 @@ define([
 
         // 请求数据
         digitService.getAwardInfoList(lotteryTypeArray, function(data) {
+
+            // 隐藏加载标示
+            util.hideLoading();
+
             if (typeof data != "undefined" ) {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
@@ -89,7 +94,7 @@ define([
     var addItem = function(item) {
         var lotteryLogo = "", title = "";
         var numbers = item.lotteryNumbers.split(",");
-        var reds, blues;
+        var reds, blues, desc;
 
         switch(item.lotteryType + "") {
             case "11": // 双色球
@@ -110,6 +115,18 @@ define([
                 lotteryLogo = "djLogo", title = "十一运夺金";
                 reds = numbers;
                 break;
+            case "12": // 福彩3D
+                lotteryLogo = "fcLogo", title = "福彩3D";
+                reds = numbers;
+                break;
+            case "14": // 幸运赛车
+                lotteryLogo = "xyscLogo", title = "幸运赛车";
+                reds = numbers;
+                break;
+            case "36": // 竞彩篮球
+                lotteryLogo = "jlLogo", title = "竞彩篮球";
+                desc = "查看开奖详情";
+                break;
         }
         var $tr = $("<tr></tr>");
         $tr.append($("<td></td>").append($("<a></a>").addClass(lotteryLogo).addClass(" fl")));
@@ -122,6 +139,11 @@ define([
         if (blues != null) {
             html += "+<span class='blue'>"+blues.join(" ")+"</span>";
         }
+
+        if (desc != null) {
+            html += "<span class='red'>"+desc+"</span>";
+        }
+
         var $p2 = $("<p></p>");$p2.html(html);
         $tr.append($("<td class='tl'></td>").append($p1).append($p2));
 
@@ -160,7 +182,19 @@ define([
             // 历史开奖信息
             var lotteryType = $(this).find(".moreBg").attr("id").split("_")[1];
             if ($.trim(lotteryType) != "") {
-                page.initPage("digit/history", {lottery: lotteryType}, 1);
+                switch (lotteryType) {
+                    case "11": // 双色球
+                    case "13": // 大乐透
+                    case "31": // 十一运夺金
+                    case "12": // 福彩3D
+                    case "14": // 幸运赛车
+                        page.initPage("digit/history", {lottery: lotteryType}, 1);
+                        break;
+                    case "36": // 竞彩篮球
+                        page.initPage("jclq/history", {lottery: lotteryType}, 1);
+                        break;
+                }
+
             }
             return true;
         });

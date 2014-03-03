@@ -15,6 +15,9 @@ define([
     // 彩种
     var lotteryType = "11";
 
+    // 购彩模式
+    var mode = "0";
+
     // 显示投注列表
     var bufferData = null;
 
@@ -89,6 +92,9 @@ define([
     var getIssue = function() {
         issue = {};
         digitService.getCurrLottery(lotteryType, function(data) {
+
+            // 隐藏加载标示
+            util.hideLoading();
             if (typeof data != "undefined" ) {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
@@ -163,13 +169,11 @@ define([
      * @param item
      */
     var addItem = function(index, item) {
-        var mode = item.mode, text = "", nos_text = "", mode_text = "";
+        var mode = item.mode;
+        var text = modeMap[mode].title, nos_text = "", mode_text = "";
 
         if (mode == "1") {
-            text = "胆拖投注";
             $(".btnMenu .first").hide();
-        } else {
-            text = "普通投注";
         }
 
         if (mode == "1") {
@@ -208,7 +212,7 @@ define([
             return true;
         });
 
-        $(".back").on(pageEvent.activate, function(event) {
+        $(".back").on(pageEvent.activate, function(e) {
             page.goBack();
             return true;
         });
@@ -219,7 +223,7 @@ define([
             return true;
         });
 
-        $("#issueNo").on(pageEvent.activate, function(event) {
+        $("#issueNo").on(pageEvent.activate, function(e) {
             
             // 获取期号信息
             getIssue();
@@ -232,7 +236,7 @@ define([
             return true;
         });
 
-        $("#protocolA").on(pageEvent.activate, function(event) {
+        $("#protocolA").on(pageEvent.activate, function(e) {
             page.initPage("protocol", {}, 1);
             return true;
         });
@@ -243,12 +247,12 @@ define([
             return true;
         });
 
-        $(".btnMenu .first").on(pageEvent.activate, function(event) {
+        $(".btnMenu .first").on(pageEvent.activate, function(e) {
 
             // 保存双色球数据
             var data = {};
             // 投注模式
-            data.mode = "0";
+            data.mode = mode;
             data.total = 1;
             //data.pay = price;
 
@@ -282,13 +286,13 @@ define([
             return true;
         });
 
-        $(".btnMenu .end").on(pageEvent.activate, function(event) {
+        $(".btnMenu .end").on(pageEvent.activate, function(e) {
             page.goBack();
             return true;
         });
 
         // 删除
-		$(".listTz").undelegate("td", pageEvent.touchStart);
+		/*$(".listTz").undelegate("td", pageEvent.touchStart);
         $(".listTz").delegate("td", pageEvent.touchStart, function(e) {
             var $target = $(e.target);
             var $czdelete = $target.hasClass("czdelete") ? $target : $target.find(".czdelete");
@@ -296,10 +300,10 @@ define([
                 pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
                 return true;
             }
-        });
+        });*/
 
-		$(".listTz").undelegate("td", pageEvent.activate);
-        $(".listTz").delegate("td", pageEvent.activate, function(e) {
+		$(".listTz").undelegate("td", pageEvent.click);
+        $(".listTz").delegate("td", pageEvent.click, function(e) {
             var $target = $(e.target);
             var $czdelete = $target.hasClass("czdelete") ? $target : $target.find(".czdelete");
             if ($czdelete.length) {
@@ -469,8 +473,6 @@ define([
             content +=$(item).text();
         });
         params.content = content.replace(/[ ]/g,"");
-        // 玩法类型 2 复式, 5 胆拖
-        params.playType = bufferData[0].mode == "1" ? "5" :"2";
 
         // 大乐透专用，0不追加，1追加
         params.addtionSupper = "0";
@@ -489,6 +491,11 @@ define([
         params.stopBetting = $("#stopBetting").attr("checked") ? "1" : "0"; // 中奖后停止追号 0不停止，1停止
         params.btzh = "0"; // 高频彩，是否是倍投计算器
         params.stopCondition = "8";  // 停止追号条件
+
+        var modeItem = modeMap[mode];
+        // 玩法类型 2 复式, 5 胆拖
+        params.playType = modeItem.playType;
+        params.betType = modeItem.betType; // 投注类型 1 直选
 
         // 显示遮住层
         util.showCover();
@@ -530,6 +537,15 @@ define([
                 util.toast("投注失败");
             }
         });
+    };
+
+    /**
+     * 模式映射
+     * @type {Object}
+     */
+    var modeMap = {
+        "0": {title: "普通投注", playType: "2", betType: "1"},
+        "1": {title: "胆拖投注", playType: "5", betType: "1"}
     };
 
     return {init:init};

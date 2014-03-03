@@ -49,6 +49,28 @@ define([
     };
 
     /**
+     * 获取当前期号
+     * @param callback
+     */
+    var getRacingPosAward = function(lotteryType, playType, callback) {
+
+        var data = {
+            lotteryType: lotteryType,
+            playType: playType
+        };
+
+        // 请求登录
+        $.ajax({
+            type: "GET",
+            url: requestConfig.request.GET_RACING_POS_AWARD,
+            data: {data: JSON.stringify(data)},
+            dataType: "jsonp",
+            success: callback,
+            error: callback
+        });
+    };
+
+    /**
      * 购买
      * @param params
      * @param callback
@@ -71,6 +93,7 @@ define([
         data.lotteryType = lottery;  // 彩种类型
         data.content = params.content;  // 方案内容
         data.playType = params.playType;  // 玩法类型 2 复式, 5 胆拖
+        data.betType = params.betType; // 投注类型 1 直选，2 组选，3 组三，4组六，5 大乐透12 选2，6生肖，7 季节，8 方位；高频彩默认传入1
 
         data.bets = params.bets; // 当期总注数
         data.totalIssue = params.totalIssue;  // 总期数
@@ -84,7 +107,6 @@ define([
         var detailStr =JSON.stringify(params.detail).replace(/\"/g,'\"');
         data.detail = detailStr; // 购买当期的详细信息
         // 固定参数
-        data.betType = "1"; // 投注类型 1 直选
         data.projectDesc = ""; // 方案描述
 
         switch (type) {
@@ -307,6 +329,7 @@ define([
     return {
         getCurrLottery: getCurrLottery,
         getLastLottery: getLastLottery,
+        getRacingPosAward: getRacingPosAward,
         toBuy: toBuy,
         getProjectDetails: getProjectDetails,
         getProjectAllIssue: getProjectAllIssue,

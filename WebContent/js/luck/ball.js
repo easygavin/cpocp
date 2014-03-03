@@ -166,6 +166,9 @@ define([
 	var getIssue = function() {
 		issue = {};
         digitService.getCurrLottery(lotteryType, function(data) {
+
+            // 隐藏加载标示
+            util.hideLoading();
             if (typeof data != "undefined" ) {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
@@ -272,6 +275,7 @@ define([
     var getLastIssue = function() {
         clearTimeout(lastIssueTimer);
         lastIssue = {};
+        $("#lastIssue").text("获取开奖号码中...");
         digitService.getLastLottery(lotteryType, function(data) {
             if (typeof data != "undefined" ) {
                 if (typeof data.statusCode != "undefined") {
@@ -650,7 +654,7 @@ define([
             return true;
         });
 
-        // 双色球机选
+        // 机选
         $(".shake").on(pageEvent.touchStart, function(e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
@@ -685,12 +689,11 @@ define([
         });
 
         // 第一行
-        $("#numbers0").on(pageEvent.click, function(e) {
+        $("#numbers0").on(pageEvent.tap, function(e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
             } else if ($num.length) {
-                // 只能选20个红球
                 var redsCount = $("#numbers0 .click").length;
                 if (parseInt(mode, 10) > 11) {
                     // 胆拖
@@ -756,7 +759,7 @@ define([
         });
 
         // 第二行
-        $("#numbers1").on(pageEvent.click, function(e) {
+        $("#numbers1").on(pageEvent.tap, function(e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -776,7 +779,7 @@ define([
         });
 
         // 第三行
-        $("#numbers2").on(pageEvent.click, function(e) {
+        $("#numbers2").on(pageEvent.tap, function(e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -853,18 +856,13 @@ define([
             } else if (total == 0) {
                 var ballCount = $(".balls .click").length;
                 if (typeof index != "NaN" && index > -1) {
-                    if (ballCount) {
-                        util.toast("请至少选择 1 注");
-                        return false;
-                    } else {
+                    if (!ballCount) {
                         // 删除一注
                         bufferData.splice(index,1);
                     }
-                } else if (bufferData.length == 0 && index == -1) {
-                    util.toast("请至少选择 1 注");
-                    return false;
                 } else if(bufferData.length > 0 && index == -1) {
                     if (ballCount) {
+                        // 再选一注
                         util.toast("请至少选择 1 注");
                         return false;
                     }
@@ -872,6 +870,11 @@ define([
             }
 
             appConfig.setMayBuyData(appConfig.MAY_BUY_LUCK_KEY, bufferData);
+
+            if (bufferData.length == 0) {
+                util.toast("请至少选择 1 注");
+                return false;
+            }
 
             if (typeof index != "NaN" && index > -1) {
                 page.goBack();

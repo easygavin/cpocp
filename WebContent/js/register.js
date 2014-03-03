@@ -28,6 +28,8 @@ define([
         		"#register", 
         		forward ? 1 : 0);
 
+        // 隐藏加载标示
+        util.hideLoading();
     };
 
     /**

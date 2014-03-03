@@ -5,8 +5,9 @@ define([
     "text!../../views/luck/intro.html",
     "../util/Page",
     "util/PageEvent",
-    "util/AppConfig"
-], function(template, page, pageEvent, appConfig){
+    "util/AppConfig",
+    "util/Util"
+], function(template, page, pageEvent, appConfig, util){
 
     /**
      * 当期显示区域
@@ -35,11 +36,13 @@ define([
         bindEvent();
 
         // 处理返回
-        page.setHistoryState({url: "redblue/intro", data:{}},
-            "redblue/intro", 
-            "#redblue/intro" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
+        page.setHistoryState({url: "luck/intro", data:{}},
+            "luck/intro",
+            "#luck/intro" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
             forward ? 1 : 0);
 
+        // 隐藏加载标示
+        util.hideLoading();
     };
 
     /**

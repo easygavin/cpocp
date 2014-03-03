@@ -160,6 +160,9 @@ define([
 	var getIssue = function() {
 		issue = {};
         digitService.getCurrLottery(lotteryType, function(data) {
+
+            // 隐藏加载标示
+            util.hideLoading();
             if (typeof data != "undefined" ) {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
@@ -251,7 +254,7 @@ define([
             return true;
         });
 
-        // 大乐透机选
+        // 机选
         $(".shake").on(pageEvent.touchStart, function(e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
@@ -291,7 +294,7 @@ define([
         });
 
         // 普通投注红球选号
-        $("#normalReds").on(pageEvent.click, function(e) {
+        $("#normalReds").on(pageEvent.tap, function(e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -310,7 +313,7 @@ define([
         });
 
         // 普通投注蓝球选号
-        $("#normalBlues").on(pageEvent.click, function(e) {
+        $("#normalBlues").on(pageEvent.tap, function(e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -324,7 +327,7 @@ define([
         });
 
         // 胆拖投注胆红选号
-        $("#danReds").on(pageEvent.click, function(e) {
+        $("#danReds").on(pageEvent.tap, function(e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -347,7 +350,7 @@ define([
 
 
         // 胆拖投注拖红选号
-        $("#tuoReds").on(pageEvent.click, function(e) {
+        $("#tuoReds").on(pageEvent.tap, function(e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -363,7 +366,7 @@ define([
         });
 
         // 胆拖投注胆蓝选号
-        $("#danBlues").on(pageEvent.click, function(e) {
+        $("#danBlues").on(pageEvent.tap, function(e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -385,7 +388,7 @@ define([
         });
 
         // 胆拖投注蓝球选号
-        $("#tuoBlues").on(pageEvent.click, function(e) {
+        $("#tuoBlues").on(pageEvent.tap, function(e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -430,7 +433,7 @@ define([
 
             if (total > 0) {
 
-                // 保存大乐透数据
+                // 保存数据
                 var data = {};
                 // 投注模式
                 data.mode = mode;
@@ -482,18 +485,13 @@ define([
             } else if (total == 0) {
                 var ballCount = $(".balls .click").length;
                 if (typeof index != "NaN" && index > -1) {
-                    if (ballCount) {
-                        util.toast("请至少选择 1 注");
-                        return false;
-                    } else {
+                    if (!ballCount) {
                         // 删除一注
                         bufferData.splice(index,1);
                     }
-                } else if (bufferData.length == 0 && index == -1) {
-                    util.toast("请至少选择 1 注");
-                    return false;
                 } else if(bufferData.length > 0 && index == -1) {
                     if (ballCount) {
+                        // 再选一注
                         util.toast("请至少选择 1 注");
                         return false;
                     }
@@ -501,6 +499,11 @@ define([
             }
 
             appConfig.setMayBuyData(appConfig.MAY_BUY_HAPPY_KEY, bufferData);
+
+            if (bufferData.length == 0) {
+                util.toast("请至少选择 1 注");
+                return false;
+            }
 
             if (typeof index != "NaN" && index > -1) {
                 page.goBack();

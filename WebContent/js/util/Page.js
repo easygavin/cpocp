@@ -27,8 +27,8 @@ define([
 
             page.init(data, forward);
 
-            // 隐藏加载标示
-            util.hideLoading();
+            // 重置滚动条
+            window.scrollTo(0, 1);
 
         });
     };

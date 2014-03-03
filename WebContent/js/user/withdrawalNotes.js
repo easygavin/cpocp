@@ -5,8 +5,9 @@ define([
     "text!../../views/user/withdrawalNotes.html",
     "util/Page",
     "util/PageEvent",
-    "util/AppConfig"
-], function(template, page, pageEvent, appConfig) {
+    "util/AppConfig",
+    "util/Util"
+], function(template, page, pageEvent, appConfig, util) {
 
     /**
      * 初始化
@@ -28,6 +29,9 @@ define([
 
         // 处理返回
         page.setHistoryState({url: "user/withdrawalNotes", data: params},"user/recharge","#user/withdrawalNotes" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),forward ? 1 : 0);
+
+        // 隐藏加载标示
+        util.hideLoading();
     };
 
     /**

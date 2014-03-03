@@ -158,6 +158,10 @@ define([
             var userKey = userInfo.userKey;
             if (userId != "" && userKey != "") {
                 personService.getUserBalance(requestType, userId, userKey, function (data) {
+
+                    // 隐藏加载标示
+                    util.hideLoading();
+
                     if (typeof  data != "undefined") {
                         if (data.statusCode == "0") {
                             userBankInfo = data;

@@ -49,6 +49,9 @@ define([
         		"luck/append",
         		"#luck/append" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
                 forward ? 1 : 0);
+
+        // 隐藏加载标示
+        util.hideLoading();
     };
 
     /**
@@ -169,7 +172,7 @@ define([
             return true;
         });
 
-        $(".back").on(pageEvent.activate, function(event) {
+        $(".back").on(pageEvent.activate, function(e) {
             page.goBack();
             return true;
         });
@@ -180,7 +183,7 @@ define([
             return true;
         });
 
-        $(".zhTb").on(pageEvent.activate, function(event) {
+        $(".zhTb").on(pageEvent.activate, function(e) {
             if ($(".smartModBox").css("display") == "none") {
                 showModBox();
             } else {
@@ -302,7 +305,7 @@ define([
             return true;
         });
 
-        $("#operate").on(pageEvent.activate, function(event) {
+        $("#operate").on(pageEvent.activate, function(e) {
             if ($(this).hasClass("gmBtn")) { // 购买
                 toBuy();
             } else {
@@ -332,10 +335,11 @@ define([
         params.issueNo = items[0].issueNo; // 期号
         params.lotteryType = args.lotteryType; //彩种
 
+        var modeItem = appendService.modeMap[args.mode];
+
         // 内容
-        var content = args.content;
-        // 玩法类型 1 直选， 2 复式, 5 胆拖
-        params.playType = "1";
+        var content = "[" + modeItem.key + "]" + args.content;
+        params.content = content.replace(/[ ]/g,"");
 
         // 大乐透专用，0不追加，1追加
         params.addtionSupper = "0";
@@ -360,6 +364,10 @@ define([
         params.stopBetting = $("#stopBetting").attr("checked") ? "1" : "0"; // 中奖后停止追号 0不停止，1停止
         params.btzh = "1"; // 高频彩，是否是倍投计算器
         params.stopCondition = "0";  // 停止追号条件
+
+        // 玩法类型 1 直选， 2 复式, 5 胆拖
+        params.playType = modeItem.playType;
+        params.betType = modeItem.betType; // 投注类型 1 直选
 
         // 显示遮住层
         util.showCover();

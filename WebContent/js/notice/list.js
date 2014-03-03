@@ -6,8 +6,9 @@ define([
     "util/Page",
     "util/PageEvent",
     "services/NoticeService",
-    "util/AppConfig"
-], function(template, page, pageEvent, noticeService, appConfig){
+    "util/AppConfig",
+    "util/Util"
+], function(template, page, pageEvent, noticeService, appConfig, util){
 
     // 处理返回参数
     var canBack = 0;
@@ -65,13 +66,16 @@ define([
 
         // 请求数据
         noticeService.getNoticeList(function(data) {
-             if (typeof data != "undefined" ) {
+
+            // 隐藏加载标示
+            util.hideLoading();
+            if (typeof data != "undefined" ) {
                  if (typeof data.statusCode != "undefined") {
                      if (data.statusCode == "0") {
                         showItems(data.noticeArray);
                      }
                  }
-             }
+            }
          });
     };
 

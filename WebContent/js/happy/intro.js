@@ -5,8 +5,9 @@ define([
     "text!../../views/happy/intro.html",
     "../util/Page",
     "util/PageEvent",
-    "util/AppConfig"
-], function(template, page, pageEvent, appConfig){
+    "util/AppConfig",
+    "util/Util"
+], function(template, page, pageEvent, appConfig, util){
 
     /**
      * 当期显示区域
@@ -39,6 +40,8 @@ define([
             "happy/intro", "#happy/intro" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
             forward ? 1 : 0);
 
+        // 隐藏加载标示
+        util.hideLoading();
     };
 
     /**

@@ -50,6 +50,8 @@ define([
             "#user/accountDetail" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
             forward ? 1 : 0);
 
+        // 隐藏加载标示
+        util.hideLoading();
     };
 
     /**

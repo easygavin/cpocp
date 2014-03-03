@@ -142,36 +142,7 @@ public class Posturl {
         return sb.toString();
     }
 
-    /**
-     * post 请求身份证绑定.
-     *
-     * @param url
-     * @param json
-     * @return
-     */
-    public static JSONObject postRequest(String url, JSONObject json) {
-        HttpClient client = new DefaultHttpClient();
-        org.apache.http.client.methods.HttpPost post = new org.apache.http.client.methods.HttpPost(url);
-        JSONObject response = null;
-        try {
-            org.apache.http.entity.StringEntity s = new org.apache.http.entity.StringEntity(json.toString());
-            s.setContentEncoding("UTF-8");
-            s.setContentType("application/json");
-            post.setEntity(s);
-            HttpResponse res = client.execute(post);
-            if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                HttpEntity entity = res.getEntity();
-                String charset = org.apache.http.util.EntityUtils.getContentCharSet(entity);
-                response = new JSONObject(new JSONTokener(new InputStreamReader(entity.getContent(), charset)));
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            client.getConnectionManager().shutdown();
-        }
-        return response;
-    }
-
+    
     /**
      * @param map 前端传送数据
      * @return 拼接url String

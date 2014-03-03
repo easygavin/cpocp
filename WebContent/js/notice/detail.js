@@ -6,8 +6,9 @@ define([
     "util/Page",
     "util/PageEvent",
     "services/NoticeService",
-    "util/AppConfig"
-], function(template, page, pageEvent, noticeService, appConfig){
+    "util/AppConfig",
+    "util/Util"
+], function(template, page, pageEvent, noticeService, appConfig, util){
 
     // 公告ID
     var noticeId = "";
@@ -69,6 +70,9 @@ define([
 
         // 请求数据
         noticeService.getNoticeDetail(noticeId, function(data) {
+
+            // 隐藏加载标示
+            util.hideLoading();
              if (typeof data != "undefined" ) {
                  if (typeof data.statusCode != "undefined") {
                      if (data.statusCode == "0") {
@@ -180,6 +184,18 @@ define([
                             // 删除缓存的购买数据
                             appConfig.clearMayBuyData(appConfig.MAY_BUY_LUCK_KEY);
                             page.initPage("luck/ball", {}, 1);
+                            break;
+                        case "12": // 福彩3D
+
+                            // 删除缓存的购买数据
+                            appConfig.clearMayBuyData(appConfig.MAY_BUY_3D_KEY);
+                            page.initPage("3d/ball", {}, 1);
+                            break;
+                        case "14": // 幸运赛车
+
+                            // 删除缓存的购买数据
+                            appConfig.clearMayBuyData(appConfig.MAY_BUY_RACING_KEY);
+                            page.initPage("racing/ball", {}, 1);
                             break;
                     }
                     break;

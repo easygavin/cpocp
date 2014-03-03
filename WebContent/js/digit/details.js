@@ -96,6 +96,9 @@ define([
      */
     var getDetails = function() {
         digitService.getProjectDetails(lotteryType, requestType, projectId, function(data) {
+
+            // 隐藏加载标示
+            util.hideLoading();
             if (typeof data != "undefined" ) {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
@@ -173,6 +176,7 @@ define([
         if (hasWithdraw > 1) {
             $(".detailsList ul").append($("<li></li>").html("<p><i id='pullBtn' class='fr sj sjup'></i>"+title+"</p>"));
             $(".detailsList ul").append($("<li id='allIssueList' class='hidden'></li>"));
+            $(".footer").hide();
         } else {
             $(".detailsList ul").append($("<li></li>").html("<p>"+title+"</p>"));
         }

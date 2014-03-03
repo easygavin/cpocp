@@ -1,7 +1,7 @@
 /**
  * Config Service
  */
-define([], function() {
+define([], function () {
 
     // 管家服务器地址
     // 管家测试："http://uatjc.ecp888.com/" 管家正式："http://gj.caipiao123.com.cn/";
@@ -62,6 +62,8 @@ define([], function() {
         GET_CURRENT_LOTTERY: SERVER_URL + "gjdigit/lotteryissue!getCurrentLottery.shtml",
         // 获取高频彩上期开奖号码及遗漏数据接口
         GET_LAST_ISSUE_MSG: SERVER_URL + "gjdigit/lotteryissue!getLastIssueMessage.shtml",
+        // 获取幸运赛车前一/位置奖金接口
+        GET_RACING_POS_AWARD: SERVER_URL + "gjdigit/lotteryissue!getXYSCJiangjinInfo.shtml",
         // 数字/高频彩投注接口
         DIGIT_BUY: SERVER_URL + "gjdigit/buy.shtml",
         // 数字/高频方案详情
@@ -76,6 +78,26 @@ define([], function() {
         AWARD_LIST: SERVER_URL + "gjkj!allkj.shtml",
         // 彩种历史开奖列表接口
         AWARD_LIST_ISSUE: SERVER_URL + "gjdigit/lotteryissue!getKjNumberByIsscout.shtml",
+        // 竞彩足球对阵接口
+        JCZQ_GAME_LIST: SERVER_URL + "gjjczq!betlist.shtml",
+        // 竞彩足球对阵情报分析
+        JCZQ_AGAINST: SERVER_URL + "gjdata/gjdata!index.shtml",
+        // 竞彩足球购彩记录
+        JCZQ_DETAIL: SERVER_URL + "gjjczq!detail.shtml",
+        // 竞彩足球开奖结果接口
+        JCZQ_LOTTERY_RECORD: SERVER_URL + "gjjczq!kjlist.shtml",
+        // 竞彩足球赛事对阵开奖SP值.
+        JCZQ_SP_LOTTERY: SERVER_URL + "gjjczq!kjsp.shtml",
+        // 竞彩蓝球对阵接口
+        JCLQ_GAME_LIST: SERVER_URL + "gjjclq!betlist.shtml",
+        // 竞彩蓝球购买
+        JCLQ_GAME_BUY: SERVER_URL + "gjjclq.shtml",
+        // 竞彩蓝球购彩记录
+        JCLQ_DETAIL: SERVER_URL + "gjjclq!detail.shtml",
+        // 竞彩篮球历史开奖列表接口
+        JCLQ_AWARD_LIST_ISSUE: NOTICE_SERVER_URL + "gjjclq!kjlist.shtml",
+        // 竞彩篮球历史开奖详情SP值
+        JCLQ_AWARD_DETAIL_SP: NOTICE_SERVER_URL + "gjjclq!kjsp.shtml",
 
         // 活动公告列表接口
         NOTICE_LIST: NOTICE_SERVER_URL + "gjgonggao/app/notic_app!index.shtml",

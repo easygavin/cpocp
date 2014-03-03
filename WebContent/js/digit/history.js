@@ -6,8 +6,9 @@ define([
     "util/Page",
     "util/PageEvent",
     "services/DigitService",
-    "util/AppConfig"
-], function(template, page, pageEvent, digitService, appConfig){
+    "util/AppConfig",
+    "util/Util"
+], function(template, page, pageEvent, digitService, appConfig, util){
 
     // 彩种
     var lottery = "";
@@ -77,6 +78,12 @@ define([
             case "31": // 十一运夺金
                 title = "十一运夺金";
                 break;
+            case "12": // 福彩3D
+                title = "福彩3D";
+                break;
+            case "14": // 幸运赛车
+                title = "幸运赛车";
+                break;
         }
         $("#title").text(title + "开奖信息");
     };
@@ -88,6 +95,9 @@ define([
 
         // 请求数据
         digitService.getHistoryAwardsByTypes(lottery, 20, function(data) {
+
+            // 隐藏加载标示
+            util.hideLoading();
              if (typeof data != "undefined" ) {
                  if (typeof data.statusCode != "undefined") {
                      if (data.statusCode == "0") {
@@ -137,6 +147,12 @@ define([
             case "31": // 十一运夺金
                 reds = numbers;
                 break;
+            case "12": // 福彩3D
+                reds = numbers;
+                break;
+            case "14": // 幸运赛车
+                reds = numbers;
+                break;
         }
 
         var html = "";
@@ -150,7 +166,7 @@ define([
         $tr.append($("<td class='tl'></td>").html(html));
 
         var $a_more = "";
-        if (lottery == "11" || lottery == "13") {
+        if (lottery == "11" || lottery == "13" || lottery == "12") {
             $a_more = $("<a class='moreBg'> </a>").attr({"id": "more_"+item.issueNo});
         }
 
@@ -184,7 +200,7 @@ define([
 		$(".listTab").undelegate("tr", pageEvent.activate);
         $(".listTab").delegate("tr", pageEvent.activate, function(e) {
 
-            if (lottery == "11" || lottery == "13") {
+            if (lottery == "11" || lottery == "13" || lottery == "12") {
                 // 详情
                 var issueNo = $(this).find(".moreBg").attr("id").split("_")[1];
                 if ($.trim(issueNo) != "") {

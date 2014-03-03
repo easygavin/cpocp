@@ -100,6 +100,9 @@ define([
     var getIssue = function() {
         issue = {};
         digitService.getCurrLottery(lotteryType, function(data) {
+
+            // 隐藏加载标示
+            util.hideLoading();
             if (typeof data != "undefined" ) {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
@@ -247,10 +250,8 @@ define([
      */
     var addItem = function(index, item) {
         mode = item.mode;
-        var text = "", nos_text = "", mode_text = "";
+        var text = appendService.modeMap[mode].title, nos_text = "", mode_text = "";
 
-        var modeItem = appendService.modeMap[mode];
-        text = modeItem.title;
         if (parseInt(mode, 10) > 11) {
             // 机选不显示
             $(".btnMenu .first").hide();
@@ -295,7 +296,7 @@ define([
             return true;
         });
 
-        $(".back").on(pageEvent.activate, function(event) {
+        $(".back").on(pageEvent.activate, function(e) {
             clearInterval(secondTimer);
             page.goBack();
             return true;
@@ -320,7 +321,7 @@ define([
             return true;
         });
 
-        $("#protocolA").on(pageEvent.activate, function(event) {
+        $("#protocolA").on(pageEvent.activate, function(e) {
             offBind();
             page.initPage("protocol", {}, 1);
             return true;
@@ -332,7 +333,7 @@ define([
             return true;
         });
 
-        $(".btnMenu .first").on(pageEvent.activate, function(event) {
+        $(".btnMenu .first").on(pageEvent.activate, function(e) {
 
             // 保存十一运夺金数据
             var data = {};
@@ -408,14 +409,14 @@ define([
             return true;
         });
 
-        $(".btnMenu .end").on(pageEvent.activate, function(event) {
+        $(".btnMenu .end").on(pageEvent.activate, function(e) {
             offBind();
             page.goBack();
             return true;
         });
 
         // 删除
-		$(".listTz").undelegate("td", pageEvent.touchStart);
+		/*$(".listTz").undelegate("td", pageEvent.touchStart);
         $(".listTz").delegate("td", pageEvent.touchStart, function(e) {
             var $target = $(e.target);
             var $czdelete = $target.hasClass("czdelete") ? $target : $target.find(".czdelete");
@@ -423,10 +424,10 @@ define([
                 pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
                 return true;
             }
-        });
+        });*/
 
-		$(".listTz").undelegate("td", pageEvent.activate);
-        $(".listTz").delegate("td", pageEvent.activate, function(e) {
+		$(".listTz").undelegate("td", pageEvent.click);
+        $(".listTz").delegate("td", pageEvent.click, function(e) {
             var $target = $(e.target);
             var $czdelete = $target.hasClass("czdelete") ? $target : $target.find(".czdelete");
             if ($czdelete.length) {
@@ -615,15 +616,15 @@ define([
         params.issueNo = issue.issueNo; // 期号
         params.lotteryType = lotteryType; //彩种
 
+        var modeItem = appendService.modeMap[mode];
+
         // 内容
         var content = "";
         $(".tl p").each(function(i, item) {
             if (i > 0) {content += "/";}
-            content +="[" + appendService.modeMap[mode].key + "]" + $(item).text();
+            content +="[" + modeItem.key + "]" + $(item).text();
         });
         params.content = content.replace(/[ ]/g,"");
-        // 玩法类型 1 直选， 2 复式, 5 胆拖
-        params.playType = "1";
 
         // 大乐透专用，0不追加，1追加
         params.addtionSupper = "0";
@@ -642,6 +643,10 @@ define([
         params.stopBetting = $("#stopBetting").attr("checked") ? "1" : "0"; // 中奖后停止追号 0不停止，1停止
         params.btzh = "0"; // 高频彩，是否是倍投计算器
         params.stopCondition = "0";  // 停止追号条件
+
+        // 玩法类型 2 复式, 5 胆拖
+        params.playType = modeItem.playType;
+        params.betType = modeItem.betType; // 投注类型 1 直选
 
         // 显示遮住层
         util.showCover();

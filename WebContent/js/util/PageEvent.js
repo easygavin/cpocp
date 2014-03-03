@@ -18,6 +18,9 @@ define([], function() {
     // 点击事件
     var click = document.hasOwnProperty("ontouchstart") ? "touchstart" : "click";
 
+    // Tap 事件
+    var tap =  document.hasOwnProperty("ontouchstart") ? "tap": "click";
+
 	// 时间目标对象
 	var eventTarget = null;
 
@@ -44,6 +47,12 @@ define([], function() {
 
     // 事件过长应该触发点击结束事件
     var triggerTimer = null;
+
+    // Tap 样式定时器
+    var tapCSSTimer = null;
+
+    // 是否已经触发事件
+    var hasActivate = false;
 	/**
      * 处理Tap事件
      * @param el 样式元素
@@ -57,14 +66,20 @@ define([], function() {
 		startTime = new Date().getTime();
 		eventTarget = target;
         needTrigger = true;
-        
-        // Tap显示样式
-        $(".tapHover").css({
-            "top": $(el).offset().top,
-            "left": $(el).offset().left,
-            "width": $(el)[0].offsetWidth,
-            "height": $(el)[0].offsetHeight
-        }).show();
+        hasActivate = false;
+
+        clearTimeout(tapCSSTimer);
+        tapCSSTimer = setTimeout(function () {
+            if (needTrigger && !hasActivate) {
+                // Tap显示样式
+                $(".tapHover").css({
+                    "top": $(el).offset().top,
+                    "left": $(el).offset().left,
+                    "width": $(el)[0].offsetWidth,
+                    "height": $(el)[0].offsetHeight
+                }).show();
+            }
+        }, 65);
 
         startPageX = event.pageX;
         startPageY = event.pageY;
@@ -89,6 +104,7 @@ define([], function() {
         endTime = new Date().getTime();
 
         if (needTrigger && endTime - startTime < eventTime) {
+            hasActivate = true;
             $(eventTarget).trigger(activate);
         }
 
@@ -113,6 +129,7 @@ define([], function() {
         touchStart: touchStart, // touchStart 事件
         activate: activate, // 模拟事件
         click: click, // 点击事件
+        tap: tap, // Tap 点击事件
 		handleTapEvent: handleTapEvent
 	};
 

@@ -6,8 +6,9 @@ define([
     "util/Page",
     "util/PageEvent",
     "services/DigitService",
-    "util/AppConfig"
-], function(template, page, pageEvent, digitService, appConfig){
+    "util/AppConfig",
+    "util/Util"
+], function(template, page, pageEvent, digitService, appConfig, util){
 
     // 彩种
     var lottery = "";
@@ -37,11 +38,11 @@ define([
         var params = {};
         if (lottery != "") {
             params.lottery = lottery;
-        };
+        }
 
         if (issueNo != "") {
             params.issueNo = issueNo;
-        };
+        }
 
         var tkn = appConfig.checkLogin(data);
         if (tkn) {
@@ -89,6 +90,12 @@ define([
             case "31": // 十一运夺金
                 title = "十一运夺金";
                 break;
+            case "12": // 福彩3D
+                title = "福彩3D";
+                break;
+            case "14": // 幸运赛车
+                title = "幸运赛车";
+                break;
         }
         $("#title").text(title + "开奖信息");
     };
@@ -98,6 +105,9 @@ define([
      */
     var getDetails = function() {
         digitService.getDigitDetailsByIssue(lottery, issueNo, function(data) {
+
+            // 隐藏加载标示
+            util.hideLoading();
              if (typeof data != "undefined" ) {
                  if (typeof data.statusCode != "undefined") {
                      if (data.statusCode == "0") {
@@ -113,7 +123,7 @@ define([
      * @param data
      */
     var showDetails = function(data) {
-        var issueTitle = "", time = "", numbers, reds, blues,
+        var issueTitle = "", time = "", numbers, reds = new Array(), blues = new Array(),
             betAmount, bonusAmount;
         switch (data.lotteryType) {
             case "11": // 双色球
@@ -211,6 +221,26 @@ define([
                     }
                 }
                 break;
+            case "12": // 福彩3D
+                issueTitle = "福彩3D";
+
+                numbers = data.lotteryNumber.split(",");
+                reds = numbers;
+
+                for (var i = 0, len = data.winDatas.length; i < len; i++) {
+                    switch (data.winDatas[i].level) {
+                        case "1":
+                            data.winDatas[i].level = "直选";
+                            break;
+                        case "2":
+                            data.winDatas[i].level = "组选3";
+                            break;
+                        case "3":
+                            data.winDatas[i].level = "组选6";
+                            break;
+                    }
+                }
+                break;
         };
         time = data.openDate;
         betAmount = data.betAmount;
@@ -277,6 +307,12 @@ define([
                     break;
                 case "31": // 十一运夺金
                     page.initPage("luck/ball", {}, 0);
+                    break;
+                case "12": // 福彩3D
+                    page.initPage("3d/ball", {}, 0);
+                    break;
+                case "14": // 幸运赛车
+                    page.initPage("racing/ball", {}, 0);
                     break;
             }
             return true;
