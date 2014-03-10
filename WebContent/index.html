@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0,
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0,
     	maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="format-detection" content="telephone=no" /> 
-<title>彩票直通车</title>
-<!-- Fav and touch icons -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/icon/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/icon/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/icon/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed" href="images/icon/apple-touch-icon-57-precomposed.png">
-<link rel="shortcut icon" href="images/icon/favicon.png">
-<link rel="stylesheet" href="css/base.css" />
-<link rel="stylesheet" href="css/tablet.css"
-	media="only screen and (min-width: 640px)" />
-<link rel="stylesheet" href="css/phone.css"
-	media="only screen and (max-width: 639px)" />
-<link rel="stylesheet" href="css/media.css" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no"/>
+    <title>彩票直通车</title>
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/icon/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/icon/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/icon/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="images/icon/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="images/icon/favicon.png">
+    <link rel="stylesheet" href="css/base.css"/>
+    <link rel="stylesheet" href="css/tablet.css"
+          media="only screen and (min-width: 641px)"/>
+    <link rel="stylesheet" href="css/phone.css"
+          media="only screen and (max-width: 640px)"/>
+    <link rel="stylesheet" href="css/media.css"/>
 </head>
 <body>
-	<!-- Main Content Container -->
-	<div id="container"></div>
-    <script type="text/javascript" src="lib/zepto.min.js"></script>
-	<script type="text/javascript" src="lib/require.min.js"
-		data-main="js/main.js"></script>
+<!-- Main Content Container -->
+<div id="container"></div>
+<script type="text/javascript" src="lib/zepto.min.js"></script>
+<script type="text/javascript" src="lib/require.min.js"
+        data-main="js/main.js"></script>
 
-    <!--遮盖层-->
-    <div class="cover"></div>
-    <!--Toast 提示信息-->
-	<div class="toast"></div>
-    <!--Tap焦点层-->
-    <div class="tapHover"></div>
-    <!--对话框-->
-    <div class="prompt">
-        <div class="tit"></div>
-        <div class="cxt">
+<!--遮盖层-->
+<div class="cover"></div>
+<!--Toast 提示信息-->
+<div class="toast"></div>
+<!--Tap焦点层-->
+<div class="tapHover"></div>
+<!--对话框-->
+<div class="prompt">
+    <div class="tit"></div>
+    <div class="cxt">
 
-        </div>
-        <div class="btnG">
-            <a class="btn l_btn" id="prompt_l"></a><a class="btn r_btn" id="prompt_r"></a>
-        </div>
     </div>
-    <!--提示框-->
-    <div class="dialog">
-        <div class="tit"></div>
-        <div class="cxt">
-
-        </div>
-        <div class="btnG"><a class="btn" id="dialog_l"></a></div>
+    <div class="btnG">
+        <a class="btn l_btn" id="prompt_l"></a><a class="btn r_btn" id="prompt_r"></a>
     </div>
+</div>
+<!--提示框-->
+<div class="dialog">
+    <div class="tit"></div>
+    <div class="cxt">
 
-    <div class="load"></div>
+    </div>
+    <div class="btnG"><a class="btn" id="dialog_l"></a></div>
+</div>
+
+<div class="load"></div>
 </body>
 </html>

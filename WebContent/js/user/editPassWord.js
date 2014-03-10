@@ -84,7 +84,7 @@ define([
                 return false;
             }
             //身份认证_查询.
-            var loginData = appConfig.getLocalUserInfo();
+            var loginData = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
             if (loginData != null) {
                 var userId = loginData.userId;
                 var userKey = loginData.userKey;
@@ -92,13 +92,13 @@ define([
                     if (typeof data != "undefined") {
                         if (data.statusCode == "0") {
 
-                            var loginData = appConfig.getLocalUserInfo();
+                            var loginData = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
                             // wap 跳转参数
                             loginData.wapKey = hex_md5(loginData.userName + $.trim($("#newPassword").val())).substr(8,16);
 
                             // 保存登录成功信息
-                            appConfig.setLocalUserInfo(loginData);
+                            appConfig.setLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY, loginData);
 
                             util.toast("修改密码成功");
                             page.goBack();

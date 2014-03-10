@@ -73,7 +73,7 @@ define([
             $("#person").find("span").text("登录/注册");
         }
 
-        readIDs = appConfig.getNoticeReadIDs();
+        readIDs = appConfig.getLocalJson(appConfig.keyMap.NOTICE_READ_ID);
 
         // 请求数据
         getNoticeList();
@@ -111,6 +111,7 @@ define([
 
         if (notices.length) {
             $(".bunner").show();
+        } else {
             return;
         }
 
@@ -186,7 +187,7 @@ define([
                 var noticeId = $img.attr("id").split("_")[1];
                 if (typeof noticeId != "undefined" && $.trim(noticeId) != "") {
                     writeIDs[noticeId] = "1";
-                    appConfig.setNoticeReadIDs(writeIDs);
+                    appConfig.setLocalJson(appConfig.keyMap.NOTICE_READ_ID, writeIDs);
 
                     page.initPage("notice/detail", {noticeId:noticeId}, 1);
                 }
@@ -249,49 +250,49 @@ define([
                 case "redblue":
 
                     // 删除缓存的购买数据
-                    appConfig.clearMayBuyData(appConfig.MAY_BUY_RED_BLUE_KEY);
+                    appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_RED_BLUE_KEY);
                     page.initPage("redblue/ball", {}, 1);
 
                     break;
                 case "happy":
 
                     // 删除缓存的购买数据
-                    appConfig.clearMayBuyData(appConfig.MAY_BUY_HAPPY_KEY);
+                    appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_HAPPY_KEY);
                     page.initPage("happy/ball", {}, 1);
 
                     break;
                 case "luck":
 
                     // 删除缓存的购买数据
-                    appConfig.clearMayBuyData(appConfig.MAY_BUY_LUCK_KEY);
+                    appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_LUCK_KEY);
                     page.initPage("luck/ball", {}, 1);
 
                     break;
                 case "3d":
 
                     // 删除缓存的购买数据
-                    appConfig.clearMayBuyData(appConfig.MAY_BUY_3D_KEY);
+                    appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_3D_KEY);
                     page.initPage("3d/ball", {}, 1);
 
                     break;
                 case "racing":
 
                     // 删除缓存的购买数据
-                    appConfig.clearMayBuyData(appConfig.MAY_BUY_RACING_KEY);
+                    appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_RACING_KEY);
                     page.initPage("racing/ball", {}, 1);
 
                     break;
                 case "jclq":
 
                     // 删除缓存的购买数据
-                    appConfig.clearMayBuyData(appConfig.MAY_BUY_JCLQ_KEY);
+                    appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_JCLQ_KEY);
                     page.initPage("jclq/mixed", {}, 1);
 
                     break;
                 case "jczq":
 
                     // 删除缓存的购买数据
-                    appConfig.clearMayBuyData(appConfig.MAY_BUY_JCZQ_KEY);
+                    appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_JCZQ_KEY);
                     page.initPage("jczq/mixed", {}, 1);
 
                     break;
@@ -300,7 +301,7 @@ define([
                     var wapUrl = appConfig.WAP_URL;
 
                     // 保存登录成功信息
-                    var user = appConfig.getLocalUserInfo();
+                    var user = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
                     if (user != null && typeof user != "undefined"
                         && user.userId != null && typeof user.userId != "undefined"

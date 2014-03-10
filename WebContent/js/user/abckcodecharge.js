@@ -26,7 +26,7 @@ define([
             params.token = tkn;
         }
 
-        userInfo = appConfig.getLocalUserInfo();
+        userInfo = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         // 绑定事件
         bindEvent();

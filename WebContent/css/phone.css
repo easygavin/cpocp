@@ -15,6 +15,11 @@
 .header h1{font-size:18px;padding:0 0.3em;font-weight: normal;line-height:40px;height:40px}
 .header h1 a{color:#fff}
 
+/*no fixed*/
+.iheader{width:100%;background:#009983;color:#fff;z-index:10;}
+.iheader h1{font-size:18px;padding:0 0.3em;font-weight: normal;line-height:40px;height:40px}
+.iheader h1 a{color:#fff}
+
 /*尾部*/
 .footer{position: fixed !important;bottom: 0px !important;left: 0px !important;width:100%;z-index: 10;}
 .footer .tzBox{padding:0 0.5em;height:40px;line-height:40px;color:#fff;background:#009983;font-size:16px;text-align:center;}
@@ -36,11 +41,17 @@
 /*二级菜单*/
 .btnMenu{position:fixed !important;top:40px;width:100%;height:40px;line-height:40px;vertical-align:middle;background:#333;font-size:0.8em;overflow:hidden;z-index: 10;display:-webkit-box;display:-moz-box;display:box;}
 .btnMenu a{display:block;-webkit-box-flex:1;-moz-box-flex:1;box-flex:1;height:40px;line-height:40px;vertical-align:middle;text-align:center;color:#ccc;border-left:1px solid #414141;border-right:1px solid #2c2a2a}
+
+.ibtnMenu{width:100%;height:40px;line-height:40px;vertical-align:middle;background:#333;font-size:0.8em;overflow:hidden;z-index: 10;display:-webkit-box;display:-moz-box;display:box;}
+.ibtnMenu a{display:block;-webkit-box-flex:1;-moz-box-flex:1;box-flex:1;height:40px;line-height:40px;vertical-align:middle;text-align:center;color:#ccc;border-left:1px solid #414141;border-right:1px solid #2c2a2a}
 .gcjl .click{background: #000;color:#fff;}
 
 /*选球期号*/
 .ballIssue{position:fixed !important;top:40px;width:100%;background:#FFF;z-index:10;}
 .listIssue{position:fixed !important;top:80px;width:100%;background:#FFF;z-index:10;}
+
+.iballIssue{width:100%;background:#FFF;z-index:10;}
+.ilistIssue{width:100%;background:#FFF;z-index:10;}
 
 /*滚动广告*/
 .bunner{display:none;width:100%;height:7.5em;overflow:hidden;text-align:left;position:relative;text-align:center}
@@ -222,13 +233,13 @@
 .mt10{margin-top:10px}
 .czdelete{width:25px;height:26px;background-position:-155px -258px}
 .czdelete:hover{background-position:-156px -225px}
-.listTz{line-height:1.5em;font-size:1em;text-align:center;margin-bottom: 110px;}
+.listTz{line-height:1.5em;font-size:1em;text-align:center;margin-bottom: 110px;table-layout: fixed;}
 .listTz td{border-bottom:1px solid #ccc}
 .listTz td.ptb10{padding:0.5em 0}
 .protocol{height:30px;line-height:30px;vertical-align:top;background:#fff;text-align:center;position: relative;font-size:0.8em;}
 .txt{font-size:0.8em;margin:0.5em 0.5em 50px;}
 .protocol .plus{position: absolute;bottom: 0;right: 10px;}
-.tzChose{height:30px;line-height:30px;border:1px solid #ccc;border-bottom:none;box-shadow:0 2px 3px #E3E1DC inset;padding:10px;background:#fff;text-align:center;font-size:0.8em;}
+.tzChose{height:30px;line-height:30px;border:1px solid #ccc;border-bottom:none;box-shadow:0 2px 3px #E3E1DC inset;padding:10px 0;background:#fff;text-align:center;font-size:0.8em;}
 .shoutInp{width:50px;height:20px;text-align:center;border:1px solid #ccc;box-shadow:0 1px 3px #E3E1DC inset;font-size:16px "微软雅黑";color:#666;margin:0 5px}
 .sj{width:30px;height:30px;background-position:-8px -1914px;border-radius:15px;background-color:#333;box-shadow:0 1px 0 #000}
 .sjup{-moz-transform: rotate(180deg);-moz-transition: all 0.25s ease 0s;-webkit-transform: rotate(180deg);-webkit-transition: all 0.25s ease 0s;-o-transform: rotate(180deg);-o-transition: all 0.25s ease 0s;-ms-transform: rotate(180deg);-ms-transition: all 0.25s ease 0s;transform: rotate(180deg);transition: all 0.25s ease 0s;}
@@ -300,7 +311,7 @@ select{border:none;width:100%;height:45px;float:left;background:none;position: a
 .footballTz table td{border:1px solid #F4F4F4}
 .footballTz table td.bordernone{border:none;line-height:25px;width: 25%}
 .bgfff{background:#fff;cursor:pointer;width: 25%}
-.jcMore{}
+.jcMore{} .leagueT{}
 .bgfff a.moreBg{margin-right:11px;}
 
 .showTable{margin:6px 6px;background:#f4f4f4;border-radius:3px;text-align:center;}
@@ -364,9 +375,9 @@ select{border:none;width:100%;height:45px;float:left;background:none;position: a
 .zckjTab p{clear:both;text-align:left}
 .zckjTab p i{margin-right:15px}
 /*.jztz{text-align:left;padding:0.8em 0.5em;background:#fff;text-align:center;font-size:1.2em;height:30px;line-height:30px}*/
-.chosegg{border:2px solid #07a08d;width:10em;height:30px;padding:0 4px;margin-right: 4px;overflow:hidden;font-size:0.8em;}
-.chosegg i{width: 4em;}
-.chosegg input{width:2em;float:right;overflow:hidden;border:none;height:30px;line-height:30px;vertical-align:middle;font-size: 1em;text-align:center}
+.chosegg{border:2px solid #07a08d;width:12em;height:30px;padding:0 4px;margin-right: 4px;overflow:hidden;font-size:0.8em;}
+.chosegg i{width: 5em;}
+.chosegg input{width:3em;float:right;overflow:hidden;border:none;height:30px;line-height:30px;vertical-align:middle;font-size: 1em;text-align:center}
 .chosegg a{height:30px;width:2em;background:#07A08D;display:inline-block;margin:0 4px;overflow:hidden}
 .chosegg a i{width:0;height:0;overflow:hidden;background:#07A08D;border:7px solid #07A08D;border-top:7px solid #fff;position:relative;top:17px;left:-1px}
 
@@ -378,6 +389,7 @@ select{border:none;width:100%;height:45px;float:left;background:none;position: a
 .tabcon{padding:10px 0;overflow:hidden;color: #998a75;display: none;}
 .tabcon li{width:5em;height:2em;border:1px solid #e3e3e3;text-align:center;line-height:2em;border-radius:3px;float:left;margin:0.1em;cursor:pointer}
 .tabcon li.click{background:#07a08d;border:1px outset #07a08d;color:#fff}
+.bonus{font-size: 0.8em;line-height: 1.5em;}
 .rhtitle{padding:0 6px;margin:20px 0;height:30px;overflow:hidden;font-size:1.2em}
 .rhtitle input{width:70px;height:26px;border:1px solid #e3e3e3;text-align:center;font-size:1.2em;font-family:verdana;margin:0 5px;border-radius:3px}
 .rhtitle div.fr{height:30px;background:#fff9b3;line-height:30px;overflow:hidden}
@@ -396,3 +408,15 @@ select{border:none;width:100%;height:45px;float:left;background:none;position: a
 .jcdetail table{text-align:center; border-collapse:collapse;border:1px solid #e5e5e5;line-height:25px;font-size:18px;background: #f4f4f4;}
 .jcdetail table td {border: 1px solid #d1d1d1;background: #e0f2ff;}
 .spTable{margin: 0;}
+
+/*竞彩开奖信息*/
+.jckjInfor{line-height:1.2em;font-size:0.8em;table-layout:fixed;}
+.jckjInfor td{border-bottom:1px solid #ccc;padding:0.5em;white-space:nowrap;overflow: hidden;text-overflow:ellipsis;}
+
+.leagueBox{display:none;background:#fff;overflow:hidden;position: fixed !important;top:80px;left:5%;width:90%;border-bottom:1px solid #c6c6c6;box-shadow:0 1px 0px #f8f8f8;border-radius:3px;box-shadow:0 1px 3px #E3E1DC inset;border:1px solid #ccc;background:#eee;padding:0.192em 0.577em 0.577em 0.577em;z-index: 30;font-size: 0.8em;}
+.leagueBox .icon{padding:10px 0;overflow:hidden;color: #998a75;}
+.leagueBox .icon li{width:7em;height:2em;border:1px solid #e3e3e3;text-align:center;line-height:2em;border-radius:3px;float:left;margin:0.1em;cursor:pointer;overflow: hidden;}
+.leagueBox .icon li.click{background:#07a08d;border:1px outset #07a08d;color:#fff}
+.leagueBox .bar{width: 100%;}
+.leagueBox .bar .showNum{float: left;margin-left: 1.5em;}
+.leagueBox .bar .btn{display:inline-block;float:right;width:6em;height:2em;font-size: 0.9em; line-height:2em;margin:0 auto;vertical-align:middle;background:#c00;color:#fff;text-align: center}

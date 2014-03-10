@@ -13,10 +13,10 @@ define([
     var gliveId = "";
 
     //期号.
-    var issueNo  ="";
+    var issueNo = "";
 
     //赛事编号.
-    var teamNo ="";
+    var teamNo = "";
 
     // 数据存储.
     var dataStore = {};
@@ -28,7 +28,7 @@ define([
         $("#container").empty().append($(template));
 
         //情报id
-        if (data != null && typeof data != "undefined"){
+        if (data != null && typeof data != "undefined") {
             // 彩种
             if (typeof data.gliveId != "undefined" && $.trim(data.gliveId) != "") {
                 gliveId = data.gliveId;
@@ -152,22 +152,20 @@ define([
         //选中某个选项,点击刷新时,先清除掉所有已选项,然后,默认选中亚盘。
         $(".tabs ul li").removeClass("click");
         $("#asiaPlate").addClass("click");
-        if (issueNo != ""
-            && issueNo != "undefined" && gliveId != "" && gliveId != "undefined") {
-            jczqService.getJCZQAgainstInfo(teamNo, issueNo, gliveId, "", "", function (data) {
+        if (gliveId != "" && gliveId != "undefined") {
+            jczqService.getJCZQAgainstInfo( gliveId,function (data) {
                 // 隐藏遮住层
                 util.hideCover();
                 util.hideLoading();
                 if (typeof data != "undefined") {
-                    if (typeof data.statusCode != "undefined") {
-                        if (data.statusCode == "0") {
-                            dataStore = data;
-                            //默认显示亚盘
-                            asiaShow(dataStore);
-                            teamVs(dataStore);
-                        }  else {
-                            util.toast(data.errorMsg);
-                        }
+
+                    if (data.statusCode == "0") {
+                        dataStore = data;
+                        //默认显示亚盘
+                        asiaShow(dataStore);
+                        teamVs(dataStore);
+                    } else {
+                        util.toast(data.errorMsg);
                     }
                 }
             });

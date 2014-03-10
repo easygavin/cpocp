@@ -30,9 +30,9 @@ define([
             params.token = tkn;
         }
 
-        loginData = appConfig.getLocalUserInfo();
-        externalInfo = appConfig.getLocalUserExternalInfo();
-        trueName = appConfig.getLocalUserTrueName();
+        loginData = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
+        externalInfo = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_EXTERNAL_INFO_KEY);
+        trueName = appConfig.getLocalString(appConfig.keyMap.LOCAL_USER_TRUE_NAME_KEY);
         //初始化查询.
         initQuery();
         // 绑定事件
@@ -111,7 +111,7 @@ define([
                 if (typeof data != "undefined") {
                     if (data.statusCode == "0") {
                         //初始化页面数据
-                        appConfig.setLocalUserExternalInfo(data);
+                        appConfig.setLocalJson(appConfig.keyMap.LOCAL_USER_EXTERNAL_INFO_KEY, data);
                         initPageData(data);
                     } else if (data.statusCode == "0007") {
                         //0007尚未绑定身份证.
@@ -148,7 +148,7 @@ define([
                     if (typeof  data != "undefined") {
                         if (data.statusCode == "0") {
                             userTrueName = data.name;
-                            appConfig.setLocalUserTrueName(userTrueName);
+                            appConfig.setLocalString(appConfig.keyMap.LOCAL_USER_TRUE_NAME_KEY, userTrueName);
                         } else {
                             util.toast(data.errorMsg);
                         }
@@ -167,7 +167,7 @@ define([
                             "userId": loginData.userId, "userKey": loginData.userKey, "name": userTrueName,
                             "cardNo": cardNo, "bankInfo": bankInfo, "bankName": selectBank, "province": selectProvince, "province": selectCity
                         };
-                        appConfig.setLocalUserExternalInfo(externalUserInfo);
+                        appConfig.setLocalJson(appConfig.keyMap.LOCAL_USER_EXTERNAL_INFO_KEY, externalUserInfo);
                         util.toast("绑定成功");
                         page.goBack();
 
@@ -283,7 +283,7 @@ define([
                     if (data.statusCode == "0") {
                         trueName = data.name;
                         $("#userBankName").val(trueName.substring(0, 1) + "***").attr("disabled", true);
-                        appConfig.setLocalUserTrueName(trueName);
+                        appConfig.setLocalString(appConfig.keyMap.LOCAL_USER_TRUE_NAME_KEY, trueName);
                     } else {
                         util.toast(data.errorMsg);
                     }

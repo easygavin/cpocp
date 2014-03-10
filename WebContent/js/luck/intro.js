@@ -7,7 +7,7 @@ define([
     "util/PageEvent",
     "util/AppConfig",
     "util/Util"
-], function(template, page, pageEvent, appConfig, util){
+], function (template, page, pageEvent, appConfig, util) {
 
     /**
      * 当期显示区域
@@ -18,7 +18,7 @@ define([
     /**
      * 初始化
      */
-    var init = function(data, forward) {
+    var init = function (data, forward) {
         // 加载模板内容
         $("#container").empty().append($(template));
 
@@ -36,7 +36,7 @@ define([
         bindEvent();
 
         // 处理返回
-        page.setHistoryState({url: "luck/intro", data:{}},
+        page.setHistoryState({url:"luck/intro", data:{}},
             "luck/intro",
             "#luck/intro" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
             forward ? 1 : 0);
@@ -48,7 +48,7 @@ define([
     /**
      * 初始化显示
      */
-    var initShow = function(data) {
+    var initShow = function (data) {
         flag = "intro";
         showZone();
     };
@@ -56,41 +56,41 @@ define([
     /**
      * 显示区域
      */
-    var showZone = function() {
-        $("#m_"+flag).addClass("click");
-        $("#"+flag).show();
+    var showZone = function () {
+        $("#m_" + flag).addClass("click");
+        $("#" + flag).show();
     };
 
     /**
      * 隐藏区域
      */
-    var hideZone = function() {
-        $("#m_"+flag).removeClass("click");
-        $("#"+flag).hide();
+    var hideZone = function () {
+        $("#m_" + flag).removeClass("click");
+        $("#" + flag).hide();
     };
     /**
      * 绑定事件
      */
-    var bindEvent = function() {
+    var bindEvent = function () {
 
         // 返回
-        $(".back").on(pageEvent.touchStart, function(e) {
+        $(".back").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".back").on(pageEvent.activate, function(e) {
+        $(".back").on(pageEvent.activate, function (e) {
             page.goBack();
             return true;
         });
 
         // Tab 切换
-		$(".btnMenu a").on(pageEvent.touchStart, function(e) {
+        $(".btnMenu a").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".btnMenu a").on(pageEvent.activate, function(e) {
+        $(".btnMenu a").on(pageEvent.activate, function (e) {
             var $target = $(this);
             if ($target.hasClass("click")) {
                 return false;

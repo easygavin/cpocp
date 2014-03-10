@@ -10,7 +10,7 @@ define([
     "util/Calculate",
     "util/Util",
     "util/Shake"
-], function(template, page, pageEvent, digitService, appConfig, calculate, util, shake){
+], function (template, page, pageEvent, digitService, appConfig, calculate, util, shake) {
 
     // 处理返回参数
     var canBack = 0;
@@ -44,9 +44,9 @@ define([
 
     // 注数
     var total = 0;
-	
-	// 计时秒
-	var seconds = 0;
+
+    // 计时秒
+    var seconds = 0;
 
     // 倒计时定时器
     var secondTimer = null;
@@ -56,7 +56,7 @@ define([
     /**
      * 初始化
      */
-    var init = function(data, forward) {
+    var init = function (data, forward) {
         canBack = forward ? 1 : 0;
 
         // 加载模板内容
@@ -86,7 +86,7 @@ define([
         bindEvent();
 
         // 处理返回
-        page.setHistoryState({url: "racing/ball", data: params},
+        page.setHistoryState({url:"racing/ball", data:params},
             "racing/ball",
             "#racing/ball" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
             canBack);
@@ -95,10 +95,10 @@ define([
     /**
      * 显示缓存数据
      */
-    var showBuffer = function(forward) {
+    var showBuffer = function (forward) {
 
         // 缓存的数据
-        bufferData = appConfig.getMayBuyData(appConfig.MAY_BUY_RACING_KEY);
+        bufferData = appConfig.getLocalJson(appConfig.keyMap.MAY_BUY_RACING_KEY);
 
         if (bufferData != null && typeof bufferData != "undefined" && bufferData.length > 0) {
             mode = bufferData[0].mode;
@@ -116,15 +116,15 @@ define([
 
         if (typeof index != "NaN" && index > -1) {
             var data = bufferData[index];
-                pay = data.total * 2, total = data.total,
-                    redFs = data.redFs, redSs = data.redSs, redTs = data.redTs;
+            pay = data.total * 2, total = data.total,
+                redFs = data.redFs, redSs = data.redSs, redTs = data.redTs;
             if (redFs.length) {
                 addRedsFFocus(redFs);
             }
             if (redSs.length) {
                 addRedsSFocus(redSs);
             }
-            if(redTs.length) {
+            if (redTs.length) {
                 addRedsTFocus(data.redTs);
             }
 
@@ -136,7 +136,7 @@ define([
     /**
      * 初始化显示
      */
-    var initShow = function(forward) {
+    var initShow = function (forward) {
 
         // 显示缓存数据
         showBuffer(forward);
@@ -157,16 +157,16 @@ define([
         unitTotal();
     };
 
-	/**
-	 * 获取期号
-	 */
-	var getIssue = function() {
-		issue = {};
-        digitService.getCurrLottery(lotteryType, function(data) {
+    /**
+     * 获取期号
+     */
+    var getIssue = function () {
+        issue = {};
+        digitService.getCurrLottery(lotteryType, function (data) {
 
             // 隐藏加载标示
             util.hideLoading();
-            if (typeof data != "undefined" ) {
+            if (typeof data != "undefined") {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
                         issue = data;
@@ -177,17 +177,17 @@ define([
                 }
             }
         });
-	};
+    };
 
     /**
      * 处理显示期号
      */
-    var handleIssue = function() {
+    var handleIssue = function () {
 
-        if (issue.endTime !=null && typeof issue.endTime != "undefined"
-            && $.trim(issue.endTime) !=""){
+        if (issue.endTime != null && typeof issue.endTime != "undefined"
+            && $.trim(issue.endTime) != "") {
             var serverTime = handleStrDate(issue.serverTime);
-			var serverDate = new Date();
+            var serverDate = new Date();
             serverDate.setFullYear(parseInt(serverTime.year, 10),
                 parseInt(serverTime.month, 10) - 1,
                 parseInt(serverTime.day, 10));
@@ -196,7 +196,7 @@ define([
                 parseInt(serverTime.second, 10),
                 0);
 
-			var endTime = handleStrDate(issue.endTime);
+            var endTime = handleStrDate(issue.endTime);
             var endDate = new Date();
             endDate.setFullYear(parseInt(endTime.year, 10),
                 parseInt(endTime.month, 10) - 1,
@@ -207,12 +207,12 @@ define([
                 0);
 
             seconds = (endDate.getTime() - serverDate.getTime()) / 1000;
-            console.log("seconds:"+seconds);
+            console.log("seconds:" + seconds);
             showIssue();
 
             // 倒计时
             clearInterval(secondTimer);
-            secondTimer = setInterval(function() {
+            secondTimer = setInterval(function () {
                 if (seconds > 0) {
                     seconds--;
                     showIssue();
@@ -224,57 +224,57 @@ define([
 
                     clearTimeout(lastIssueTimer);
                     // 5分钟之后重新拉去上期信息
-                    lastIssueTimer = setTimeout(function() {
+                    lastIssueTimer = setTimeout(function () {
                         getLastIssue();
-                    } ,3 * 60 * 1000);
+                    }, 3 * 60 * 1000);
                 }
             }, 1000);
         }
     };
-	
-	/**
-	 * 处理字符时间
-	 */
-	var handleStrDate = function(str) {
-		
-		var sParam = str.split("-");
-		var sYear = sParam[0], sMonth = sParam[1];
-		var sdParam = sParam[2].split(" ");
-		var sDay = sdParam[0];
-		var sHMS = sdParam[1].split(":");
-		var sHour = sHMS[0], sMinute = sHMS[1], sSecond = sHMS[2];
-		
-		return {
-			year: sYear,
-			month: sMonth,
-			day: sDay,
-			hour: sHour,
-            minute: sMinute,
-			second: sSecond
-		};
-	};
-	
-	/**
-	 * 显示期号，倒计时
-	 */
-	var showIssue = function() {
+
+    /**
+     * 处理字符时间
+     */
+    var handleStrDate = function (str) {
+
+        var sParam = str.split("-");
+        var sYear = sParam[0], sMonth = sParam[1];
+        var sdParam = sParam[2].split(" ");
+        var sDay = sdParam[0];
+        var sHMS = sdParam[1].split(":");
+        var sHour = sHMS[0], sMinute = sHMS[1], sSecond = sHMS[2];
+
+        return {
+            year:sYear,
+            month:sMonth,
+            day:sDay,
+            hour:sHour,
+            minute:sMinute,
+            second:sSecond
+        };
+    };
+
+    /**
+     * 显示期号，倒计时
+     */
+    var showIssue = function () {
         var minute = Math.floor(seconds / 60);
         var second = seconds % 60;
         var issueTxt = issue.issueNo.substring(6) + "期截止:" + minute + ":" +
             ( second < 10 ? "0" + second : second );
-        $("#issueNo").text(issueTxt);
-	};
+        $("#RBIssueNo").text(issueTxt);
+    };
 
 
     /**
      * 获取上期开奖号码
      */
-    var getLastIssue = function() {
+    var getLastIssue = function () {
         clearTimeout(lastIssueTimer);
         lastIssue = {};
-        $("#lastIssue").text("获取开奖号码中...");
-        digitService.getLastLottery(lotteryType, function(data) {
-            if (typeof data != "undefined" ) {
+        $("#RBLastIssue").text("获取开奖号码中...");
+        digitService.getLastLottery(lotteryType, function (data) {
+            if (typeof data != "undefined") {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
                         console.log(JSON.stringify(data));
@@ -291,21 +291,21 @@ define([
     /**
      * 处理上期开奖号码
      */
-    var showLastIssue = function() {
+    var showLastIssue = function () {
         var issueTxt = lastIssue.issueNo.substring(6) + "期 : " + lastIssue.lastLotteryNumber;
-        $("#lastIssue").text(issueTxt);
+        $("#RBLastIssue").text(issueTxt);
     };
 
     /**
      * 显示模式区域
      */
-    var showModeZone = function() {
+    var showModeZone = function () {
 
         // 获取当期奖金
         getRacingPosAward();
 
         $(".popup li").removeClass("click");
-        var $mode = $("#mode_"+mode);
+        var $mode = $("#mode_" + mode);
         $mode.addClass("click");
         $(".radioBox").text($mode.text());
 
@@ -442,7 +442,7 @@ define([
             $(".posAwardL").show();
             digitService.getRacingPosAward(lotteryType, playType, function (data) {
                 util.hideLoading();
-                if (typeof data != "undefined" ) {
+                if (typeof data != "undefined") {
                     if (typeof data.statusCode != "undefined") {
                         if (data.statusCode == "0") {
                             if ($.trim(data.bonusDatas) != "") {
@@ -477,12 +477,12 @@ define([
     /**
      * 绑定事件
      */
-    var bindEvent = function() {
+    var bindEvent = function () {
 
         // 摇一摇
         if (window.DeviceMotionEvent) {
             $(window).off("devicemotion");
-            $(window).on("devicemotion", function(eventData) {
+            $(window).on("devicemotion", function (eventData) {
                 if (parseInt(mode, 10) < 12) {
                     shake.deviceMotionHandler(eventData, getRandomBalls);
                 }
@@ -490,14 +490,14 @@ define([
         }
 
         // 返回
-        $(".back").on(pageEvent.touchStart, function(e) {
+        $(".back").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".back").on(pageEvent.activate, function(e) {
+        $(".back").on(pageEvent.activate, function (e) {
             if (typeof index == "NaN" || index == -1) {
-                appConfig.clearMayBuyData(appConfig.MAY_BUY_RACING_KEY);
+                appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_RACING_KEY);
             }
             offBind();
             if (canBack) {
@@ -509,12 +509,12 @@ define([
         });
 
         // 获取期号
-        $("#issueNo").on(pageEvent.touchStart, function(e) {
+        $("#RBIssueNo").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $("#issueNo").on(pageEvent.activate, function(e) {
+        $("#RBIssueNo").on(pageEvent.activate, function (e) {
 
             // 获取期号信息
             getIssue();
@@ -525,12 +525,12 @@ define([
         });
 
         // 获取当期奖金
-        $(".awardR").on(pageEvent.touchStart, function(e) {
+        $(".awardR").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".awardR").on(pageEvent.activate, function(e) {
+        $(".awardR").on(pageEvent.activate, function (e) {
 
             util.showLoading();
 
@@ -540,12 +540,12 @@ define([
         });
 
         // 模式选择
-        $("#modeSelect").on(pageEvent.touchStart, function(e) {
+        $("#modeSelect").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $("#modeSelect").on(pageEvent.activate, function(e) {
+        $("#modeSelect").on(pageEvent.activate, function (e) {
             if ($(this).hasClass("radioBox")) {
                 $(".popup").show();
                 // 显示遮盖层
@@ -557,18 +557,18 @@ define([
         });
 
         // 双色球机选
-        $(".shake").on(pageEvent.touchStart, function(e) {
+        $(".shake").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".shake").on(pageEvent.activate, function(e) {
+        $(".shake").on(pageEvent.activate, function (e) {
             getRandomBalls();
             return true;
         });
 
         // 选中模式
-        $(".popup li").on(pageEvent.click, function(e) {
+        $(".popup li").on(pageEvent.click, function (e) {
             var id = this.id.split("_")[1];
             var $target = $(this);
             if (!$target.hasClass("click")) {
@@ -591,7 +591,7 @@ define([
         });
 
         // 第一行
-        $("#numbers0").on(pageEvent.tap, function(e) {
+        $("#numbers0").on(pageEvent.tap, function (e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -600,7 +600,7 @@ define([
                 var redsCount = $("#numbers0 .click").length;
                 if (parseInt(mode, 10) > 5) {
                     // 胆拖
-                    switch(mode) {
+                    switch (mode) {
                         case "6": // 前二胆拖
                         case "8": // 两关胆拖
                             if (redsCount == 1) {
@@ -618,7 +618,7 @@ define([
                     }
                     $num.addClass("click");
                     // 移除拖红选中
-                    $("#numbers1 li .num :contains('"+$num.text()+"')").removeClass("click");
+                    $("#numbers1 li .num :contains('" + $num.text() + "')").removeClass("click");
                 } else {
                     // 复试
                     $num.addClass("click");
@@ -630,7 +630,7 @@ define([
         });
 
         // 第二行
-        $("#numbers1").on(pageEvent.tap, function(e) {
+        $("#numbers1").on(pageEvent.tap, function (e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -640,7 +640,7 @@ define([
                 if (parseInt(mode, 10) > 5) {
                     // 胆拖
                     // 移除胆红选中
-                    $("#numbers0 li .num :contains('"+$num.text()+"')").removeClass("click");
+                    $("#numbers0 li .num :contains('" + $num.text() + "')").removeClass("click");
                 }
             }
 
@@ -650,7 +650,7 @@ define([
         });
 
         // 第三行
-        $("#numbers2").on(pageEvent.tap, function(e) {
+        $("#numbers2").on(pageEvent.tap, function (e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -664,32 +664,32 @@ define([
         });
 
         // 清除选中号
-        $(".delete").on(pageEvent.touchStart, function(e) {
+        $(".delete").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".delete").on(pageEvent.activate, function(e) {
+        $(".delete").on(pageEvent.activate, function (e) {
             clear();
             unitTotal();
             return true;
         });
 
         // 确认
-        $(".sure").on(pageEvent.touchStart, function(e) {
+        $(".sure").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".sure").on(pageEvent.activate, function(e) {
+        $(".sure").on(pageEvent.activate, function (e) {
 
             // 缓存的数据
             bufferData = (bufferData == null || typeof bufferData == "undefined" || bufferData.length == 0) ? [] : bufferData;
 
             if (typeof issue.issueNo == "undefined" && bufferData.length == 0) {
-                 util.toast("无法获取到彩票期号");
-                 return false;
-             }
+                util.toast("无法获取到彩票期号");
+                return false;
+            }
 
             if (total > 0) {
 
@@ -702,19 +702,19 @@ define([
                 var redFs = new Array(), redSs = new Array(), redTs = new Array();
 
                 // 第一批数据
-                $("#numbers0 .click").each(function(i, item) {
+                $("#numbers0 .click").each(function (i, item) {
                     redFs.push($(item).text());
                 });
                 data.redFs = redFs;
 
                 // 第二排数据
-                $("#numbers1 .click").each(function(i, item) {
+                $("#numbers1 .click").each(function (i, item) {
                     redSs.push($(item).text());
                 });
                 data.redSs = redSs;
 
                 // 第三排数据
-                $("#numbers2 .click").each(function(i, item) {
+                $("#numbers2 .click").each(function (i, item) {
                     redTs.push($(item).text());
                 });
                 data.redTs = redTs;
@@ -729,9 +729,13 @@ define([
                 if (typeof index != "NaN" && index > -1) {
                     if (!ballCount) {
                         // 删除一注
-                        bufferData.splice(index,1);
+                        bufferData.splice(index, 1);
+                    } else {
+                        // 再选一注
+                        util.toast("请至少选择 1 注");
+                        return false;
                     }
-                } else if(bufferData.length > 0 && index == -1) {
+                } else if (bufferData.length > 0 && index == -1) {
                     if (ballCount) {
                         // 再选一注
                         util.toast("请至少选择 1 注");
@@ -740,7 +744,7 @@ define([
                 }
             }
 
-            appConfig.setMayBuyData(appConfig.MAY_BUY_RACING_KEY, bufferData);
+            appConfig.setLocalJson(appConfig.keyMap.MAY_BUY_RACING_KEY, bufferData);
 
             if (bufferData.length == 0) {
                 util.toast("请至少选择 1 注");
@@ -758,45 +762,54 @@ define([
         });
 
         // 右菜单
-        $(".menu").on(pageEvent.touchStart, function(e) {
+        $(".menu").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".menu").on(pageEvent.activate, function(e) {
+        $(".menu").on(pageEvent.activate, function (e) {
             $(".menuBox").show();
             util.showCover();
             return true;
         });
 
         // 购彩记录
-        $(".gcBg").on(pageEvent.click, function(e) {
+        $(".gcBg").on(pageEvent.click, function (e) {
             offBind();
-            page.initPage("user/buyRecord", {lotteryTypeArray: lotteryType}, 1);
             util.hideCover();
+            if (!appConfig.checkLogin(null)) {
+                // 尚未登录，弹出提示框
+                util.prompt("", "您还未登录，请先登录", "登录", "取消",
+                    function (e) {
+                        page.initPage("login", {}, 1);
+                    },
+                    function (e) {
+                    }
+                );
+                return false;
+            }
+            page.initPage("user/buyRecord", {lotteryTypeArray:lotteryType}, 1);
             return true;
         });
 
         // 开奖信息
-        $(".kjBg").on(pageEvent.click, function(e) {
+        $(".kjBg").on(pageEvent.click, function (e) {
             offBind();
-
-            page.initPage("digit/history", {lottery: lotteryType}, 1);
             util.hideCover();
+            page.initPage("digit/history", {lottery:lotteryType}, 1);
             return true;
         });
 
         // 玩法介绍
-        $(".wfBg").on(pageEvent.click, function(e) {
+        $(".wfBg").on(pageEvent.click, function (e) {
             offBind();
-
-            page.initPage("racing/intro", {}, 1);
             util.hideCover();
+            page.initPage("racing/intro", {}, 1);
             return true;
         });
 
         // 关闭显示框
-        $(".cover").on(pageEvent.click, function(e) {
+        $(".cover").on(pageEvent.click, function (e) {
             $(".popup").hide();
             $(".menuBox").hide();
             util.hideCover();
@@ -810,7 +823,7 @@ define([
      */
     var addRedsFFocus = function (arr) {
         for (var i = 0, redLen = arr.length; i < redLen; i++) {
-            $("#numbers0 li .num :contains('"+(parseInt(arr[i], 10) < 10 ? ("0" + parseInt(arr[i], 10)) : arr[i])+"')").addClass("click");
+            $("#numbers0 li .num :contains('" + (parseInt(arr[i], 10) < 10 ? ("0" + parseInt(arr[i], 10)) : arr[i]) + "')").addClass("click");
         }
     };
 
@@ -820,7 +833,7 @@ define([
      */
     var addRedsSFocus = function (arr) {
         for (var i = 0, redLen = arr.length; i < redLen; i++) {
-            $("#numbers1 li .num :contains('"+(parseInt(arr[i], 10) < 10 ? ("0" + parseInt(arr[i], 10)) : arr[i])+"')").addClass("click");
+            $("#numbers1 li .num :contains('" + (parseInt(arr[i], 10) < 10 ? ("0" + parseInt(arr[i], 10)) : arr[i]) + "')").addClass("click");
         }
     };
 
@@ -830,43 +843,43 @@ define([
      */
     var addRedsTFocus = function (arr) {
         for (var i = 0, redLen = arr.length; i < redLen; i++) {
-            $("#numbers2 li .num :contains('"+(parseInt(arr[i], 10) < 10 ? ("0" + parseInt(arr[i], 10)) : arr[i])+"')").addClass("click");
+            $("#numbers2 li .num :contains('" + (parseInt(arr[i], 10) < 10 ? ("0" + parseInt(arr[i], 10)) : arr[i]) + "')").addClass("click");
         }
     };
 
     /**
      * 随机一注
      */
-    var getRandomBalls = function() {
+    var getRandomBalls = function () {
         // 清空原始的选中
         clear();
         var redFs = new Array(), redSs = new Array(), redTs = new Array();
         switch (mode) {
             case "0": // 前一
-                redFs = calculate.getSrand(1,12,1);
+                redFs = calculate.getSrand(1, 12, 1);
                 break;
             case "1": // 前二
-                var randoms = calculate.getSrand(1,12,3);
+                var randoms = calculate.getSrand(1, 12, 3);
                 redFs.push(randoms[0]);
                 redSs.push(randoms[1]);
                 break;
             case "2": // 前三
-                var randoms = calculate.getSrand(1,12,3);
+                var randoms = calculate.getSrand(1, 12, 3);
                 redFs.push(randoms[0]);
                 redSs.push(randoms[1]);
                 redTs.push(randoms[2]);
                 break;
             case "3": // 位置
-                redFs = calculate.getSrand(1,12,1);
+                redFs = calculate.getSrand(1, 12, 1);
                 break;
             case "4": // 过两关
-                redFs = calculate.getSrand(1,12,1);
-                redSs = calculate.getSrand(1,12,1);
+                redFs = calculate.getSrand(1, 12, 1);
+                redSs = calculate.getSrand(1, 12, 1);
                 break;
             case "5": // 过三关
-                redFs = calculate.getSrand(1,12,1);
-                redSs = calculate.getSrand(1,12,1);
-                redTs = calculate.getSrand(1,12,1);
+                redFs = calculate.getSrand(1, 12, 1);
+                redSs = calculate.getSrand(1, 12, 1);
+                redTs = calculate.getSrand(1, 12, 1);
                 break;
         }
 
@@ -888,7 +901,7 @@ define([
     /**
      * 解除绑定
      */
-    var offBind = function() {
+    var offBind = function () {
         clearInterval(secondTimer);
         clearTimeout(lastIssueTimer);
         $(".cover").off(pageEvent.click);
@@ -897,7 +910,7 @@ define([
     /**
      * 验证是否显示机选
      */
-    var validShake = function() {
+    var validShake = function () {
         if (parseInt(mode, 10) < 6) {
             $(".shake").show();
         } else {
@@ -917,7 +930,7 @@ define([
     /**
      * 统计注数，消费金额
      */
-    var unitTotal = function() {
+    var unitTotal = function () {
         total = 0, pay = 0;
 
         switch (mode) {
@@ -928,10 +941,10 @@ define([
                 break;
             case "1": // 前二
                 var redFs = new Array(), redSs = new Array();
-                $("#numbers0 .click").each(function(i, item) {
+                $("#numbers0 .click").each(function (i, item) {
                     redFs.push($(item).text());
                 });
-                $("#numbers1 .click").each(function(i, item) {
+                $("#numbers1 .click").each(function (i, item) {
                     redSs.push($(item).text());
                 });
 
@@ -950,13 +963,13 @@ define([
                 break;
             case "2": // 前三
                 var redFs = new Array(), redSs = new Array(), redTs = new Array();
-                $("#numbers0 .click").each(function(i, item) {
+                $("#numbers0 .click").each(function (i, item) {
                     redFs.push($(item).text());
                 });
-                $("#numbers1 .click").each(function(i, item) {
+                $("#numbers1 .click").each(function (i, item) {
                     redSs.push($(item).text());
                 });
-                $("#numbers2 .click").each(function(i, item) {
+                $("#numbers2 .click").each(function (i, item) {
                     redTs.push($(item).text());
                 });
 

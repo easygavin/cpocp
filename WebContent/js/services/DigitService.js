@@ -4,26 +4,26 @@
 define([
     "util/RequestConfig",
     "util/AppConfig"
-], function(requestConfig, appConfig) {
+], function (requestConfig, appConfig) {
 
     /**
      * 获取当前期号
      * @param callback
      */
-    var getCurrLottery = function(lotteryType, callback) {
+    var getCurrLottery = function (lotteryType, callback) {
 
         var data = {
-            lotteryType: lotteryType
+            lotteryType:lotteryType
         };
 
         // 请求登录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.GET_CURRENT_LOTTERY,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.GET_CURRENT_LOTTERY,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -31,20 +31,20 @@ define([
      * 获取当前期号
      * @param callback
      */
-    var getLastLottery = function(lotteryType, callback) {
+    var getLastLottery = function (lotteryType, callback) {
 
         var data = {
-            lotteryType: lotteryType
+            lotteryType:lotteryType
         };
 
         // 请求登录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.GET_LAST_ISSUE_MSG,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.GET_LAST_ISSUE_MSG,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -52,21 +52,21 @@ define([
      * 获取当前期号
      * @param callback
      */
-    var getRacingPosAward = function(lotteryType, playType, callback) {
+    var getRacingPosAward = function (lotteryType, playType, callback) {
 
         var data = {
-            lotteryType: lotteryType,
-            playType: playType
+            lotteryType:lotteryType,
+            playType:playType
         };
 
         // 请求登录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.GET_RACING_POS_AWARD,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.GET_RACING_POS_AWARD,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -75,16 +75,16 @@ define([
      * @param params
      * @param callback
      */
-    var toBuy = function(lottery, type, params, price, callback) {
+    var toBuy = function (lottery, type, params, price, callback) {
 
         if (!appConfig.checkLogin(null)) {
             // 尚未登录
-            callback({statusCode: "off"});
+            callback({statusCode:"off"});
             return false;
         }
 
         // 保存登录成功信息
-        var user = appConfig.getLocalUserInfo();
+        var user = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         // 请求参数
         var data = {};
@@ -104,7 +104,7 @@ define([
         data.btzh = params.btzh;  // 高频彩，是否是倍投计算器
         data.stopCondition = params.stopCondition;  // 停止追号条件
 
-        var detailStr =JSON.stringify(params.detail).replace(/\"/g,'\"');
+        var detailStr = JSON.stringify(params.detail).replace(/\"/g, '\"');
         data.detail = detailStr; // 购买当期的详细信息
         // 固定参数
         data.projectDesc = ""; // 方案描述
@@ -141,12 +141,12 @@ define([
 
         // 购买登录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.DIGIT_BUY,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.DIGIT_BUY,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -157,33 +157,33 @@ define([
      * @param projectId
      * @param callback
      */
-    var getProjectDetails = function(lotteryType, requestType, projectId, callback) {
+    var getProjectDetails = function (lotteryType, requestType, projectId, callback) {
 
         if (!appConfig.checkLogin(null)) {
             // 尚未登录
-            callback({statusCode: "off"});
+            callback({statusCode:"off"});
             return false;
         }
 
         // 保存登录成功信息
-        var user = appConfig.getLocalUserInfo();
+        var user = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         var data = {
-            lotteryType: lotteryType,
-            requestType: requestType,
-            projectId: projectId,
-            userKey: user.userKey,
-            userId: user.userId + ""
+            lotteryType:lotteryType,
+            requestType:requestType,
+            projectId:projectId,
+            userKey:user.userKey,
+            userId:user.userId + ""
         };
 
         // 请求登录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.SUBSCRIBE_ORDER,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.SUBSCRIBE_ORDER,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -194,31 +194,31 @@ define([
      * @param callback
      * @return {Boolean}
      */
-    var getProjectAllIssue = function(lotteryType, projectId, callback) {
+    var getProjectAllIssue = function (lotteryType, projectId, callback) {
 
         if (!appConfig.checkLogin(null)) {
             // 尚未登录
-            callback({statusCode: "off"});
+            callback({statusCode:"off"});
             return false;
         }
 
         // 保存登录成功信息
-        var user = appConfig.getLocalUserInfo();
+        var user = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         var data = {
-            lotteryType: lotteryType,
-            projectId: projectId,
-            userId: user.userId + ""
+            lotteryType:lotteryType,
+            projectId:projectId,
+            userId:user.userId + ""
         };
 
         // 请求登录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.ALL_ISSUE,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.ALL_ISSUE,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -229,32 +229,32 @@ define([
      * @param callback
      * @return {Boolean}
      */
-    var addBuyDigit = function(lotteryType, projectId, callback) {
+    var addBuyDigit = function (lotteryType, projectId, callback) {
 
         if (!appConfig.checkLogin(null)) {
             // 尚未登录
-            callback({statusCode: "off"});
+            callback({statusCode:"off"});
             return false;
         }
 
         // 保存登录成功信息
-        var user = appConfig.getLocalUserInfo();
+        var user = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         var data = {
-            lotteryType: lotteryType,
-            projectId: projectId,
-            userKey: user.userKey,
-            userId: user.userId + ""
+            lotteryType:lotteryType,
+            projectId:projectId,
+            userKey:user.userKey,
+            userId:user.userId + ""
         };
 
         // 请求登录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.ADD_BUY_DIGIT,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.ADD_BUY_DIGIT,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -263,22 +263,22 @@ define([
      * @param lottery 彩种
      * @param size 记录数
      */
-    var getHistoryAwardsByTypes = function(lottery, size, callback) {
+    var getHistoryAwardsByTypes = function (lottery, size, callback) {
 
         // 请求参数
-        var data={
-            lotteryType: lottery,
-            issueCount: size
+        var data = {
+            lotteryType:lottery,
+            issueCount:size
         };
 
         // 开奖记录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.AWARD_LIST_ISSUE,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.AWARD_LIST_ISSUE,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -288,20 +288,20 @@ define([
      * @param issueNo 期号
      * @param callback
      */
-    var getDigitDetailsByIssue = function(lottery, issueNo, callback) {
-        var data={
-            lotteryId: lottery,
-            issueNo: issueNo
+    var getDigitDetailsByIssue = function (lottery, issueNo, callback) {
+        var data = {
+            lotteryId:lottery,
+            issueNo:issueNo
         };
 
         // 数字彩某期开奖详情
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.GET_DIGIT_NB,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.GET_DIGIT_NB,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -310,32 +310,32 @@ define([
      * @param lotteryTypeArray
      * @param callback
      */
-    var getAwardInfoList = function(lotteryTypeArray, callback) {
-        var data={
-            lotteryTypeArray: lotteryTypeArray
+    var getAwardInfoList = function (lotteryTypeArray, callback) {
+        var data = {
+            lotteryTypeArray:lotteryTypeArray
         };
 
         // 数字彩某期开奖详情
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.AWARD_LIST,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.AWARD_LIST,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
     return {
-        getCurrLottery: getCurrLottery,
-        getLastLottery: getLastLottery,
-        getRacingPosAward: getRacingPosAward,
-        toBuy: toBuy,
-        getProjectDetails: getProjectDetails,
-        getProjectAllIssue: getProjectAllIssue,
-        addBuyDigit: addBuyDigit,
-        getHistoryAwardsByTypes: getHistoryAwardsByTypes,
-        getDigitDetailsByIssue: getDigitDetailsByIssue,
-        getAwardInfoList: getAwardInfoList
+        getCurrLottery:getCurrLottery,
+        getLastLottery:getLastLottery,
+        getRacingPosAward:getRacingPosAward,
+        toBuy:toBuy,
+        getProjectDetails:getProjectDetails,
+        getProjectAllIssue:getProjectAllIssue,
+        addBuyDigit:addBuyDigit,
+        getHistoryAwardsByTypes:getHistoryAwardsByTypes,
+        getDigitDetailsByIssue:getDigitDetailsByIssue,
+        getAwardInfoList:getAwardInfoList
     };
 });

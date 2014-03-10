@@ -1,13 +1,13 @@
 /**
  * Shake 处理
  */
-define([], function() {
+define([], function () {
 
     var SHAKE_THRESHOLD = 2000;
     var lastUpdate = 0;
     var x, y, z, last_x, last_y, last_z;
 
-    var deviceMotionHandler = function(eventData, callback) {
+    var deviceMotionHandler = function (eventData, callback) {
         // Grab the acceleration including gravity from the results
         var acceleration = eventData.accelerationIncludingGravity;
         var curTime = new Date().getTime();
@@ -17,7 +17,7 @@ define([], function() {
             x = acceleration.x;
             y = acceleration.y;
             z = acceleration.z;
-            var speed = Math.abs(x+y+z-last_x-last_y-last_z) / diffTime * 10000;
+            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
             if (speed > SHAKE_THRESHOLD) {
                 callback();
             }
@@ -27,5 +27,5 @@ define([], function() {
         }
     };
 
-    return {deviceMotionHandler: deviceMotionHandler};
+    return {deviceMotionHandler:deviceMotionHandler};
 });

@@ -48,7 +48,7 @@ define([
          */
         var initShow = function () {
 
-            userInfo = appConfig.getLocalUserInfo();
+            userInfo = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
             // 防止事件污染
             offBind();
@@ -181,7 +181,7 @@ define([
                         break;
                     case "logoutSys":
                         // 清除本地用户信息
-                        appConfig.clearLocalUserInfo();
+                        appConfig.clearData(appConfig.keyMap.LOCAL_USER_INFO_KEY);
                         personService.logout(userInfo.userId, userInfo.userKey);
                         if (canBack) {
                             page.goBack();
@@ -216,14 +216,14 @@ define([
                     if ("undefined" != data) {
                         if (data.statusCode == "0") {
                             //已经绑定
-                            appConfig.setLocalUserTrueName(data.name);
+                            appConfig.setLocalString(appConfig.keyMap.LOCAL_USER_TRUE_NAME_KEY, data.name);
                             //查询是否绑定银行卡
                             personService.getUserBalance(1, userInfo.userId, userInfo.userKey, function (data) {
                                 if (typeof data != "undefined") {
                                     //已绑定.
                                     if (data.statusCode == "0") {
                                         //存储用户信息
-                                        appConfig.setLocalUserExternalInfo(data);
+                                        appConfig.setLocalJson(appConfig.keyMap.LOCAL_USER_EXTERNAL_INFO_KEY, data);
                                     }
                                     page.initPage(url, {}, 1);
                                 } else {
@@ -252,7 +252,7 @@ define([
                 if (typeof data != "undefined") {
                     if (data.statusCode == "0") {
                         //初始化页面数据
-                        appConfig.setLocalUserExternalInfo(data);
+                        appConfig.setLocalJson(appConfig.keyMap.LOCAL_USER_EXTERNAL_INFO_KEY, data);
                         page.initPage(url, {}, 1);
                     } else if (data.statusCode == "0007") {
                         //0007尚未绑定身份证.

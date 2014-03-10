@@ -12,8 +12,8 @@ define([
 
     // 彩种 双色球|大乐透|十一运夺金|福彩3D|幸运赛车|竞彩足球|
     // 竞彩篮球胜负|竞彩篮球让分胜负|竞彩篮球胜分差||竞彩篮球大小分|竞彩篮球混投
-    // 竞彩足球胜平负|竞彩足球让球胜平负|竞彩足球比分|竞彩足球总进球|竞彩足球半全场|竞彩足球混投
-    var lotteryTypeArray = "11|13|31|12|14|36|37|38|39|53|46|56|47|48|49|52";
+    // 竞彩足球胜平负|竞彩足球让球胜平负|竞彩足球比分|竞彩足球总进球|竞彩足球半全场|竞彩足球混投|让球胜平负
+    var lotteryTypeArray = "11|13|31|12|14|36|37|38|39|53|46|56|47|48|49|52|56";
 
     // 请求彩种列表
     var typeArr = "";
@@ -62,7 +62,7 @@ define([
         bindEvent();
 
         // 处理返回
-        page.setHistoryState({url: "user/buyRecord", data: params},
+        page.setHistoryState({url:"user/buyRecord", data:params},
             "user/buyRecord",
             "#user/buyRecord" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
             forward ? 1 : 0);
@@ -162,14 +162,15 @@ define([
                     page.initPage("login", {}, 1);
                 },
                 function (e) {
-
+                    // 隐藏加载图标
+                    loadingShow(0);
                 }
             );
             return false;
         }
 
         // 保存登录成功信息
-        var user = appConfig.getLocalUserInfo();
+        var user = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         var data = {};
         // buyType 0: 全部, 1: 自购
@@ -267,19 +268,52 @@ define([
         var $p1 = $("<p></p>");
         $p1.html("<i class='fr'>" + item.time + "</i>" +
             "<i class='c000 f22'>" + item.lotteryName + "-" + item.purchaseType + "</i>");
-        var award = "";
-        if (parseInt(item.income, 10) > 0) {
-            award = "<i class='fr'>奖金：<i class='red mlr5'>" + parseFloat(item.income).toFixed(2) + "</i>元</i>";
-        } else {
-            award = "<i class='fr'>" + item.incomeDetail + "</i>";
+
+        var schemeStatus = "";
+        switch (item.schemeStatus) {
+            case "0":
+                schemeStatus = "失败";
+                break;
+            case "1":
+                schemeStatus = "未满员";
+                break;
+            case "2":
+                schemeStatus = "出票中";
+                break;
+            case "3":
+                schemeStatus = "未开奖";
+                break;
+            case "4":
+                schemeStatus = "未中奖";
+                break;
+            case "5":
+                schemeStatus = "已中奖";
+                break;
+            case "6":
+                schemeStatus = "已撤单";
+                break;
+            case "7":
+                schemeStatus = "追号中";
+                break;
         }
+
+        var status = "<i class='fr'>" + schemeStatus + "</i>";
 
         var payment = "<i>认购金额：<span class='red mlr5'>" + parseFloat(item.payment).toFixed(2) + "</span>元</i>";
         var $p2 = $("<p></p>");
-        $p2.html(award + payment);
-        $tr.append($("<td class='tl fzc'></td>").append($p1).append($p2));
+        $p2.html(status + payment);
 
-        $tr.append($("<td></td>").append($("<a class='moreBg'> </a>").attr({"id": "more_" + item.lotteryType + "_" + item.projectId})));
+        var $td = $("<td class='tl fzc'></td>");
+        $td.append($p1).append($p2);
+
+        var award = "";
+        if (parseInt(item.income, 10) > 0) {
+            var $p3 = $("<p></p>");
+            $p3.html("<i>奖金：<i class='red mlr5'>" + parseFloat(item.income).toFixed(2) + "</i>元</i>");
+            $td.append($p3);
+        }
+        $tr.append($td);
+        $tr.append($("<td></td>").append($("<a class='moreBg'> </a>").attr({"id":"more_" + item.lotteryType + "_" + item.projectId})));
         $(".kjInformation tbody").append($tr);
     };
 
@@ -372,14 +406,14 @@ define([
                 var lotteryType = params[1], requestType = "0", projectId = params[2];
                 if (lotteryType == "11" || lotteryType == "12" || lotteryType == "13" || lotteryType == "14" || lotteryType == "31") {
                     // 数字彩，高频彩
-                    page.initPage("digit/details", {lotteryType: lotteryType, requestType: requestType, projectId: projectId}, 1);
+                    page.initPage("digit/details", {lotteryType:lotteryType, requestType:requestType, projectId:projectId}, 1);
                 } else if (lotteryType == "36" || lotteryType == "37"
                     || lotteryType == "38" || lotteryType == "39"
                     || lotteryType == "53") {
                     // 竞彩篮球
-                    page.initPage("jclq/details", {lotteryType: lotteryType, requestType: requestType, projectId: projectId}, 1);
+                    page.initPage("jclq/details", {lotteryType:lotteryType, requestType:requestType, projectId:projectId}, 1);
                 } else if (lotteryType == "46" || lotteryType == "47" || lotteryType == "48" || lotteryType == "49" || lotteryType == "52" || lotteryType == "56") {
-                    page.initPage("jczq/details",{lotteryType:lotteryType,requestType:requestType,projectId:projectId},1);
+                    page.initPage("jczq/details", {lotteryType:lotteryType, requestType:requestType, projectId:projectId}, 1);
                 }
             }
             return true;
@@ -408,9 +442,9 @@ define([
      */
     var loadingShow = function (flag) {
         if (flag) {
-            $(".loadIcon").css({"visibility": "visible"});
+            $(".loadIcon").css({"visibility":"visible"});
         } else {
-            $(".loadIcon").css({"visibility": "hidden"});
+            $(".loadIcon").css({"visibility":"hidden"});
         }
     };
 
@@ -436,5 +470,5 @@ define([
     };
 
 
-    return {init: init};
+    return {init:init};
 });

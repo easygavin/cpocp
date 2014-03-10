@@ -27,7 +27,7 @@ define([
             params.token = tkn;
         }
 
-        userInfo = appConfig.getLocalUserInfo();
+        userInfo = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         //初始化查询可提款金额
         initShow();

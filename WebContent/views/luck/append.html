@@ -1,13 +1,13 @@
 <section id="luckAppendView">
 
     <!--中国农业银行-->
-    <div class="header">
+    <div class="iheader">
         <h1>
             <a class="back" title="返回"></a><span class="fl">十一运夺金智能追号</span>
         </h1>
     </div>
     <!--表头-->
-    <div class="btnMenu">
+    <div class="ibtnMenu">
         <table width="100%" cellspacing="0" cellpadding="0" class="smartHead">
             <colgroup>
                 <col width="20%">
@@ -28,29 +28,26 @@
         </table>
     </div>
 
-    <div class="mBox">
-        
-        <!--追期列表-->
-        <table width="100%" cellspacing="0" cellpadding="0" class="smartList">
-            <colgroup>
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
-            </colgroup>
-            <tbody>
+    <!--追期列表-->
+    <table width="100%" cellspacing="0" cellpadding="0" class="smartList">
+        <colgroup>
+            <col width="20%">
+            <col width="20%">
+            <col width="20%">
+            <col width="20%">
+            <col width="20%">
+        </colgroup>
+        <tbody>
 
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
 
     <!--尾部-->
     <div class="footer">
         <div class="smartModBox">
             <div class="ml">
                 我要追
-                <input id="issueUnit" type="number" value="10" class="shoutInp" maxlength="2"/>
+                <input id="issueUnit" type="tel" value="10" class="shoutInp" maxlength="2"/>
                 期&nbsp;&nbsp;
                 <label>
                     <input id="stopBetting" type="checkbox" checked/>中奖停止追号
@@ -59,13 +56,13 @@
             <div class="ml">
                 <span class="red"></span>
                 &nbsp;&nbsp;全部最小盈利率&nbsp;&nbsp;
-                <input id="minRate" type="number" value="30" class="shoutInp" maxlength="3"/>
+                <input id="minRate" type="tel" value="30" class="shoutInp" maxlength="3"/>
                 &nbsp;&nbsp;%
             </div>
             <div class="ml">
                 <span class="grey"></span>
                 &nbsp;&nbsp;累计盈利不低于&nbsp;&nbsp;
-                <input id="minIncome" type="number" value="100" class="shoutInp"/>
+                <input id="minIncome" type="tel" value="100" class="shoutInp"/>
                 &nbsp;&nbsp;元
             </div>
         </div>

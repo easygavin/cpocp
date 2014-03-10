@@ -33,6 +33,13 @@ define([
 
     // 显示期号
     var issueNo = "";
+
+    // 赛事分类
+    var leagueMap = {};
+
+    // 初始焦点元素
+    var initEles = null;
+
     /**
      * 初始化
      */
@@ -75,7 +82,7 @@ define([
         } else {
             // 根据缓存数据判断是否需要重新拉取列表
             // 缓存的数据
-            bufferData = appConfig.getMayBuyData(appConfig.MAY_BUY_JCZQ_KEY);
+            bufferData = appConfig.getLocalJson(appConfig.keyMap.MAY_BUY_JCZQ_KEY);
             if (bufferData != null && typeof bufferData != "undefined"
                 && betList != null && typeof betList != "undefined"
                 && betList.datas != null && typeof betList.datas != "undefined") {
@@ -98,7 +105,7 @@ define([
      * 获取对阵列表
      */
     var getBetList = function () {
-        betList = {}, matchMap = {}, issueNo = "";
+        betList = {}, matchMap = {}, issueNo = "", leagueMap = {};
         jczqService.getJCZQBetList(lotteryType, function (data) {
             if (typeof data != "undefined") {
                 if (typeof data.statusCode != "undefined") {
@@ -111,9 +118,6 @@ define([
                 }
             }
         });
-        /*  var result = '{"datas":[{"issueNo":"2014-02-13","matchArray":[{"time":"23:50","transfer":-1,"playAgainst":"里昂|朗斯","showctrlstr":"","matchId":"F20140213001","spDatas":{"rqspf":"-1,2.1,3.4,2.68","spf":"1.31,3.95,8.0","bqc":"1.95,17.0,60.0,3.55,5.9,13.0,25.0,17.0,11.0","zjq":"10.0,4.5,3.3,3.6,5.2,9.0,16.0,25.0","bf":"6.0,5.5,7.0,8.0,10.5,24.0,14.0,20.0,50.0,34.0,39.0,100.0,29.0,10.0,7.0,17.0,80.0,500.0,16.0,39.0,19.0,120.0,70.0,70.0,500.0,300.0,300.0,1000.0,900.0,900.0,300.0"},"number":"周四001","leagueMatch":"法国杯","date":"2014年02月13日 星期四","gliveId":"951633"},{"time":"23:50","transfer":1,"playAgainst":"里奥阿维|布拉加","showctrlstr":"","matchId":"F20140213002","spDatas":{"rqspf":"1,1.7,3.55,3.65","spf":"3.6,3.15,1.82","bqc":"5.6,13.0,29.0,7.2,4.6,4.6,36.0,13.0,2.95","zjq":"8.0,3.85,3.25,3.65,5.95,11.0,20.0,30.0","bf":"8.0,16.0,10.0,50.0,30.0,36.0,200.0,100.0,150.0,500.0,300.0,400.0,200.0,8.0,5.3,15.0,70.0,400.0,6.0,8.0,8.0,15.0,14.0,26.0,39.0,34.0,60.0,100.0,80.0,200.0,60.0"},"number":"周四002","leagueMatch":"葡联杯","date":"2014年02月13日 星期四","gliveId":"951635"},{"time":"23:50","transfer":-1,"playAgainst":"巴拉纳竞技|最强者","showctrlstr":"","matchId":"F20140213003","spDatas":{"rqspf":"-1,1.6,3.8,3.95","spf":"1.13,5.8,11.5","bqc":"1.55,23.0,100.0,3.45,7.5,23.0,24.0,23.0,18.0","zjq":"17.0,6.0,3.85,3.5,4.4,7.0,11.0,14.0","bf":"7.0,6.0,7.0,7.0,9.25,22.0,9.5,14.0,35.0,18.0,25.0,65.0,14.0,17.0,9.5,20.0,75.0,500.0,23.0,60.0,25.0,250.0,100.0,80.0,700.0,400.0,400.0,1000.0,1000.0,1000.0,300.0"},"number":"周四003","leagueMatch":"解放者杯","date":"2014年02月13日 星期四","gliveId":"954234"},{"time":"23:50","transfer":-1,"playAgainst":"智利大学|捍卫者竞技","showctrlstr":"","matchId":"F20140213004","spDatas":{"rqspf":"-1,2.2,3.4,2.53","spf":"1.35,4.0,6.5","bqc":"1.92,18.0,50.0,3.85,5.8,13.0,22.0,18.0,10.0","zjq":"10.5,4.75,3.4,3.55,5.0,8.5,15.0,23.0","bf":"6.5,6.5,7.0,9.0,10.0,19.0,17.0,19.0,35.0,35.0,50.0,100.0,27.0,10.5,7.0,16.0,70.0,400.0,14.0,29.0,16.0,80.0,50.0,50.0,300.0,200.0,200.0,900.0,700.0,700.0,250.0"},"number":"周四004","leagueMatch":"解放者杯","date":"2014年02月13日 星期四","gliveId":"954282"},{"time":"23:50","transfer":-1,"playAgainst":"蒙得维的亚国民|格雷米奥","showctrlstr":"","matchId":"F20140213005","spDatas":{"rqspf":"-1,5.3,3.97,1.42","spf":"2.32,2.95,2.67","bqc":"3.95,14.0,33.0,5.3,4.0,5.8,29.0,14.0,4.25","zjq":"7.0,3.5,3.1,3.85,6.5,13.0,26.0,38.0","bf":"6.5,10.0,8.0,23.0,21.0,34.0,70.0,60.0,100.0,250.0,200.0,300.0,120.0,7.0,5.25,14.0,80.0,500.0,6.75,11.0,8.5,25.0,23.0,35.0,75.0,65.0,100.0,250.0,250.0,400.0,150.0"},"number":"周四005","leagueMatch":"解放者杯","date":"2014年02月13日 星期四","gliveId":"954293"},{"time":"23:50","transfer":-1,"playAgainst":"拉努斯|奥伊金斯","showctrlstr":"","matchId":"F20140213006","spDatas":{"rqspf":"-1,2.27,3.3,2.5","spf":"1.36,3.9,6.55","bqc":"1.95,19.0,60.0,3.6,5.3,12.0,25.0,19.0,11.75","zjq":"9.0,3.9,3.2,3.6,5.8,11.0,20.0,29.0","bf":"5.25,6.0,7.0,8.25,11.5,26.0,17.0,23.0,55.0,35.0,55.0,150.0,39.0,9.0,7.0,18.0,100.0,600.0,12.0,29.0,17.0,100.0,60.0,60.0,400.0,250.0,300.0,1000.0,800.0,900.0,300.0"},"number":"周四006","leagueMatch":"解放者杯","date":"2014年02月13日 星期四","gliveId":"954258"},{"time":"10:20","transfer":-1,"playAgainst":"麦德林国民竞技|纽维尔老男孩","showctrlstr":"","matchId":"F20140213007","spDatas":{"rqspf":"-1,4.0,3.65,1.62","spf":"1.93,3.1,3.3","bqc":"3.25,14.0,39.0,4.6,4.25,6.5,29.0,14.0,5.2","zjq":"7.5,3.45,3.1,3.8,6.5,13.0,25.0,39.0","bf":"6.0,8.0,7.25,16.0,16.0,28.0,45.0,45.0,75.0,150.0,150.0,250.0,80.0,7.5,6.0,15.0,80.0,500.0,7.5,13.5,9.5,35.0,28.0,35.0,120.0,80.0,150.0,400.0,400.0,500.0,200.0"},"number":"周四007","leagueMatch":"解放者杯","date":"2014年02月13日 星期四","gliveId":"954294"},{"time":"10:20","transfer":-1,"playAgainst":"埃梅莱克|玻利瓦尔","showctrlstr":"","matchId":"F20140213008","spDatas":{"rqspf":"-1,1.79,3.55,3.3","spf":"1.2,4.9,9.5","bqc":"1.65,20.0,80.0,3.5,7.0,18.0,25.0,20.0,15.0","zjq":"13.0,5.1,3.5,3.5,4.8,8.0,13.0,19.0","bf":"6.0,6.0,7.0,7.0,10.0,24.0,12.0,17.0,40.0,22.0,32.0,75.0,17.0,13.0,8.5,19.0,80.0,500.0,19.0,50.0,21.0,150.0,80.0,70.0,600.0,400.0,300.0,1000.0,1000.0,900.0,300.0"},"number":"周四008","leagueMatch":"解放者杯","date":"2014年02月13日 星期四","gliveId":"954306"}]}],"statusCode":0}';
-         betList = JSON.parse(result);
-         handleBetList();*/
     };
 
     /**
@@ -123,21 +127,28 @@ define([
         // 隐藏加载标示
         util.hideLoading();
 
+        var matchLen = 0;
+        for (var i = 0, len = betList.datas.length; i < len; i++) {
+            matchLen += betList.datas[i].matchArray.length;
+        }
+
         // 显示期号
-        showIssueNo();
+        showIssueNo(matchLen);
 
         // 显示赛事列表
         showMatchItems();
+
+        // 添加赛事种类列表
+        addLeagueItems();
     };
 
     /**
      * 显示期号
      */
-    var showIssueNo = function () {
+    var showIssueNo = function (matchLen) {
         // 140103期，共16场比赛可投注
         issueNo = betList.datas[0].issueNo;
-        var matchLen = betList.datas[0].matchArray.length;
-        $("#issueNo").text(issueNo + "期，共" + matchLen + "场比赛可投注");
+        $("#JMIssueNo").text(issueNo + "期，共" + matchLen + "场比赛可投注");
     };
 
     /**
@@ -146,9 +157,8 @@ define([
     var showMatchItems = function () {
         for (var i = 0, iLen = betList.datas.length; i < iLen; i++) {
             var matchArr = betList.datas[i].matchArray;
-            var issueNo = betList.datas[i].issueNo;
             for (var j = 0, jLen = matchArr.length; j < jLen; j++) {
-                showMathItem(matchArr[j], issueNo);
+                showMathItem(matchArr[j]);
             }
         }
     };
@@ -157,15 +167,23 @@ define([
      * 显示单场赛事
      * @param item
      */
-    var showMathItem = function (item, issueNo) {
+    var showMathItem = function (item) {
         var matchId = item.matchId;
         var $contain = $("<div id='m_" + matchId + "' class='betContain'></div>");
 
         // 缓存赛事数据
         matchMap[matchId] = item;
 
+        // 缓存赛事种类数据
+        var len = 1; // 赛事种类中的场数
+        if (leagueMap[item.leagueMatch] != null && typeof leagueMap[item.leagueMatch] != "undefined") {
+            var len = leagueMap[item.leagueMatch] + len;
+        }
+
+        leagueMap[item.leagueMatch] = len;
+
         // 字符串
-        var str = "<div class='footballTz' title='" + item.gliveId + '_' + issueNo + '_' + item.number + "'>" + "<table cellpadding='0' cellspacing='0' width='100%'>";
+        var str = "<div class='footballTz' title='" + item.gliveId + "'>" + "<table cellpadding='0' cellspacing='0' width='100%'>";
         str += "<colgroup>" +
             "<col width='25%'>" +
             "<col width='25%'>" +
@@ -176,7 +194,7 @@ define([
         str += "<tbody>";
 
         str += "<tr>";
-        str += "<td class='bordernone'>" + item.number + "<br>" + item.leagueMatch + "</td>";
+        str += "<td class='bordernone'>" + item.number + "<br><span class='leagueT'>" + item.leagueMatch + "</span></td>";
         str += "<td class='bgfff jcMore' colspan='3'>";
         if (item.gliveId != null && typeof item.gliveId != "undefined"
             && $.trim(item.gliveId) != "") {
@@ -193,11 +211,11 @@ define([
         str += "<tr>";
         str += "<td class='bordernone'><i class=' jcArrow grayDown'>" + item.time + "</i></td>";
         if ($.trim(spf[0]) != "") {
-            str += "<td class='bgfff' id='spf_3_" + matchId + "'><i class='mlr10'> 胜 </i>" + spf[0] + "</td>";
-            str += "<td class='bgfff' id='spf_1_" + matchId + "'><i class='mlr10'> 平 </i>" + spf[1] + "</td>";
-            str += "<td class='bgfff' id='spf_0_" + matchId + "'><i class='mlr10'> 负 </i>" + spf[2] + "</td>";
+            str += "<td class='bgfff' id='spf_0-" + matchId + "'><i class='mlr10'> 胜 </i>" + spf[0] + "</td>";
+            str += "<td class='bgfff' id='spf_1-" + matchId + "'><i class='mlr10'> 平 </i>" + spf[1] + "</td>";
+            str += "<td class='bgfff' id='spf_2-" + matchId + "'><i class='mlr10'> 负 </i>" + spf[2] + "</td>";
         } else {
-            str += "<td colspan='3'>该玩法未开售</td>";
+            str += "<td colspan='2' width='74%'>该玩法尚未开售</td>";
         }
         str += "</tr>";
 
@@ -208,6 +226,31 @@ define([
         $(".balls").append($contain);
     };
 
+    /**
+     * 添加赛事种类列表
+     */
+    var addLeagueItems = function () {
+        for (var l in leagueMap) {
+            $(".leagueBox .icon").append($("<li class='click'>" + l + "[<span>" + leagueMap[l] + "</span>场]</li>"));
+        }
+
+        showLeagueMatchLen();
+    };
+
+    /**
+     * 显示选择赛事类型中的场数
+     */
+    var showLeagueMatchLen = function () {
+        var matchLen = 0;
+        $(".leagueBox .icon .click").each(function (i, li) {
+            var $span = $(li).find("span");
+            if ($span.length) {
+                matchLen += parseInt($span.text(), 10);
+            }
+        });
+
+        $(".bar .red").text(matchLen);
+    };
 
     /**
      * 显示缓存数据
@@ -223,34 +266,34 @@ define([
                 bqcIds = item.bqcIds,
                 bfIds = item.bfIds;
 
-            if (spfIds.length > 0 || rqspfIds.length > 0 || zjqIds.length > 0 || bqcIds.length > 0 || bfIds.length > 0) {
+            if ( rqspfIds.length > 0 || zjqIds.length > 0 || bqcIds.length > 0 || bfIds.length > 0) {
                 // 显示SP层
                 showSPOptions(matchId);
             }
 
             // 胜平负
             for (var j = 0, jLen = spfIds.length; j < jLen; j++) {
-                $("#spf_" + spfIds[j] + "_" + matchId).addClass("click");
+                $("#" + spfIds[j] + "-" + matchId).addClass("click");
             }
 
             // 让球胜平负
             for (var k = 0, kLen = rqspfIds.length; k < kLen; k++) {
-                $("#rqspf_" + rqspfIds[k] + "_" + matchId).addClass("click");
+                $("#" + rqspfIds[k] + "-" + matchId).addClass("click");
             }
 
             // 总进球
             for (var d = 0, dLen = zjqIds.length; d < dLen; d++) {
-                $("#zjq_" + zjqIds[d] + "_" + matchId).addClass("click");
+                $("#" + zjqIds[d] + "-" + matchId).addClass("click");
             }
 
             // 半全场
             for (var c = 0, cLen = bqcIds.length; c < cLen; c++) {
-                $("#bqc_" + bqcIds[c] + "_" + matchId).addClass("click");
+                $("#" + bqcIds[c] + "-" + matchId).addClass("click");
             }
 
             // 比分
-            for (var f = 0, bLen = bfIds.length; c < bLen; f++) {
-                $("#bf_" + bfIds[f] + "_" + matchId).addClass("clfick");
+            for (var f = 0, bLen = bfIds.length; f < bLen; f++) {
+                $("#" + bfIds[f] + "-" + matchId).addClass("click");
             }
 
             if (spfIds.length > 0 || rqspfIds.length > 0 || zjqIds.length > 0 || bqcIds.length > 0 || bfIds.length > 0) {
@@ -342,9 +385,9 @@ define([
         var rqspf = spDatas.rqspf.split(",");
         str += "<tr>" +
             "<td class='tab'> 让球 <br>" + rqspf[0] + "</td>" +
-            "<td id='rqspf_3_" + matchId + "'> 让胜 <br>" + rqspf[1] + "</td>" +
-            "<td id='rqspf_1_" + matchId + "'> 让平 <br>" + rqspf[2] + "</td>" +
-            "<td id='rqspf_0_" + matchId + "'> 让负 <br>" + rqspf[3] + "</td>" +
+            "<td id='rqspf_1-" + matchId + "'> 让胜 <br>" + rqspf[1] + "</td>" +
+            "<td id='rqspf_2-" + matchId + "'> 让平 <br>" + rqspf[2] + "</td>" +
+            "<td id='rqspf_3-" + matchId + "'> 让负 <br>" + rqspf[3] + "</td>" +
             "</tr>";
 
 
@@ -365,17 +408,17 @@ define([
 
         var zjq = spDatas.zjq.split(",");
         str += "<tr>" +
-            "<td id='zjq_0_" + matchId + "'> 0球 <br>" + zjq[0] + "</td>" +
-            "<td id='zjq_1_" + matchId + "'> 1球 <br>" + zjq[1] + "</td>" +
-            "<td id='zjq_2_" + matchId + "'> 2球 <br>" + zjq[2] + "</td>" +
-            "<td id='zjq_3_" + matchId + "'> 3球 <br>" + zjq[3] + "</td>" +
+            "<td id='zjq_0-" + matchId + "'> 0球 <br>" + zjq[0] + "</td>" +
+            "<td id='zjq_1-" + matchId + "'> 1球 <br>" + zjq[1] + "</td>" +
+            "<td id='zjq_2-" + matchId + "'> 2球 <br>" + zjq[2] + "</td>" +
+            "<td id='zjq_3-" + matchId + "'> 3球 <br>" + zjq[3] + "</td>" +
             "</tr>";
 
         str += "<tr>" +
-            "<td id='zjq_4_" + matchId + "'> 4球 <br>" + zjq[4] + "</td>" +
-            "<td id='zjq_5_" + matchId + "'> 5球 <br>" + zjq[5] + "</td>" +
-            "<td id='zjq_6_" + matchId + "'> 6球 <br>" + zjq[6] + "</td>" +
-            "<td id='zjq_7_" + matchId + "'> 7+ <br>" + zjq[7] + "</td>" +
+            "<td id='zjq_4-" + matchId + "'> 4球 <br>" + zjq[4] + "</td>" +
+            "<td id='zjq_5-" + matchId + "'> 5球 <br>" + zjq[5] + "</td>" +
+            "<td id='zjq_6-" + matchId + "'> 6球 <br>" + zjq[6] + "</td>" +
+            "<td id='zjq_7-" + matchId + "'> 7+ <br>" + zjq[7] + "</td>" +
             "</tr>";
 
         str += "</tbody>";
@@ -396,18 +439,18 @@ define([
 
         var bqc = spDatas.bqc.split(",");
         str += "<tr>" +
-            "<td id='bqc_s-s_" + matchId + "'> 胜胜 <br>" + bqc[0] + "</td>" +
-            "<td id='bqc_s-p_" + matchId + "'> 胜平 <br>" + bqc[1] + "</td>" +
-            "<td id='bqc_s-f_" + matchId + "'> 胜负 <br>" + bqc[2] + "</td>" +
-            "<td id='bqc_p-s_" + matchId + "'> 平胜 <br>" + bqc[3] + "</td>" +
-            "<td id='bqc_p-p_" + matchId + "'> 平平 <br>" + bqc[4] + "</td>" +
+            "<td id='bqc_0-" + matchId + "'> 胜胜 <br>" + bqc[0] + "</td>" +
+            "<td id='bqc_1-" + matchId + "'> 胜平 <br>" + bqc[1] + "</td>" +
+            "<td id='bqc_2-" + matchId + "'> 胜负 <br>" + bqc[2] + "</td>" +
+            "<td id='bqc_3-" + matchId + "'> 平胜 <br>" + bqc[3] + "</td>" +
+            "<td id='bqc_4-" + matchId + "'> 平平 <br>" + bqc[4] + "</td>" +
             "</tr>";
 
         str += "<tr>" +
-            "<td id='bqc_p-s_" + matchId + "'> 平负 <br>" + bqc[5] + "</td>" +
-            "<td id='bqc_f-s_" + matchId + "'> 负胜 <br>" + bqc[6] + "</td>" +
-            "<td id='bqc_f-p_" + matchId + "'> 负平 <br>" + bqc[7] + "</td>" +
-            "<td id='bqc_f-f_" + matchId + "'> 负负 <br>" + bqc[8] + "</td>" +
+            "<td id='bqc_5-" + matchId + "'> 平负 <br>" + bqc[5] + "</td>" +
+            "<td id='bqc_6-" + matchId + "'> 负胜 <br>" + bqc[6] + "</td>" +
+            "<td id='bqc_7-" + matchId + "'> 负平 <br>" + bqc[7] + "</td>" +
+            "<td id='bqc_8-" + matchId + "'> 负负 <br>" + bqc[8] + "</td>" +
             "</tr>";
 
         str += "</tbody>";
@@ -427,55 +470,59 @@ define([
             "<col width='14.28%'>" +
             "</colgroup>";
 
+        str += "<tbody>";
         str += "<tr>" +
-            "<td id='bf_1-0_" + matchId + "'> 1:0 <br>" + bf[0] + "</td>" +
-            "<td id='bf_2-0_" + matchId + "'> 2:0 <br>" + bf[1] + "</td>" +
-            "<td id='bf_2-1_" + matchId + "'> 2:1 <br>" + bf[2] + "</td>" +
-            "<td id='bf_3-0_" + matchId + "'> 3:0 <br>" + bf[3] + "</td>" +
-            "<td id='bf_3-1_" + matchId + "'> 3:1 <br>" + bf[4] + "</td>" +
-            "<td id='bf_3-2_" + matchId + "'> 3:2 <br>" + bf[5] + "</td>" +
-            "<td id='bf_4-0_" + matchId + "'> 4:0 <br>" + bf[6] + "</td>" +
+            "<td id='bf_0-" + matchId + "'> 1:0 <br>" + bf[0] + "</td>" +
+            "<td id='bf_1-" + matchId + "'> 2:0 <br>" + bf[1] + "</td>" +
+            "<td id='bf_2-" + matchId + "'> 2:1 <br>" + bf[2] + "</td>" +
+            "<td id='bf_3-" + matchId + "'> 3:0 <br>" + bf[3] + "</td>" +
+            "<td id='bf_4-" + matchId + "'> 3:1 <br>" + bf[4] + "</td>" +
+            "<td id='bf_5-" + matchId + "'> 3:2 <br>" + bf[5] + "</td>" +
+            "<td id='bf_6-" + matchId + "'> 4:0 <br>" + bf[6] + "</td>" +
             " </tr>";
 
         str += "<tr>" +
-            "<td id='bf_4-1_" + matchId + "'> 4:1 <br>" + bf[7] + "</td>" +
-            "<td id='bf_4-2_" + matchId + "'> 4:2 <br>" + bf[8] + "</td>" +
-            "<td id='bf_5-0_" + matchId + "'> 5:0 <br>" + bf[9] + "</td>" +
-            "<td id='bf_5-1_" + matchId + "'> 5:1 <br>" + bf[10] + "</td>" +
-            "<td id='bf_5-2_" + matchId + "'> 5:2 <br>" + bf[11] + "</td>" +
-            "<td id='bf_s-s_" + matchId + "' colspan='2'> 胜其他 <br>" + bf[12] + "</td>" +
+            "<td id='bf_7-" + matchId + "'> 4:1 <br>" + bf[7] + "</td>" +
+            "<td id='bf_8-" + matchId + "'> 4:2 <br>" + bf[8] + "</td>" +
+            "<td id='bf_9-" + matchId + "'> 5:0 <br>" + bf[9] + "</td>" +
+            "<td id='bf_10-" + matchId + "'> 5:1 <br>" + bf[10] + "</td>" +
+            "<td id='bf_11-" + matchId + "'> 5:2 <br>" + bf[11] + "</td>" +
+            "<td id='bf_12-" + matchId + "' colspan='2'> 胜其他 <br>" + bf[12] + "</td>" +
             " </tr>";
 
         str += "<tr>" +
-            "<td id='bf_0-0_" + matchId + "'> 0:0 <br>" + bf[13] + "</td>" +
-            "<td id='bf_1-1_" + matchId + "'> 1:1 <br>" + bf[14] + "</td>" +
-            "<td id='bf_2-2_" + matchId + "'> 2:2 <br>" + bf[15] + "</td>" +
-            "<td id='bf_3-3_" + matchId + "'> 3:3 <br>" + bf[16] + "</td>" +
-            "<td id='bf_p-p_" + matchId + "' colspan='3'>  平其他    <br>" + bf[17] + "</td>" +
+            "<td id='bf_13-" + matchId + "'> 0:0 <br>" + bf[13] + "</td>" +
+            "<td id='bf_14-" + matchId + "'> 1:1 <br>" + bf[14] + "</td>" +
+            "<td id='bf_15-" + matchId + "'> 2:2 <br>" + bf[15] + "</td>" +
+            "<td id='bf_16-" + matchId + "'> 3:3 <br>" + bf[16] + "</td>" +
+            "<td id='bf_17-" + matchId + "' colspan='3'>  平其他    <br>" + bf[17] + "</td>" +
             " </tr>";
 
         str += "<tr>" +
-            "<td id='bf_0-1_" + matchId + "'> 0:1 <br>" + bf[18] + "</td>" +
-            "<td id='bf_0-2_" + matchId + "'> 0:2 <br>" + bf[19] + "</td>" +
-            "<td id='bf_1-2_" + matchId + "'> 1:2 <br>" + bf[20] + "</td>" +
-            "<td id='bf_0-3_" + matchId + "'> 0:3 <br>" + bf[21] + "</td>" +
-            "<td id='bf_1-3_" + matchId + "'> 1:3 <br>" + bf[22] + "</td>" +
-            "<td id='bf_2-3_" + matchId + "'> 2:3 <br>" + bf[23] + "</td>" +
-            "<td id='bf_0-4_" + matchId + "'> 0:4 <br>" + bf[24] + "</td>" +
+            "<td id='bf_18-" + matchId + "'> 0:1 <br>" + bf[18] + "</td>" +
+            "<td id='bf_19-" + matchId + "'> 0:2 <br>" + bf[19] + "</td>" +
+            "<td id='bf_20-" + matchId + "'> 1:2 <br>" + bf[20] + "</td>" +
+            "<td id='bf_21-" + matchId + "'> 0:3 <br>" + bf[21] + "</td>" +
+            "<td id='bf_22-" + matchId + "'> 1:3 <br>" + bf[22] + "</td>" +
+            "<td id='bf_23-" + matchId + "'> 2:3 <br>" + bf[23] + "</td>" +
+            "<td id='bf_24-" + matchId + "'> 0:4 <br>" + bf[24] + "</td>" +
             " </tr>";
 
         str += "<tr>" +
-            "<td id='bf_1-4_" + matchId + "'> 1:4 <br>" + bf[25] + "</td>" +
-            "<td id='bf_2-4_" + matchId + "'> 2:4 <br>" + bf[26] + "</td>" +
-            "<td id='bf_0-5_" + matchId + "'> 0:5 <br>" + bf[27] + "</td>" +
-            "<td id='bf_1-5_" + matchId + "'> 1:5 <br>" + bf[28] + "</td>" +
-            "<td id='bf_2-5_" + matchId + "'> 2:5 <br>" + bf[29] + "</td>" +
-            "<td id='bf_f-f_" + matchId + "'colspan='2'> 负其他 <br>" + bf[30] + "</td>" +
+            "<td id='bf_25-" + matchId + "'> 1:4 <br>" + bf[25] + "</td>" +
+            "<td id='bf_26-" + matchId + "'> 2:4 <br>" + bf[26] + "</td>" +
+            "<td id='bf_27-" + matchId + "'> 0:5 <br>" + bf[27] + "</td>" +
+            "<td id='bf_28-" + matchId + "'> 1:5 <br>" + bf[28] + "</td>" +
+            "<td id='bf_29-" + matchId + "'> 2:5 <br>" + bf[29] + "</td>" +
+            "<td id='bf_30-" + matchId + "'colspan='2'> 负其他 <br>" + bf[30] + "</td>" +
             " </tr>";
+
+        str += "</tbody>";
+        str += "</table>";
 
         $contain.html(str);
         $("#m_" + matchId).append($contain);
-        $("#m_" + matchId).find(".colDown").removeClass("colDown").addClass("colUp");
+        switchArrow(matchId, 1);
     };
 
     /**
@@ -533,29 +580,40 @@ define([
         });
 
         $(".loudou").on(pageEvent.activate, function (e) {
-            $(".menuBox").show();
-            util.showCover();
+            showLeagueBox();
             return true;
         });
 
         // 购彩记录
         $(".gcBg").on(pageEvent.click, function (e) {
-            page.initPage("user/buyRecord", {lotteryTypeArray: "36|37|38|39|53|46"}, 1);
             util.hideCover();
+            if (!appConfig.checkLogin(null)) {
+                // 尚未登录，弹出提示框
+                $(".menuBox").hide();
+                util.prompt("", "您还未登录，请先登录", "登录", "取消",
+                    function (e) {
+                        page.initPage("login", {}, 1);
+                    },
+                    function (e) {
+                    }
+                );
+                return false;
+            }
+            page.initPage("user/buyRecord", {lotteryTypeArray: "46|47|48|49|52|56"}, 1);
             return true;
         });
 
         // 开奖信息
         $(".kjBg").on(pageEvent.click, function (e) {
-            page.initPage("jczq/history", {lottery: lotteryType}, 1);
             util.hideCover();
+            page.initPage("jczq/history", {lottery: lotteryType}, 1);
             return true;
         });
 
         // 玩法介绍
         $(".wfBg").on(pageEvent.click, function (e) {
-            page.initPage("jczq/intro", {}, 1);
             util.hideCover();
+            page.initPage("jczq/intro", {}, 1);
             return true;
         });
 
@@ -563,6 +621,15 @@ define([
         $(".cover").on(pageEvent.click, function (e) {
             $(".popup").hide();
             $(".menuBox").hide();
+            if ($(".leagueBox").is(":visible")) {
+                hideLeagueBox();
+                $(".leagueBox .icon li").removeClass("click");
+                initEles.each(function (i, item) {
+                    $(item).addClass("click");
+                });
+
+                showLeagueMatchLen();
+            }
             util.hideCover();
             return true;
         });
@@ -601,10 +668,10 @@ define([
                 var against = {};
                 //存储数据,页面跳转...
                 //查找最近div-title属性,分别得到gliveId 854099,issueNo 2014-02-21,teamNo 周五002
-                var titleAttribute = $target.closest(".footballTz").attr("title");
-                var title = titleAttribute.split("_");
-                if (title != null) {
-                    page.initPage("jczq/against", {gliveId:title[0],issueNo:title[1],teamNo:title[2]}, 1);
+                var gliveId = $target.closest(".footballTz").attr("title");
+                if (gliveId != null && gliveId != "") {
+                    recordUserSelected();
+                    page.initPage("jczq/against", {gliveId: gliveId}, 1);
                 }
 
             } else if ($spf.length) {
@@ -686,101 +753,7 @@ define([
                 && betList.datas != null && typeof betList.datas != "undefined"
                 && betList.datas.length) {
                 if (total > 1) {
-                    // 赛事数据
-                    bufferData = {};
-                    // 期号
-                    bufferData.issueNo = issueNo;
-
-                    // 标题对象
-                    var titleMap = {};
-
-                    // 赛事对阵列表
-                    var matchBetList = [];
-
-                    $(".betContain").each(function (i, item) {
-                        var $item = $(item);
-                        if ($item.find(".click").length) {
-
-                            // 每场赛事数据
-                            var data = {};
-
-                            // 获取matchId
-                            var matchId = getMatchId($item);
-                            data.matchId = matchId;
-                            data.match = matchMap[matchId];
-
-                            if ($.trim(matchId) != "") {
-                                // 选中模式
-                                // 让球胜平负
-                                var spfIds = [];
-                                var $spf = $item.find(".footballTz .click");
-                                if ($spf.length) {
-                                    $spf.each(function (j, spf) {
-                                        var spfId = $(spf).attr("id").split("_")[1];
-                                        spfIds.push(spfId);
-                                    });
-                                    titleMap["spf"] = "1";
-                                }
-                                data.spfIds = spfIds;
-
-                                // 让球胜平负
-                                var rqspfIds = [];
-                                var $rqspf = $item.find(".lYTable .click");
-                                if ($rqspf.length) {
-                                    $rqspf.each(function (k, rqspf) {
-                                        var rqspfId = $(rqspf).attr("id").split("_")[1];
-                                        rqspfIds.push(rqspfId);
-                                    });
-                                    titleMap["rqspf"] = "1";
-                                }
-                                data.rqspfIds = rqspfIds;
-
-                                // 总进球
-                                var zjqIds = [];
-                                var $zjq = $item.find(".dYTable .click");
-                                if ($zjq.length) {
-                                    $zjq.each(function (d, zjq) {
-                                        var zjqId = $(zjq).attr("id").split("_")[1];
-                                        zjqIds.push(zjqId);
-                                    });
-                                    titleMap["zjq"] = "1";
-                                }
-                                data.zjqIds = zjqIds;
-
-                                // 半全场
-                                var bqcIds = [];
-                                var $bqc = $item.find(".lBTable .click");
-                                if ($bqc.length) {
-                                    $bqc.each(function (c, bqc) {
-                                        var bqcId = $(bqc).attr("id").split("_")[1];
-                                        bqcIds.push(bqcId);
-
-                                    });
-                                    titleMap["bqc"] = "1";
-                                }
-                                data.bqcIds = bqcIds;
-
-                                //比分
-                                var bfIds = [];
-                                var $bf = $item.find(".lRTable .click");
-                                if ($bf.length) {
-                                    $bf.each(function (c, bf) {
-                                        var bfId = $($bf).attr("id").split("_")[1];
-                                        bfIds.push(bfId);
-
-                                    });
-                                    titleMap["bf"] = "1";
-                                }
-                                data.bfIds = bfIds;
-                                matchBetList.push(data);
-                            }
-                        }
-                    });
-
-                    bufferData.matchBetList = matchBetList;
-                    bufferData.titleMap = titleMap;
-                    appConfig.setMayBuyData(appConfig.MAY_BUY_JCLQ_KEY, bufferData);
-
+                    recordUserSelected();
                     page.initPage("jczq/list", {}, 1);
                 } else {
                     util.toast("至少选择2场比赛")
@@ -794,6 +767,88 @@ define([
             return true;
         });
 
+        // 赛事种类筛选
+        $(".leagueBox .icon").on(pageEvent.tap, function (e) {
+            var $li = $(e.target).closest("li");
+            if ($li.length) {
+                var id = $li.attr("id");
+                if (id != null && typeof id != "undefined" && id == "leagueOpt") {
+                    // 全选，全不选
+                    if ($li.hasClass("click")) {
+                        // 全不选
+                        $(".leagueBox .icon li").removeClass("click");
+                        $li.text("全选");
+                    } else {
+                        // 全选
+                        $(".leagueBox .icon li").addClass("click");
+                        $li.text("全不选");
+                    }
+
+                } else {
+                    if ($li.hasClass("click")) {
+                        $li.removeClass("click");
+                        $("#leagueOpt").removeClass("click");
+                    } else {
+                        $li.addClass("click");
+                        if (($(".leagueBox .icon .click").length + 1) == $(".leagueBox .icon li").length) {
+                            $("#leagueOpt").addClass("click");
+                        }
+                    }
+                }
+                showLeagueMatchLen();
+            }
+        });
+
+        $(".bar .btn").on(pageEvent.tap, function (e) {
+            var $clicks = $(".leagueBox .icon .click");
+            if (!$clicks.length) {
+                util.toast("请至少选择1种赛事");
+                return false;
+            }
+
+            var matchLen = 0;
+            var $leagueAll = $("#leagueOpt");
+            if ($leagueAll.hasClass("click")) {
+                // 全选
+                $(".betContain").show();
+                matchLen = parseInt($(".bar .red").text(), 10);
+            } else {
+                $(".betContain").hide();
+                $clicks.each(function (i, li) {
+                    var text = $(li).text();
+                    var leagueName = text.substring(0, text.indexOf("["));
+                    $(".leagueT").each(function (i, t) {
+                        var $t = $(t);
+                        if (leagueName == $t.text()) {
+                            matchLen++;
+                            $t.closest(".betContain").show();
+                        }
+                    });
+                });
+            }
+            showIssueNo(matchLen);
+
+            hideLeagueBox();
+        });
+    };
+
+    /**
+     * 显示赛事种类层
+     */
+    var showLeagueBox = function () {
+        if ($(".leagueBox .icon li").length > 1) {
+            initEles = $(".leagueBox .icon .click");
+            $(".leagueBox").show();
+            util.showCover();
+        }
+    };
+
+    /**
+     * 隐藏赛事种类层
+     */
+    var hideLeagueBox = function () {
+        $(".leagueBox").hide();
+        util.hideCover();
     };
 
     /**
@@ -818,6 +873,8 @@ define([
      */
     var clear = function () {
         $(".balls").find(".click").removeClass("click");
+        $(".balls").find(".redUp").removeClass("redUp").addClass("grayUp");
+        $(".balls").find(".redDown").removeClass("redDown").addClass("grayDown");
     };
 
     /**
@@ -844,6 +901,109 @@ define([
         });
 
         $("#total").text(total);
+    };
+
+    /**
+     * 点击对阵赛事的欧亚盘,以及确认按钮,
+     * back的时候要记录所选定的比赛.
+     */
+    var recordUserSelected = function () {
+
+        // 赛事数据
+        bufferData = {};
+        // 期号
+        bufferData.issueNo = issueNo;
+
+        // 标题对象
+        var titleMap = {};
+
+        // 赛事对阵列表
+        var matchBetList = [];
+
+        $(".betContain").each(function (i, item) {
+            var $item = $(item);
+            if ($item.find(".click").length) {
+
+                // 每场赛事数据
+                var data = {};
+
+                // 获取matchId
+                var matchId = getMatchId($item);
+                data.matchId = matchId;
+                data.match = matchMap[matchId];
+
+                if ($.trim(matchId) != "") {
+                    // 选中模式
+                    // 让球胜平负
+                    var spfIds = [];
+                    var $spf = $item.find(".footballTz .click");
+                    if ($spf.length) {
+                        $spf.each(function (j, spf) {
+                            var spfId = $(spf).attr("id").split("-")[0];
+                            spfIds.push(spfId);
+                        });
+                        titleMap["spf"] = "1";
+                    }
+                    data.spfIds = spfIds;
+
+                    // 让球胜平负
+                    var rqspfIds = [];
+                    var $rqspf = $item.find(".lYTable .click");
+                    if ($rqspf.length) {
+                        $rqspf.each(function (k, rqspf) {
+                            var rqspfId = $(rqspf).attr("id").split("-")[0];
+                            rqspfIds.push(rqspfId);
+                        });
+                        titleMap["rqspf"] = "1";
+                    }
+                    data.rqspfIds = rqspfIds;
+
+                    // 总进球
+                    var zjqIds = [];
+                    var $zjq = $item.find(".dYTable .click");
+                    if ($zjq.length) {
+                        $zjq.each(function (d, zjq) {
+                            var zjqId = $(zjq).attr("id").split("-")[0];
+                            zjqIds.push(zjqId);
+                        });
+                        titleMap["zjq"] = "1";
+                    }
+                    data.zjqIds = zjqIds;
+
+                    // 半全场
+                    var bqcIds = [];
+                    var $bqc = $item.find(".lBTable .click");
+                    if ($bqc.length) {
+                        $bqc.each(function (c, bqc) {
+                            var bqcId = $(bqc).attr("id").split("-")[0];
+                            bqcIds.push(bqcId);
+
+                        });
+                        titleMap["bqc"] = "1";
+                    }
+                    data.bqcIds = bqcIds;
+
+                    //比分
+                    var bfIds = [];
+                    var $bf = $item.find(".lRTable .click");
+                    if ($bf.length) {
+                        $bf.each(function (c, bf) {
+                            var bfId = $(bf).attr("id").split("-")[0];
+                            bfIds.push(bfId);
+
+                        });
+                        titleMap["bf"] = "1";
+                    }
+                    data.bfIds = bfIds;
+                    matchBetList.push(data);
+                }
+            }
+        });
+
+        bufferData.matchBetList = matchBetList;
+        bufferData.titleMap = titleMap;
+        appConfig.setLocalJson(appConfig.keyMap.MAY_BUY_JCZQ_KEY, bufferData);
+
     };
 
     return {init: init};

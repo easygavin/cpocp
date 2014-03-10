@@ -8,7 +8,7 @@ define([
     "services/NoticeService",
     "util/AppConfig",
     "util/Util"
-], function(template, page, pageEvent, noticeService, appConfig, util){
+], function (template, page, pageEvent, noticeService, appConfig, util) {
 
     // 处理返回参数
     var canBack = 0;
@@ -21,7 +21,7 @@ define([
     /**
      * 初始化
      */
-    var init = function(data, forward) {
+    var init = function (data, forward) {
         canBack = forward ? 1 : 0;
 
         // 加载模板内容
@@ -41,19 +41,19 @@ define([
         bindEvent();
 
         // 处理返回
-        page.setHistoryState({url: "notice/list", data: params},
-        		"notice/list",
-        		"#notice/list" + (JSON.stringify(params).length > 2 ? "?data="+encodeURIComponent(JSON.stringify(params)) : ""),
-                canBack);
+        page.setHistoryState({url:"notice/list", data:params},
+            "notice/list",
+            "#notice/list" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
+            canBack);
 
     };
 
     /**
      * 初始化显示
      */
-    var initShow = function(data) {
+    var initShow = function (data) {
 
-        readIDs = appConfig.getNoticeReadIDs();
+        readIDs = appConfig.getLocalJson(appConfig.keyMap.NOTICE_READ_ID);
 
         // 请求数据
         getNoticeList();
@@ -62,28 +62,28 @@ define([
     /**
      * 获取公告列表
      */
-    var getNoticeList = function() {
+    var getNoticeList = function () {
 
         // 请求数据
-        noticeService.getNoticeList(function(data) {
+        noticeService.getNoticeList(function (data) {
 
             // 隐藏加载标示
             util.hideLoading();
-            if (typeof data != "undefined" ) {
-                 if (typeof data.statusCode != "undefined") {
-                     if (data.statusCode == "0") {
+            if (typeof data != "undefined") {
+                if (typeof data.statusCode != "undefined") {
+                    if (data.statusCode == "0") {
                         showItems(data.noticeArray);
-                     }
-                 }
+                    }
+                }
             }
-         });
+        });
     };
 
     /**
      * 显示列表信息
      * @param data
      */
-    var showItems = function(data) {
+    var showItems = function (data) {
         $(".listTab tbody").empty();
         for (var i = 0, len = data.length; i < len; i++) {
             addItem(data[i]);
@@ -94,7 +94,7 @@ define([
      * 添加一项数据
      * @param item
      */
-    var addItem = function(item) {
+    var addItem = function (item) {
         var $tr = $("<tr></tr>");
 
         if (readIDs != null && typeof readIDs != "undefined"
@@ -109,7 +109,7 @@ define([
         // 标题
         $tr.append($("<td class='tl'></td>").html(item.title));
 
-        var $a_more = $("<a class='moreBg'> </a>").attr({"id": "more_"+item.noticeId});
+        var $a_more = $("<a class='moreBg'> </a>").attr({"id":"more_" + item.noticeId});
 
         $tr.append($("<td></td>").append($a_more));
 
@@ -119,15 +119,15 @@ define([
     /**
      * 绑定事件
      */
-    var bindEvent = function() {
+    var bindEvent = function () {
 
         // 返回
-        $(".back").on(pageEvent.touchStart, function(e) {
+        $(".back").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".back").on(pageEvent.activate, function(e) {
+        $(".back").on(pageEvent.activate, function (e) {
             if (canBack) {
                 page.goBack();
             } else {
@@ -136,21 +136,21 @@ define([
             return true;
         });
 
-		$(".listTab").undelegate("tr", pageEvent.touchStart);
-        $(".listTab").delegate("tr", pageEvent.touchStart, function(e) {
+        $(".listTab").undelegate("tr", pageEvent.touchStart);
+        $(".listTab").delegate("tr", pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-		$(".listTab").undelegate("tr", pageEvent.activate);
-        $(".listTab").delegate("tr", pageEvent.activate, function(e) {
+        $(".listTab").undelegate("tr", pageEvent.activate);
+        $(".listTab").delegate("tr", pageEvent.activate, function (e) {
 
             // 详情
             var noticeId = $(this).find(".moreBg").attr("id").split("_")[1];
             if ($.trim(noticeId) != "") {
                 writeIDs[noticeId] = "1";
-                appConfig.setNoticeReadIDs(writeIDs);
-                page.initPage("notice/detail", {noticeId: noticeId}, 1);
+                appConfig.setLocalJson(appConfig.keyMap.NOTICE_READ_ID, writeIDs);
+                page.initPage("notice/detail", {noticeId:noticeId}, 1);
             }
 
             return true;

@@ -25,7 +25,7 @@ define([
     /**
      * 初始化
      */
-    var init = function (data, forward, load) {
+    var init = function (data, forward) {
         // 加载模板内容
         $("#container").empty().append($(template));
 
@@ -53,7 +53,7 @@ define([
         bindEvent();
 
         // 处理返回
-        page.setHistoryState({url:"jclq/history", data:params, load: load},
+        page.setHistoryState({url:"jclq/history", data:params},
             "jclq/history",
             "#jclq/history" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
             forward ? 1 : 0);
@@ -183,7 +183,7 @@ define([
             str += "<tr id='m_" + match.matchId + "'>";
             str += "<td>" + match.number + "<br>" + match.leagueMatch + "</td>";
             var teams = match.playAgainst.split("|");
-            str += "<td>" + teams[0] + "(" + match.transfer + ")</td>";
+            str += "<td>" + teams[0].substring(0, 4) + "<br>(" + match.transfer + ")</td>";
 
             // 胜负
             var className = "s";
@@ -196,14 +196,14 @@ define([
             }
             str += "<td class='" + className + "'>" + match.goalscore + "<br>" + match.result[0].sf + "</td>";
 
-            str += "<td>" + teams[1] + "</td>";
+            str += "<td>" + teams[1].substring(0, 4) + "</td>";
             str += "</tr>";
 
             matchResultMap[match.matchId] = {
-                matchId: match.matchId,
-                playAgainst: match.playAgainst,
-                goalscore: match.goalscore,
-                result: match.result
+                matchId:match.matchId,
+                playAgainst:match.playAgainst,
+                goalscore:match.goalscore,
+                result:match.result
             };
         }
 
@@ -331,7 +331,7 @@ define([
                                 var $tr = $target.closest("tr");
                                 var matchId = $tr.attr("id").split("_")[1];
                                 var matchResult = matchResultMap[matchId];
-                                page.initPage("jclq/look", {matchResult: matchResult}, 1, 0);
+                                page.initPage("jclq/look", {matchResult:matchResult}, 1);
                                 break;
                         }
                     }
@@ -346,7 +346,7 @@ define([
         });
 
         $(".tzBox").on(pageEvent.activate, function (e) {
-            page.initPage("user/buyRecord", {lotteryTypeArray: "36|37|38|39|53"}, 1, 0);
+            page.initPage("user/buyRecord", {lotteryTypeArray:"36|37|38|39|53"}, 1, 0);
             return true;
         });
 

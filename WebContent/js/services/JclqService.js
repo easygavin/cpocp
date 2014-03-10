@@ -4,26 +4,26 @@
 define([
     "util/RequestConfig",
     "util/AppConfig"
-], function(requestConfig, appConfig) {
+], function (requestConfig, appConfig) {
 
     /**
      * 获取竞彩篮球对阵
      * @param callback
      */
-    var getJCLQBetList = function(lotteryType, callback) {
+    var getJCLQBetList = function (lotteryType, callback) {
 
         var data = {
-            lotteryType: lotteryType
+            lotteryType:lotteryType
         };
 
         // 请求登录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.JCLQ_GAME_LIST,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.JCLQ_GAME_LIST,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -32,16 +32,16 @@ define([
      * @param params
      * @param callback
      */
-    var toBuy = function(type, params, price, callback) {
+    var toBuy = function (type, params, price, callback) {
 
         if (!appConfig.checkLogin(null)) {
             // 尚未登录
-            callback({statusCode: "off"});
+            callback({statusCode:"off"});
             return false;
         }
 
         // 保存登录成功信息
-        var user = appConfig.getLocalUserInfo();
+        var user = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         params.totalAmount = (parseInt(params.totalBet, 10) * parseInt(params.totalBei, 10) * price) + "";  // 总金额
 
@@ -80,12 +80,12 @@ define([
 
         // 购买登录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.JCLQ_GAME_BUY,
-            data: {data: JSON.stringify(params)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.JCLQ_GAME_BUY,
+            data:{data:JSON.stringify(params)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -96,33 +96,33 @@ define([
      * @param projectId
      * @param callback
      */
-    var getProjectDetails = function(lotteryType, requestType, projectId, callback) {
+    var getProjectDetails = function (lotteryType, requestType, projectId, callback) {
 
         if (!appConfig.checkLogin(null)) {
             // 尚未登录
-            callback({statusCode: "off"});
+            callback({statusCode:"off"});
             return false;
         }
 
         // 保存登录成功信息
-        var user = appConfig.getLocalUserInfo();
+        var user = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         var data = {
-            lotteryType: lotteryType,
-            requestType: requestType,
-            projectId: projectId,
-            userKey: user.userKey,
-            userId: user.userId + ""
+            lotteryType:lotteryType,
+            requestType:requestType,
+            projectId:projectId,
+            userKey:user.userKey,
+            userId:user.userId + ""
         };
 
         // 请求登录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.JCLQ_DETAIL,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.JCLQ_DETAIL,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -134,19 +134,19 @@ define([
     var getHistoryAwards = function (lotteryType, date, callback) {
 
         // 请求参数
-        var data={
-            lotteryType: lotteryType,
-            date: date
+        var data = {
+            lotteryType:lotteryType,
+            date:date
         };
 
         // 开奖记录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.JCLQ_AWARD_LIST_ISSUE,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.JCLQ_AWARD_LIST_ISSUE,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -157,18 +157,18 @@ define([
     var getAwardDetailSP = function (matchId, callback) {
 
         // 请求参数
-        var data={
-            matchId: matchId
+        var data = {
+            matchId:matchId
         };
 
         // 开奖记录
         $.ajax({
-            type: "GET",
-            url: requestConfig.request.JCLQ_AWARD_DETAIL_SP,
-            data: {data: JSON.stringify(data)},
-            dataType: "jsonp",
-            success: callback,
-            error: callback
+            type:"GET",
+            url:requestConfig.request.JCLQ_AWARD_DETAIL_SP,
+            data:{data:JSON.stringify(data)},
+            dataType:"jsonp",
+            success:callback,
+            error:callback
         });
     };
 
@@ -178,7 +178,7 @@ define([
      * @param dans 胆数
      * @param types 投注方式列表
      */
-    var getNormalWays = function(counts, dans, types) {
+    var getNormalWays = function (counts, dans, types) {
         var ways = [];
         var minCross = getMinCrossNum(dans);
         var maxCross = getMaxCrossNum(counts, types);
@@ -196,7 +196,7 @@ define([
      * @param dans 胆数
      * @param types 投注方式列表
      */
-    var getManyWay = function(counts, types) {
+    var getManyWay = function (counts, types) {
         // 多串过关无胆
         var ways = [];
         var minCross = 3;
@@ -983,8 +983,8 @@ define([
         }
 
         return {
-            min: minPrize,
-            max: maxPrize
+            min:minPrize,
+            max:maxPrize
         };
     };
 
@@ -1415,24 +1415,24 @@ define([
      * @type {Object}
      */
     var maxMap = {
-        "sf": {max: 8},
-        "rfsf": {max: 8},
-        "dxf": {max: 8},
-        "sfc": {max: 4}
+        "sf":{max:8},
+        "rfsf":{max:8},
+        "dxf":{max:8},
+        "sfc":{max:4}
     };
 
     return {
-        getJCLQBetList: getJCLQBetList,
-        toBuy: toBuy,
-        getProjectDetails: getProjectDetails,
-        getHistoryAwards: getHistoryAwards,
-        getAwardDetailSP: getAwardDetailSP,
-        getNormalWays: getNormalWays,
-        getManyWay: getManyWay,
-        getBetByCrossWay: getBetByCrossWay,
-        getMinMaxPrize: getMinMaxPrize,
-        getMixMinMaxPrize: getMixMinMaxPrize,
-        desc: desc,
-        asc: asc
+        getJCLQBetList:getJCLQBetList,
+        toBuy:toBuy,
+        getProjectDetails:getProjectDetails,
+        getHistoryAwards:getHistoryAwards,
+        getAwardDetailSP:getAwardDetailSP,
+        getNormalWays:getNormalWays,
+        getManyWay:getManyWay,
+        getBetByCrossWay:getBetByCrossWay,
+        getMinMaxPrize:getMinMaxPrize,
+        getMixMinMaxPrize:getMixMinMaxPrize,
+        desc:desc,
+        asc:asc
     };
 });

@@ -1,9 +1,9 @@
 /**
  * calculate 计算处理
  */
-define([], function() {
-	
-	/**
+define([], function () {
+
+    /**
      * 阶乘计算 m > n
      */
     var getFactorial = function (m, n) {
@@ -27,7 +27,7 @@ define([], function() {
      * @param n 拖
      * @return
      */
-    var getCombineCount = function(m, n) {
+    var getCombineCount = function (m, n) {
         if (m < 0 || n < 0 || n < m) {
             return 0; // 当m小于0时返回0 by:liaoyuding
         }
@@ -47,7 +47,7 @@ define([], function() {
      * @param n
      * @return
      */
-    var getPLNumber = function(m, n) {
+    var getPLNumber = function (m, n) {
         var p = 1;
         if (m <= 0 || n <= 0 || n < m) {
             return 0;
@@ -62,7 +62,7 @@ define([], function() {
      * @param n
      * @return
      */
-    var getJCNumber = function(n) {
+    var getJCNumber = function (n) {
         var result = 1;
         if ((n < 0) || (n > 19)) {
             return -1;
@@ -79,18 +79,18 @@ define([], function() {
      * @param n 结束数
      * @param count 随机个数
      */
-    var getSrand = function(m, n, count) {
+    var getSrand = function (m, n, count) {
         var arr = new Array();
         if (m == n || m > n || count == 0) {
             return arr;
         }
 
-        do{
+        do {
             var val = getRandom(m, n);
-            if(!isContain(arr, val)) {
+            if (!isContain(arr, val)) {
                 arr.push(val);
             }
-        }while(arr.length < count);
+        } while (arr.length < count);
         // 排序
         arr = sortNumber(arr, "asc");
         return arr;
@@ -102,7 +102,7 @@ define([], function() {
      * @param e 结束数
      * @return {Number}
      */
-    var getRandom = function(s, e) {
+    var getRandom = function (s, e) {
         return Math.floor(Math.random() * (e + 1 - s)) + s;
     };
 
@@ -112,9 +112,9 @@ define([], function() {
      * @param n 某项值
      * @return {Boolean}
      */
-    var isContain = function(arr, n) {
+    var isContain = function (arr, n) {
         for (var i = 0, len = arr.length; i < len; i++) {
-            if(arr[i] == n) {
+            if (arr[i] == n) {
                 return true;
             }
         }
@@ -127,21 +127,21 @@ define([], function() {
      * @param ad 排序方式
      * @return {*}
      */
-    var sortNumber = function(arr, ad) {
-        var f = ad != "desc" ? function(a, b) {
+    var sortNumber = function (arr, ad) {
+        var f = ad != "desc" ? function (a, b) {
             return a - b;
-        } : function(a, b) {
+        } : function (a, b) {
             return b - a;
         };
         return arr.sort(f);
     };
-	
-	return {
-		getFactorial: getFactorial,
-        getCombineCount: getCombineCount,
-        getPLNumber: getPLNumber,
-        getJCNumber: getJCNumber,
-        getSrand: getSrand
-	};
+
+    return {
+        getFactorial:getFactorial,
+        getCombineCount:getCombineCount,
+        getPLNumber:getPLNumber,
+        getJCNumber:getJCNumber,
+        getSrand:getSrand
+    };
 
 });

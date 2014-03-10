@@ -1,5 +1,5 @@
 /**
- * 历史开奖信息
+ * 竞彩足球历史开奖信息
  */
 define([
     "text!../../views/jczq/history.html",
@@ -7,23 +7,20 @@ define([
     "util/PageEvent",
     "services/JczqService",
     "util/AppConfig",
-    "util/Util"
+    "util/Util",
 ], function (template, page, pageEvent, jczqService, appConfig, util) {
 
-    // 彩种.
-    var lotteryType = "46";
+    // 彩种
+    var lottery = "46";
 
-    //开奖时间.
+    // 日期
     var date = "";
 
-    //数据
-    var lotteryData = {};
+    // 返回数据
+    var result = {};
 
-    //可查询时间列表
-    var issueList = "";
-
-    // match Map值
-    var matchMap = {};
+    // 赛事结果数据
+    var matchResultMap = [];
 
     /**
      * 初始化
@@ -32,14 +29,15 @@ define([
         // 加载模板内容
         $("#container").empty().append($(template));
 
-        // 参数设置
-        var params = {};
-
-        if ($.trim(lotteryType) != "") {
-            params.lotteryType = lotteryType;
+        // 彩种
+        if (data != null && typeof data != "undefined"
+            && typeof data.date != "undefined" && $.trim(data.date) != "") {
+            date = data.date;
         }
 
-        if ($.trim(date) != "") {
+        // 参数设置
+        var params = {};
+        if (date != "") {
             params.date = date;
         }
 
@@ -55,7 +53,7 @@ define([
         bindEvent();
 
         // 处理返回
-        page.setHistoryState({url: "jczq/history", data: params},
+        page.setHistoryState({url:"jczq/history", data:params},
             "jczq/history",
             "#jczq/history" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
             forward ? 1 : 0);
@@ -63,48 +61,43 @@ define([
     };
 
     /**
-     * 初始化显示
+     * 重新设置history
      */
-    var initShow = function (data) {
-        // 请求数据
-        getHistory();
+    var resetHistoryState = function () {
+        var params = {
+            date:date
+        };
+        // 处理返回
+        page.setHistoryState({url:"jclq/history", data:params},
+            "jclq/history",
+            "#jclq/history" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
+            0);
     };
 
     /**
-     * 显示title信息
+     * 初始化显示
      */
-    var showTitle = function () {
-        if (lotteryData != null) {
-            /*  var current = lotteryData[0];
-             var before = lotteryData[1];
-             currentTitle = current.matchArray[0].date + " " + current.matchArray.length + "场比赛已开奖";
-             beforeTitle = before.matchArray[0].date + " " + before.matchArray.length + "场比赛已开奖";
-             $("#current").text(currentTitle);
-             $("#before").text(beforeTitle);*/
-        }
+    var initShow = function (data) {
+
+        // 请求数据
+        getHistory();
     };
 
     /**
      * 获取历史开奖信息
      */
     var getHistory = function () {
-        jczqService.getJczqHistoryLottery(lotteryType, date, function (data) {
+        // 请求数据
+        jczqService.getHistoryAwards(lottery, date, function (data) {
 
             // 隐藏加载标示
             util.hideLoading();
             if (typeof data != "undefined") {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
-                        lotteryData = data.datas;
-                        if (data.datas != null) {
-                            //可查询日期选项.
-                            issueList = data.IssueList.split(",");
-                            //最近一期
-                            showItems(lotteryData);
-
-                        }
-                    } else {
-                        util.toast(data.errorMsg);
+                        result = data;
+                        showItems();
+                        addIssueList();
                     }
                 }
             }
@@ -115,64 +108,144 @@ define([
      * 显示列表信息
      * @param data
      */
-    var showItems = function (data) {
-        for (var i = 0; i < data.length; i++) {
-            //返回几条数据,就有几个title..
-            var subItem = data[i];
-            var titleStr = subItem.matchArray[0].date + " " + subItem.matchArray.length + "场比赛已开奖";
-            var $target = $("<div id='target_" + i + "'></div>");
+    var showItems = function () {
+        var data = result.datas, matchResultMap = [];
 
-            //标题 XX日,XX场比赛.
-            var tableHead = '<table cellpadding="0" cellspacing="0" width="100%" id="head_' + i + '">';
-            tableHead += '<tr>' +
-                '<td colspan="4" class="tl head"><i class="fr sj"></i><span id="title_' + i + '">' + titleStr + '</span></td>' +
-                '</tr>';
-            tableHead += '</table>';
-
-            //详细比赛..
-            var detailGame = '<table  cellpadding="0" cellspacing="0" width="100%" id="detail_' + i + '">';
-            detailGame += '<colgroup>' +
-                '<col width="25%">' +
-                '<col width="25%">' +
-                '<col width="25%">' +
-                '<col width="25%">' +
-                '</colgroup>';
-            detailGame += '<tbody>';
-            //循环读取数据.
-            for (var t = 0; t < subItem.matchArray.length; t++) {
-                var teams = subItem.matchArray[t];
-                matchMap [teams.matchId] =teams;
-                //比赛队伍.
-                var playAgainst = teams.playAgainst.split("|");
-                //主队.
-                var hostTeam = playAgainst[0];
-                //客队.
-                var guestTeam = playAgainst[1];
-                //比赛结果.
-                var result = teams.result;
-                detailGame += '<tr id="' + teams.matchId + '">';
-                detailGame += '<td class="line30">' + teams.number + '<br>' + teams.leagueMatch + '</td>';
-                detailGame += '<td class="bl1">' + hostTeam.substring(0, 4) + '</td>';
-
-                if (result[0].spf == "胜") {
-                    detailGame += '<td   class="line30 bl1 s">' + teams.goalscore + "<br>胜" + '</td>';
-                } else if (result[0].spf == "平") {
-                    detailGame += '<td   class="line30 bl1 p">' + teams.goalscore + "<br>平" + '</td>';
-                } else if (result[0].spf == "负") {
-                    detailGame += '<td   class="line30 bl1 f">' + teams.goalscore + "<br>负" + '</td>';
-                } else {
-                    detailGame += '<td class="u">' + "未开售" + '</td>';
-                }
-                detailGame += '<td class="bl1">' + guestTeam.substring(0, 4) + '</td>';
-                detailGame += "</tr>";
-            }
-            detailGame += '</tbody>';
-
-            detailGame += "</table>";
-
-            $target.html(tableHead + detailGame);
-            $(".lqkjBox").append($target);
+        $(".lqkjBox").empty();
+        if (result.datas.length == 0) {
+            $(".lqkjBox").html("<p class='tl'>暂无赛事数据</p>");
+            return false;
         }
+
+        for (var i = 0, len = data.length; i < len; i++) {
+            addItem(i, data[i]);
+        }
+
+        showDateMatchArr(0);
+        switchArrow(0, 0);
+    };
+
+    /**
+     * 添加一项数据
+     * @param item
+     */
+    var addItem = function (index, item) {
+        var $target = $("<div id='d_" + index + "'></div>");
+
+        var str = "";
+        str += "<table id='t_" + index + "'  cellpadding='0' cellspacing='0' width='100%'>" +
+            "<colgroup>" +
+            "<col width='25%'>" +
+            "<col width='25%'>" +
+            "<col width='25%'>" +
+            "<col width='25%'>" +
+            "</colgroup>";
+
+        str += "<tbody>";
+
+        str += "<tr>";
+        str += "<td colspan='4' class='tl head'>" +
+            "<i class='fr sj sjup'></i>" +
+            "<span>" + item.matchArray[0].date + " " + item.matchArray.length + "场比赛已开奖</span>" +
+            "</td>";
+        str += "</tr>";
+
+        str += "</tbody>";
+        str += "</table>";
+
+        $target.html(str);
+
+        $(".lqkjBox").append($target);
+    };
+
+    /**
+     * 显示当前日期赛事
+     * @param index
+     */
+    var showDateMatchArr = function (index) {
+        var item = result.datas[index];
+        var matchArr = item.matchArray;
+
+        var $target = $("<div id='r_" + index + "'></div>");
+        var str = "";
+        str += "<table id='l_" + index + "' cellpadding='0' cellspacing='0' width='100%'>" +
+            "<colgroup>" +
+            "<col width='25%'>" +
+            "<col width='25%'>" +
+            "<col width='25%'>" +
+            "<col width='25%'>" +
+            "</colgroup>";
+
+        str += "<tbody>";
+
+        for (var i = 0, len = matchArr.length; i < len; i++) {
+            var match = matchArr[i];
+            str += "<tr id='m_" + match.matchId + "'>";
+            str += "<td>" + match.number + "<br>" + match.leagueMatch + "</td>";
+            var teams = match.playAgainst.split("|");
+            str += "<td>" + teams[0].substring(0, 4) + "<br>(" + match.transfer + ")</td>";
+
+            // 胜负
+            var className = "s";
+            if (match.result[0].spf == "胜") {
+                className = "s";
+            } else if (match.result[0].spf == "平") {
+                className = "p";
+            } else if (match.result[0].spf == "负") {
+                className = "f";
+            } else if (match.result[0].spf == "未开售") {
+                className = "u";
+            }
+            str += "<td class='" + className + "'>" + match.goalscore + "<br>" + match.result[0].spf + "</td>";
+
+            str += "<td>" + teams[1].substring(0, 4) + "</td>";
+            str += "</tr>";
+
+            matchResultMap[match.matchId] = {
+                matchId:match.matchId,
+                playAgainst:match.playAgainst,
+                goalscore:match.goalscore,
+                result:match.result,
+                transfer:match.transfer
+            };
+        }
+
+        str += "</tbody>";
+        str += "</table>";
+
+        $target.html(str);
+
+        $("#d_" + index).append($target);
+    };
+
+    /**
+     * 转换箭头
+     * @param index
+     * @param up
+     */
+    var switchArrow = function (index, up) {
+        if (up) {
+            $("#t_" + index + " .sj").addClass("sjup")
+        } else {
+            $("#t_" + index + " .sj").removeClass("sjup")
+        }
+    };
+
+    /**
+     * 添加期号列表
+     */
+    var addIssueList = function () {
+        if ($(".lotteryBox li").length) {
+            return false;
+        }
+
+        var issueList = result.IssueList.split(",");
+        var str = "";
+        for (var i = 0, len = issueList.length; i < len; i++) {
+            str += "<li>" + issueList[i] + "</li>";
+        }
+
+        $(".lotteryBox ul").html(str);
     };
 
     /**
@@ -191,7 +264,6 @@ define([
             return true;
         });
 
-
         // 右菜单
         $(".menu").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
@@ -199,81 +271,89 @@ define([
         });
 
         $(".menu").on(pageEvent.activate, function (e) {
-            var issueMenu = $(".lotteryBox ul");
-            if (issueMenu.is(":visible")) {
-                $(".lotteryBox").hide();
-            } else {
-                if (issueMenu.hasClass("click")) {
-                    $(".lotteryBox").show();
-                } else {
-                    for (var t = 0; t < issueList.length; t++) {
-                        var $li = $("<li id='" + issueList[t] + "'>" + issueList[t] + "</li>");
-                        issueMenu.append($li);
-                    }
-                    issueMenu.addClass("click");
-                }
-                $(".lotteryBox").show();
-            }
+            $(".lotteryBox").show();
             util.showCover();
             return true;
         });
 
-        $("#select").on(pageEvent.tap, function (e) {
-            var $target = $(e.target);
-            //右侧菜单栏.
-            var select_date = $target.closest(".lotteryBox ul li");
-            //表格..标题被点击切换/隐藏..
-            var select_title = $target.closest(".lqkjBox table");
-            //点击当中的某一行,显示开奖sp.
-            var displayFlag = "";
-            if (select_title.length) {
-                var titleId = select_title.attr("id");
-                if (titleId.indexOf('head') > -1) {
-                    var detailItem = "detail_" + titleId.split("_")[1];
-                    displayFlag = $("#" + detailItem);
-                    if (displayFlag.is(":visible")) {
-                        displayFlag.hide();
-                    } else {
-                        displayFlag.show();
-                    }
-                }
-            }
-
-            var select_tr = $target.closest(".lqkjBox table tr");
-            if (select_tr.length) {
-                var matchId = select_tr.attr("id");
-                var matchInfo = matchMap[matchId];
-                if ($.trim(matchId) != "") {
-                    page.initPage("jczq/spLottery", {matchInfo: matchInfo}, 1);
-                }
-            }
-
-            if (select_date.length) {
-                date = select_date.attr("id");
-                if ($.trim(date) != "") {
-                    page.initPage("jczq/history", {date: date, lotteryType: 46}, 1);
-                    //getHistory();
-                }
-            }
-        });
-
-        /*   $(".select").undelegate("li", pageEvent.activate);
-         $(".select").delegate("li", pageEvent.activate, function(e) {
-         // 历史开奖信息 ，id是使用时间来设定.
-         date = $(this).attr("id");
-         if ($.trim(date) != "") {
-         page.initPage("jczq/history", {date: date,lotteryType:46}, 1);
-         //getHistory();
-         }
-         return true;
-         });*/
         // 关闭显示框
         $(".cover").on(pageEvent.click, function (e) {
             $(".lotteryBox").hide();
             util.hideCover();
             return true;
         });
+
+        // 期号选择
+        $(".lotteryBox").on(pageEvent.tap, function (e) {
+
+            var $li = $(e.target).closest("li");
+            if ($li.length) {
+                date = $li.text();
+                // 请求数据
+                getHistory();
+                // 重新设置history
+                resetHistoryState();
+
+                $(".lotteryBox li").removeClass("click");
+                $li.addClass("click");
+
+                $(".lotteryBox").hide();
+                util.hideCover();
+            }
+
+            return true;
+        });
+
+        $(".lqkjBox").on(pageEvent.tap, function (e) {
+            var $target = $(e.target);
+            var $table = $target.closest("table");
+            if ($table.length) {
+                var typeId = $table.attr("id");
+                if (typeId != null && typeof typeId != "undefined") {
+                    var typeIdArr = typeId.split("_");
+                    if (typeIdArr.length > 1) {
+                        var index = parseInt(typeIdArr[1], 10);
+                        switch (typeIdArr[0]) {
+                            case "t":
+                                // 标题日期
+                                var $result = $("#r_" + typeIdArr[1]);
+                                if ($result.length) {
+                                    if ($result.is(":visible")) {
+                                        $result.hide();
+                                        switchArrow(index, 1);
+                                    } else {
+                                        $result.show();
+                                        switchArrow(index, 0);
+                                    }
+                                } else {
+                                    showDateMatchArr(index);
+                                    switchArrow(index, 0);
+                                }
+                                break;
+                            case "l":
+                                var $tr = $target.closest("tr");
+                                var matchId = $tr.attr("id").split("_")[1];
+                                var matchResult = matchResultMap[matchId];
+                                page.initPage("jczq/look", {matchResult:matchResult}, 1);
+                                break;
+                        }
+                    }
+                }
+            }
+        });
+
+        // 赛事回查
+        $(".tzBox").on(pageEvent.touchStart, function (e) {
+            pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
+            return true;
+        });
+
+        $(".tzBox").on(pageEvent.activate, function (e) {
+            page.initPage("user/buyRecord", {lotteryTypeArray:"46|47|48|49|52"}, 1);
+            return true;
+        });
+
     };
 
-    return {init: init};
+    return {init:init};
 });

@@ -9,7 +9,7 @@ define([
     "util/AppConfig",
     "services/PersonService",
     "util/Util"
-], function(template, page, pageEvent, appConfig, personService, util) {
+], function (template, page, pageEvent, appConfig, personService, util) {
 
     // 请求页码
     var requestPage = "1";
@@ -26,7 +26,7 @@ define([
     /**
      * 初始化
      */
-    var init = function(data, forward) {
+    var init = function (data, forward) {
 
         // 加载模板内容
         $("#container").empty().append($(template));
@@ -45,7 +45,7 @@ define([
         bindEvent();
 
         // 处理返回
-        page.setHistoryState({url: "user/accountDetail", data: params},
+        page.setHistoryState({url:"user/accountDetail", data:params},
             "user/accountDetail",
             "#user/accountDetail" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
             forward ? 1 : 0);
@@ -57,7 +57,7 @@ define([
     /**
      * 初始化显示
      */
-    var initShow = function(data) {
+    var initShow = function (data) {
 
         // 参数重置
         requestPage = "1", requestType = "0", periodOfCheck = "30";
@@ -72,17 +72,17 @@ define([
     /**
      * 获取购买记录
      */
-    var getBuyRecordsList = function() {
+    var getBuyRecordsList = function () {
 
         // 总页数重置
         pages = 0;
         if (!appConfig.checkLogin(null)) {
             // 尚未登录，弹出提示框
             util.prompt("", "您还未登录，请先登录", "登录", "取消",
-                function(e) {
+                function (e) {
                     page.initPage("login", {}, 1);
                 },
-                function(e) {
+                function (e) {
 
                 }
             );
@@ -90,7 +90,7 @@ define([
         }
 
         // 保存登录成功信息
-        var user = appConfig.getLocalUserInfo();
+        var user = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         var data = {};
         // sortType 排序方式,0 表示时间倒序默认为0;1 表示金额倒序
@@ -106,8 +106,8 @@ define([
         // 显示加载图标
         loadingShow(1);
 
-        personService.getAccountDetailList(data, function(data) {
-            if (typeof data != "undefined" ) {
+        personService.getAccountDetailList(data, function (data) {
+            if (typeof data != "undefined") {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
                         showItems(data);
@@ -130,7 +130,7 @@ define([
      * 显示列表信息
      * @param data
      */
-    var showItems = function(data) {
+    var showItems = function (data) {
         pages = data.pages;
         if (parseInt(requestPage, 10) < pages) {
             $(".loadText").text("查看更多");
@@ -147,10 +147,10 @@ define([
      * 添加一项数据
      * @param item
      */
-    var addItem = function(item) {
+    var addItem = function (item) {
         var typeTxt = "", typeClass = "";
 
-        switch(item.incomeOrExpenses + "") {
+        switch (item.incomeOrExpenses + "") {
             case "0": // 收入
                 typeTxt = "收入";
                 typeClass = "srBox";
@@ -161,11 +161,11 @@ define([
                 break;
         }
         var $tr = $("<tr></tr>");
-        $tr.append($("<td></td>").html("<span class='"+typeClass+"'>"+typeTxt+"</span>"));
-        var html = "<p>时间："+item.time+"</p>" +
-            "<p>类型："+item.exchangeType+"</p>" +
-            "<p>编号："+item.lotteryNo+"</p>" +
-            "<p>金额：<i class='red mlr5'>"+parseFloat(item.amount).toFixed(2)+"</i>元</p>";
+        $tr.append($("<td></td>").html("<span class='" + typeClass + "'>" + typeTxt + "</span>"));
+        var html = "<p>时间：" + item.time + "</p>" +
+            "<p>类型：" + item.exchangeType + "</p>" +
+            "<p>编号：" + item.lotteryNo + "</p>" +
+            "<p>金额：<i class='red mlr5'>" + parseFloat(item.amount).toFixed(2) + "</i>元</p>";
         $tr.append($("<td class='tl fzc'></td>").html(html));
 
         $(".kjInformation tbody").append($tr);
@@ -174,26 +174,26 @@ define([
     /**
      * 绑定事件
      */
-    var bindEvent = function() {
+    var bindEvent = function () {
 
         // 返回
-        $(".back").on(pageEvent.touchStart, function(e) {
+        $(".back").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return false;
         });
 
-        $(".back").on(pageEvent.activate, function(e) {
+        $(".back").on(pageEvent.activate, function (e) {
             offBind();
             page.goBack();
         });
 
         // Tab 切换
-        $(".btnMenu a").on(pageEvent.touchStart, function(e) {
+        $(".btnMenu a").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".btnMenu a").on(pageEvent.activate, function(e) {
+        $(".btnMenu a").on(pageEvent.activate, function (e) {
             var $target = $(this);
             var id = $target.attr("id").split("_")[1];
             switch (id) {
@@ -244,9 +244,9 @@ define([
         });
 
         var timer = 0;
-        $(window).on("scroll", function() {
+        $(window).on("scroll", function () {
             if (!timer) {
-                timer = setTimeout(function() {
+                timer = setTimeout(function () {
                     checkScrollPosition();
                     timer = 0;
                 }, 250);
@@ -257,25 +257,25 @@ define([
     /**
      * 清空列表
      */
-    var clearItems = function() {
+    var clearItems = function () {
         $(".kjInformation tbody").empty();
     };
 
     /**
      * 加载图片的显示
      */
-    var loadingShow = function(flag) {
+    var loadingShow = function (flag) {
         if (flag) {
-            $(".loadIcon").css({"visibility": "visible"});
+            $(".loadIcon").css({"visibility":"visible"});
         } else {
-            $(".loadIcon").css({"visibility": "hidden"});
+            $(".loadIcon").css({"visibility":"hidden"});
         }
     };
 
     /**
      * 检查滚动的位置
      */
-    var checkScrollPosition = function() {
+    var checkScrollPosition = function () {
         var distance = $(window).scrollTop() + $(window).height();
         if ($("#accountDetailView").height() <= distance) {
             var intRequestPage = parseInt(requestPage, 10);
@@ -289,7 +289,7 @@ define([
     /**
      * 解除绑定
      */
-    var offBind = function() {
+    var offBind = function () {
         $(window).off("scroll");
     };
 

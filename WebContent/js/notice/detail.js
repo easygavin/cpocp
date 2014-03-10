@@ -8,7 +8,7 @@ define([
     "services/NoticeService",
     "util/AppConfig",
     "util/Util"
-], function(template, page, pageEvent, noticeService, appConfig, util){
+], function (template, page, pageEvent, noticeService, appConfig, util) {
 
     // 公告ID
     var noticeId = "";
@@ -19,7 +19,7 @@ define([
     /**
      * 初始化
      */
-    var init = function(data, forward) {
+    var init = function (data, forward) {
         // 加载模板内容
         $("#container").empty().append($(template));
 
@@ -47,17 +47,17 @@ define([
         bindEvent();
 
         // 处理返回
-        page.setHistoryState({url: "notice/detail", data: params},
-        		"notice/detail",
-        		"#notice/detail" + (JSON.stringify(params).length > 2 ? "?data="+encodeURIComponent(JSON.stringify(params)) : ""),
-        		forward ? 1 : 0);
+        page.setHistoryState({url:"notice/detail", data:params},
+            "notice/detail",
+            "#notice/detail" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
+            forward ? 1 : 0);
 
     };
 
     /**
      * 初始化显示
      */
-    var initShow = function(data) {
+    var initShow = function (data) {
 
         // 请求数据
         getNoticeDetail();
@@ -66,28 +66,28 @@ define([
     /**
      * 获取公告详情
      */
-    var getNoticeDetail = function() {
+    var getNoticeDetail = function () {
 
         // 请求数据
-        noticeService.getNoticeDetail(noticeId, function(data) {
+        noticeService.getNoticeDetail(noticeId, function (data) {
 
             // 隐藏加载标示
             util.hideLoading();
-             if (typeof data != "undefined" ) {
-                 if (typeof data.statusCode != "undefined") {
-                     if (data.statusCode == "0") {
+            if (typeof data != "undefined") {
+                if (typeof data.statusCode != "undefined") {
+                    if (data.statusCode == "0") {
                         showDetail(data);
-                     }
-                 }
-             }
-         });
+                    }
+                }
+            }
+        });
     };
 
     /**
      * 显示列表信息
      * @param data
      */
-    var showDetail = function(data) {
+    var showDetail = function (data) {
 
         result = data;
         // 标题
@@ -97,16 +97,16 @@ define([
 
         // 图片
         if ($.trim(result.imgUrl) != "") {
-            console.log(noticeService.getImageServerUrl()+result.imgUrl);
+            console.log(noticeService.getImageServerUrl() + result.imgUrl);
             $mBox.append($("<img width='95%' style='width: 95%;display: block;margin: 1em auto;' " +
-                "src='"+noticeService.getImageServerUrl()+result.imgUrl+"'/>"));
+                "src='" + noticeService.getImageServerUrl() + result.imgUrl + "'/>"));
         }
 
         // 内容
         if ($.trim(result.contentUrl) != "") {
             var contentUrl = noticeService.getImageServerUrl() + result.contentUrl;
             $mBox.append($("<div style='width: 98%;margin:0 auto;'></div>").append($("<iframe id='noticeFrame' scrolling='no' frameborder='0' width='100%' height='0' style='padding: 0;margin: 0;height:1500px;'" +
-                " src="+contentUrl+"></iframe>")));
+                " src=" + contentUrl + "></iframe>")));
         }
 
         // 类型
@@ -120,35 +120,35 @@ define([
     /**
      * 绑定事件
      */
-    var bindEvent = function() {
+    var bindEvent = function () {
 
-		$(window).off("message");
-        $(window).on("message", function(e) {
+        $(window).off("message");
+        $(window).on("message", function (e) {
             if (e.origin === "http://gj.caipiao123.com.cn") {
                 var height = parseInt(e.data, 10) + 40;
-                $("#noticeFrame").css({"height": height + "px"});
+                $("#noticeFrame").css({"height":height + "px"});
             }
             return true;
         });
 
         // 返回
-        $(".back").on(pageEvent.touchStart, function(e) {
+        $(".back").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".back").on(pageEvent.activate, function(e) {
+        $(".back").on(pageEvent.activate, function (e) {
             page.goBack();
             return true;
         });
 
         // 立即参与
-        $(".tzBox").on(pageEvent.touchStart, function(e) {
+        $(".tzBox").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".tzBox").on(pageEvent.activate, function(e) {
+        $(".tzBox").on(pageEvent.activate, function (e) {
             switch (result.type) {
                 case "0": // 普通活动
                     switch (result.lotteryId) {
@@ -170,31 +170,31 @@ define([
                         case "11": // 双色球
 
                             // 删除缓存的购买数据
-                            appConfig.clearMayBuyData(appConfig.MAY_BUY_RED_BLUE_KEY);
+                            appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_RED_BLUE_KEY);
                             page.initPage("redblue/ball", {}, 1);
                             break;
                         case "13": // 大乐透
 
                             // 删除缓存的购买数据
-                            appConfig.clearMayBuyData(appConfig.MAY_BUY_HAPPY_KEY);
+                            appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_HAPPY_KEY);
                             page.initPage("happy/ball", {}, 1);
                             break;
                         case "31": // 十一运夺金
 
                             // 删除缓存的购买数据
-                            appConfig.clearMayBuyData(appConfig.MAY_BUY_LUCK_KEY);
+                            appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_LUCK_KEY);
                             page.initPage("luck/ball", {}, 1);
                             break;
                         case "12": // 福彩3D
 
                             // 删除缓存的购买数据
-                            appConfig.clearMayBuyData(appConfig.MAY_BUY_3D_KEY);
+                            appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_3D_KEY);
                             page.initPage("3d/ball", {}, 1);
                             break;
                         case "14": // 幸运赛车
 
                             // 删除缓存的购买数据
-                            appConfig.clearMayBuyData(appConfig.MAY_BUY_RACING_KEY);
+                            appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_RACING_KEY);
                             page.initPage("racing/ball", {}, 1);
                             break;
                     }

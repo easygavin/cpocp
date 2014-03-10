@@ -25,7 +25,7 @@ define([
             params.token = tkn;
         }
 
-        userInfo = appConfig.getLocalUserInfo();
+        userInfo = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         //初始化显示
         initShow();

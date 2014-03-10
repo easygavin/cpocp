@@ -3,7 +3,7 @@
  */
 define([
     "util/Calculate"
-], function(calculate) {
+], function (calculate) {
     /**
      * 获取智能追号列表
      * @param startIssue 开始期号
@@ -42,7 +42,7 @@ define([
                     maxRate = (maxIncome / (pay + totalPay)) * 100;
                 }
 
-                if (opt.type == 1 &&  minRate > opt.rate) {
+                if (opt.type == 1 && minRate > opt.rate) {
                     break;
                 } else if (opt.type == 2 && minIncome > opt.income) {
                     break;
@@ -122,8 +122,8 @@ define([
         var maxBonus = 0;
         switch (opt.mode) {
             /*case "0": // 任一
-                maxBonus = 0;
-                break;*/
+             maxBonus = 0;
+             break;*/
             case "1": // 任二
             case "2": // 任三
             case "3": // 任四
@@ -135,8 +135,8 @@ define([
                 }
                 break;
             /*case "4": // 任五
-                maxBonus = 0;
-                break;*/
+             maxBonus = 0;
+             break;*/
             case "5": // 任六
             case "6": // 任七
             case "7": // 任八
@@ -147,29 +147,29 @@ define([
                 }
                 break;
             /*case "8": // 前三直选
-                maxBonus = 0;
-                break;
-            case "9": // 前三组选
-                maxBonus = 0;
-                break;
-            case "10": // 前二直选
-                maxBonus = 0;
-                break;
-            case "11": // 前二组选
-                maxBonus = 0;
-                break;
-            case "12": // 前三直选胆拖
-                maxBonus = 0;
-                break;
-            case "13": // 前三组选胆拖
-                maxBonus = 0;
-                break;
-            case "14": // 前二直选胆拖
-                maxBonus = 0;
-                break;
-            case "15": // 前二组选胆拖
-                maxBonus = 0;
-                break;*/
+             maxBonus = 0;
+             break;
+             case "9": // 前三组选
+             maxBonus = 0;
+             break;
+             case "10": // 前二直选
+             maxBonus = 0;
+             break;
+             case "11": // 前二组选
+             maxBonus = 0;
+             break;
+             case "12": // 前三直选胆拖
+             maxBonus = 0;
+             break;
+             case "13": // 前三组选胆拖
+             maxBonus = 0;
+             break;
+             case "14": // 前二直选胆拖
+             maxBonus = 0;
+             break;
+             case "15": // 前二组选胆拖
+             maxBonus = 0;
+             break;*/
             case "16": // 任二胆拖
             case "17": // 任三胆拖
             case "18": // 任四胆拖
@@ -196,7 +196,7 @@ define([
         result.endIssue = endIssue;
         result.money = opt.money;
         result.minBonus = opt.bonus,
-        result.maxBonus = maxBonus;
+            result.maxBonus = maxBonus;
         result.count = opt.count;
         result.leave = leave;
 
@@ -208,34 +208,34 @@ define([
      * @type {Object}
      */
     var modeMap = {
-        "0": {title: "任一", key: "201", bonus: 13, playType: "1", betType: "1"},
-        "1": {title: "任二", key: "202", bonus: 6, playType: "1", betType: "1"},
-        "2": {title: "任三", key: "203", bonus: 19, playType: "1", betType: "1"},
-        "3": {title: "任四", key: "204", bonus: 78, playType: "1", betType: "1"},
-        "4": {title: "任五", key: "205", bonus: 540, playType: "1", betType: "1"},
-        "5": {title: "任六", key: "206", bonus: 90, playType: "1", betType: "1"},
-        "6": {title: "任七", key: "207", bonus: 26, playType: "1", betType: "1"},
-        "7": {title: "任八", key: "208", bonus: 9, playType: "1", betType: "1"},
-        "8": {title: "前三直选", key: "511", bonus: 1170, playType: "1", betType: "1"},
-        "9": {title: "前三组选", key: "501", bonus: 195, playType: "1", betType: "1"},
-        "10": {title: "前二直选", key: "411", bonus: 130, playType: "1", betType: "1"},
-        "11": {title: "前二组选", key: "401", bonus: 65, playType: "1", betType: "1"},
-        "12": {title: "前三直选胆拖", key: "512", bonus: 1170, playType: "1", betType: "1"},
-        "13": {title: "前三组选胆拖", key: "502", bonus: 195, playType: "1", betType: "1"},
-        "14": {title: "前二直选胆拖", key: "412", bonus: 130, playType: "1", betType: "1"},
-        "15": {title: "前二组选胆拖", key: "402", bonus: 65, playType: "1", betType: "1"},
-        "16": {title: "任二胆拖", key: "302", bonus: 6, playType: "1", betType: "1"},
-        "17": {title: "任三胆拖", key: "303", bonus: 19, playType: "1", betType: "1"},
-        "18": {title: "任四胆拖", key: "304", bonus: 78, playType: "1", betType: "1"},
-        "19": {title: "任五胆拖", key: "305", bonus: 540, playType: "1", betType: "1"},
-        "20": {title: "任六胆拖", key: "306", bonus: 90, playType: "1", betType: "1"},
-        "21": {title: "任七胆拖", key: "307", bonus: 26, playType: "1", betType: "1"},
-        "22": {title: "任八胆拖", key: "308", bonus: 9, playType: "1", betType: "1"}
+        "0":{title:"任一", key:"201", bonus:13, playType:"1", betType:"1"},
+        "1":{title:"任二", key:"202", bonus:6, playType:"1", betType:"1"},
+        "2":{title:"任三", key:"203", bonus:19, playType:"1", betType:"1"},
+        "3":{title:"任四", key:"204", bonus:78, playType:"1", betType:"1"},
+        "4":{title:"任五", key:"205", bonus:540, playType:"1", betType:"1"},
+        "5":{title:"任六", key:"206", bonus:90, playType:"1", betType:"1"},
+        "6":{title:"任七", key:"207", bonus:26, playType:"1", betType:"1"},
+        "7":{title:"任八", key:"208", bonus:9, playType:"1", betType:"1"},
+        "8":{title:"前三直选", key:"511", bonus:1170, playType:"1", betType:"1"},
+        "9":{title:"前三组选", key:"501", bonus:195, playType:"1", betType:"1"},
+        "10":{title:"前二直选", key:"411", bonus:130, playType:"1", betType:"1"},
+        "11":{title:"前二组选", key:"401", bonus:65, playType:"1", betType:"1"},
+        "12":{title:"前三直选胆拖", key:"512", bonus:1170, playType:"1", betType:"1"},
+        "13":{title:"前三组选胆拖", key:"502", bonus:195, playType:"1", betType:"1"},
+        "14":{title:"前二直选胆拖", key:"412", bonus:130, playType:"1", betType:"1"},
+        "15":{title:"前二组选胆拖", key:"402", bonus:65, playType:"1", betType:"1"},
+        "16":{title:"任二胆拖", key:"302", bonus:6, playType:"1", betType:"1"},
+        "17":{title:"任三胆拖", key:"303", bonus:19, playType:"1", betType:"1"},
+        "18":{title:"任四胆拖", key:"304", bonus:78, playType:"1", betType:"1"},
+        "19":{title:"任五胆拖", key:"305", bonus:540, playType:"1", betType:"1"},
+        "20":{title:"任六胆拖", key:"306", bonus:90, playType:"1", betType:"1"},
+        "21":{title:"任七胆拖", key:"307", bonus:26, playType:"1", betType:"1"},
+        "22":{title:"任八胆拖", key:"308", bonus:9, playType:"1", betType:"1"}
     };
 
     return {
-        modeMap: modeMap,
-        beforeHandler: beforeHandler,
-        getAppendList: getAppendList
+        modeMap:modeMap,
+        beforeHandler:beforeHandler,
+        getAppendList:getAppendList
     };
 });

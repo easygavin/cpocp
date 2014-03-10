@@ -4,11 +4,11 @@
 define([
     "text!../../views/jczq/details.html",
     "util/Page",
-	"util/PageEvent",
+    "util/PageEvent",
     "services/JczqService",
     "util/Util",
     "util/AppConfig"
-], function(template, page, pageEvent, jczqService, util, appConfig){
+], function (template, page, pageEvent, jczqService, util, appConfig) {
 
     // 彩种
     var lotteryType = "";
@@ -19,14 +19,21 @@ define([
     // 方案编号
     var projectId = "";
 
+    //赛事对阵信息..
+
+    var item = {};
+
+    //用户信息
+    var user = null;
+
     /**
      * 初始化
      */
-    var init = function(data, forward) {
+    var init = function (data, forward) {
         // 加载模板内容
         $("#container").empty().append($(template));
 
-        if (data != null && typeof data != "undefined"){
+        if (data != null && typeof data != "undefined") {
             // 彩种
             if (typeof data.lotteryType != "undefined" && $.trim(data.lotteryType) != "") {
                 lotteryType = data.lotteryType;
@@ -70,33 +77,56 @@ define([
 
         // 处理返回
         page.setHistoryState({url: "jczq/details", data: params},
-        		"jczq/details",
-        		"#jczq/details" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : "") ,
-        		forward ? 1 : 0);
+            "jczq/details",
+            "#jczq/details" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
+            forward ? 1 : 0);
 
     };
 
     /**
      * 初始化显示
      */
-    var initShow = function(data) {
+    var initShow = function (data) {
+
         // 获取方案详情
         getDetails();
+
+        user = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
+
+        item.userId = user.userId;
+        item.userKey = user.userKey;
+    };
+
+    /**
+     *查询即使比分接口,确定赛事状态..
+     */
+    var queryGameState = function () {
+        //item.score等于空,表明该球赛暂未返回数据..则调用及时比分接口查询..
+        if (item != null && item != "undefined" && (item.score == "" || item.score == null)) {
+            jczqService.getAliveState(item, function (data) {
+                if (typeof data != "undefined") {
+                    if (data.statusCode != "undefined" && data.statusCode == "0") {
+                        return dataMap[data.status];
+                    }
+                }
+            });
+        }
+
     };
 
     /**
      * 获取方案详情
      */
-    var getDetails = function() {
-        jczqService.getProjectDetails(lotteryType, requestType, projectId, function(data) {
+    var getDetails = function () {
+        jczqService.getProjectDetails(lotteryType, requestType, projectId, function (data) {
 
             // 隐藏加载标示
             util.hideLoading();
-            if (typeof data != "undefined" ) {
+            if (typeof data != "undefined") {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
                         showDetails(data);
-                    } else if(data.statusCode == "off") {
+                    } else if (data.statusCode == "off") {
                         // 尚未登录
                         page.initPage("login", {}, 1);
                     } else {
@@ -111,75 +141,95 @@ define([
      * 显示详情
      * @param data
      */
-    var showDetails = function(data) {
+    var showDetails = function (data) {
 
-        $(".details").append($("<p></p>").text("方案编号："+data.lotteryNo));
-        $(".details").append($("<p></p>").text("  发起人："+data.createUser));
-        $(".details").append($("<p></p>").text("发起时间："+data.createDate));
-        $(".details").append($("<p></p>").text("方案金额："+data.totalAmount));
-        $(".details").append($("<p></p>").text("认购金额："+data.oneAmount));
-        $(".details").append($("<p></p>").text("方案状态："+data.projectState));
-        $(".details").append($("<p></p>").text("方案奖金："+data.bonus));
+        $(".details").append($("<p></p>").text("方案编号：" + data.lotteryNo));
+        $(".details").append($("<p></p>").text("发起人：" + data.createUser));
+        $(".details").append($("<p></p>").text("发起时间：" + data.createDate));
+        $(".details").append($("<p></p>").text("方案金额：" + data.totalAmount + "元"));
+        $(".details").append($("<p></p>").text("认购金额：" + data.oneAmount + "元"));
+        $(".details").append($("<p></p>").text("方案状态：" + data.projectState));
+        $(".details").append($("<p></p>").text("方案奖金：" + data.bonus + (isNaN(data.bonus) ? "" : "元")));
 
-        $(".detailsList ul").append($("<li></li>").html("<p>"+data.title+"<i class='fr'>"+data.passWay+"</i></p>"));
-        $(".tzBox").text($.trim(data.title)+"投注");
+        $(".detailsList ul").append($("<li></li>").html("<p>" + data.title + "<i class='fr'>" + data.passWay + "</i></p>"));
+        $(".tzBox").text($.trim(data.title) + "投注");
         var detail = data.detail;
 
-        var str = "<table width='100%' cellspacing='0' cellpadding='0' class='kjInformation'>";
+        var str = "<table width='100%' cellspacing='0' cellpadding='0' class='jckjInfor'>";
         str += "<colgroup>" +
-            "<col width='60%'>" +
+            "<col width='70%'>" +
             "<col width='20%'>" +
-            "<col width='20%'>" +
-            "</colgroup>" +
-            "<thead>" +
-            "<tr>" +
-            "<td>对阵</td>" +
-            "<td>比分</td>" +
-            "<td>&nbsp;</td>" +
-            "</tr>" +
-            "</thead>";
+            "<col width='10%'>" +
+            "</colgroup>";
+
         str += "<tbody>";
         for (var i = 0, len = detail.length; i < len; i++) {
+            var content = detail[i].content.replace(/{/g, '<span class="red">')
+                .replace(/}/g, '</span>')
+                .replace(/\n/g, '<br>');
             str += "<tr>" +
-                "<td>"+detail[i].content+"</td>" +
-                "<td>"+detail[i].score+"</td>" +
-                "<td><i class='red'>"+detail[i].dan+"</i></td>" +
+                "<td>" + content + "</td>";
+
+            var score = detail[i].score;
+            if ((score == "" || score == null || score.length <= 0) && projectId != "") {
+                item.lotteryId = "";
+                item.projectId = projectId;
+                item.searchType = 0;
+                item.matchIdArray = detail[i].gliveId;
+                var result = queryGameState();
+                str += "<td>" + result + "</td>";
+            } else {
+                str += "<td>" + detail[i].score + "</td>";
+            }
+
+            str += "<td><i class='red'>" + detail[i].dan + "</i></td>" +
                 "</tr>"
         }
         str += "</tbody></table>";
 
-        $(".detailsList ul").append($("<li></li>").html("<p>"+str+"</p>"));
+        $(".detailsList ul").append($("<li></li>").append($("<p></p>").html(str)));
     };
 
     /**
      * 绑定事件
      */
-    var bindEvent = function() {
+    var bindEvent = function () {
 
         // 返回
-        $(".back").on(pageEvent.touchStart, function(e) {
+        $(".back").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".back").on(pageEvent.activate, function(e) {
+        $(".back").on(pageEvent.activate, function (e) {
             page.goBack();
             return true;
         });
 
         // 去投注
-        $(".tzBox").on(pageEvent.touchStart, function(e) {
+        $(".tzBox").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".tzBox").on(pageEvent.activate, function(e) {
+        $(".tzBox").on(pageEvent.activate, function (e) {
             // 删除缓存的购买数据
-            appConfig.clearMayBuyData(appConfig.MAY_BUY_JCZQ_KEY);
+            appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_JCZQ_KEY);
             page.initPage("jczq/mixed", {}, 1);
             return true;
         });
     };
-
-    return {init:init};
-});
+    var dataMap = {
+        "0": "未开赛",
+        "1": "上半场",
+        "2": "中场",
+        "3": "下半场",
+        "-11": "待定",
+        "-12": "腰斩",
+        "-13": "中断",
+        "-14": "推迟",
+        "-1": "完场"
+    };
+    return {init: init};
+})
+;

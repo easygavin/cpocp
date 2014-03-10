@@ -4,13 +4,13 @@
 define([
     "text!../../views/luck/append.html",
     "util/Page",
-	"util/PageEvent",
+    "util/PageEvent",
     "services/DigitService",
     "services/AppendService",
     "util/AppConfig",
-	"util/Util",
+    "util/Util",
     "util/ErrorHandler"
-], function(template, page, pageEvent, digitService, appendService, appConfig, util, errorHandler){
+], function (template, page, pageEvent, digitService, appendService, appConfig, util, errorHandler) {
 
     // 传递参数
     var args = {};
@@ -28,7 +28,7 @@ define([
     /**
      * 初始化
      */
-    var init = function(data, forward) {
+    var init = function (data, forward) {
         // 加载模板内容
         $("#container").empty().append($(template));
 
@@ -45,10 +45,10 @@ define([
         // 绑定事件
         bindEvent();
 
-        page.setHistoryState({url: "luck/append", data:{}},
-        		"luck/append",
-        		"#luck/append" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
-                forward ? 1 : 0);
+        page.setHistoryState({url:"luck/append", data:{}},
+            "luck/append",
+            "#luck/append" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
+            forward ? 1 : 0);
 
         // 隐藏加载标示
         util.hideLoading();
@@ -57,7 +57,7 @@ define([
     /**
      * 初始化显示
      */
-    var initShow = function(data, forward) {
+    var initShow = function (data, forward) {
 
         // 获取智能追号检查结果
         getBufferResult();
@@ -81,8 +81,8 @@ define([
     /**
      * 获取智能追号检查结果
      */
-    var getBufferResult = function() {
-        args = appConfig.getMayBuyData(appConfig.SMART_LUCK_KEY);
+    var getBufferResult = function () {
+        args = appConfig.getLocalJson(appConfig.keyMap.SMART_LUCK_KEY);
     };
 
     /**
@@ -108,7 +108,7 @@ define([
      * 显示消费信息
      * @param items
      */
-    var showPayInfo = function() {
+    var showPayInfo = function () {
         var issueCount = 0, pays = 0;
         if (items.length) {
             issueCount = items.length;
@@ -122,7 +122,7 @@ define([
     /**
      * 显示投注列表
      */
-    var showItems = function() {
+    var showItems = function () {
         $(".smartList tbody").empty();
 
         if (!items.length) {
@@ -137,7 +137,7 @@ define([
     /**
      * 添加一项数据
      */
-    var addItem = function(item) {
+    var addItem = function (item) {
         var $tr = $("<tr></tr>");
 
         var html = "<td>&nbsp;&nbsp;" + item.issueNo.substring(4) + "</td>";
@@ -164,26 +164,26 @@ define([
     /**
      * 绑定事件
      */
-    var bindEvent = function() {
+    var bindEvent = function () {
 
         // 返回
-        $(".back").on(pageEvent.touchStart, function(e) {
+        $(".back").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".back").on(pageEvent.activate, function(e) {
+        $(".back").on(pageEvent.activate, function (e) {
             page.goBack();
             return true;
         });
 
         // 修改追号规则
-        $(".zhTb").on(pageEvent.touchStart, function(e) {
+        $(".zhTb").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".zhTb").on(pageEvent.activate, function(e) {
+        $(".zhTb").on(pageEvent.activate, function (e) {
             if ($(".smartModBox").css("display") == "none") {
                 showModBox();
             } else {
@@ -193,119 +193,119 @@ define([
         });
 
         // 关闭显示层
-        $(".lCover").on(pageEvent.click, function(e) {
+        $(".lCover").on(pageEvent.click, function (e) {
             hideModBox();
             return true;
         });
 
         // 追期
-        $("#issueUnit").on("keyup", function(e) {
-            this.value = this.value.replace(/\D/g,'');
+        $("#issueUnit").on("keyup",function (e) {
+            this.value = this.value.replace(/\D/g, '');
             var $issueUnit = $(this);
             args.count = $issueUnit.val();
 
             if ($.trim(args.count) == "") {
-                return false;
+                args.count = 0;
+            } else {
+                if ($.trim(args.count) != "" && (isNaN(args.count) || args.count < 1)) {
+                    args.count = 10;
+                    $issueUnit.val(10);
+                } else if (args.count > args.leave) {
+                    util.toast("离截止还剩" + args.leave + "期可追");
+                    args.count = args.leave;
+                    $issueUnit.val(args.leave);
+                }
             }
 
-            if ($.trim(args.count) != "" && (typeof args.count == "NaN" || args.count < 1)) {
-                args.count = 10;
-                $issueUnit.val(10);
-            } else if (args.count > args.leave ) {
-                util.toast("离截止还剩" + args.leave + "期可追");
-                args.count = args.leave;
-                $issueUnit.val(args.leave);
-            }
             handleEndIssue();
             return true;
-        }).on("blur", function(e) {
-            this.value = this.value.replace(/\D/g,'');
-            var $issueUnit = $(this);
-            args.count = $issueUnit.val();
+        }).on("blur", function (e) {
+                this.value = this.value.replace(/\D/g, '');
+                var $issueUnit = $(this);
+                args.count = $issueUnit.val();
 
-            if ($.trim(args.count) == "" || typeof args.count == "NaN" || args.count < 1) {
-                args.count = 10;
-                $issueUnit.val(10);
-                handleEndIssue();
-            }
-        });
+                if ($.trim(args.count) == "" || isNaN(args.count) || args.count < 1) {
+                    args.count = 10;
+                    $issueUnit.val(10);
+                    handleEndIssue();
+                }
+            });
 
         // 最小盈利率
-        $("#minRate").on("focus", function(e) {
+        $("#minRate").on("focus",function (e) {
             $(this).siblings("span").removeClass().addClass("red");
             $("#minIncome").siblings("span").removeClass().addClass("grey");
 
             // 盈利率方式计算
             redType = 1;
-        }).on("keyup", function(e) {
-            this.value = this.value.replace(/\D/g,'');
-            var $minRate = $(this);
-            args.rate = $minRate.val();
+        }).on("keyup",function (e) {
+                this.value = this.value.replace(/\D/g, '');
+                var $minRate = $(this);
+                args.rate = $minRate.val();
 
-            if ($.trim(args.rate) == "") {
-                return false;
-            }
+                if ($.trim(args.rate) == "") {
+                    args.rate = 0;
+                } else {
+                    if ($.trim(args.rate) != "" && (isNaN(args.rate) || args.rate < 1)) {
+                        args.rate = 30;
+                        $minRate.val(30);
+                    } else if (args.rate > 1000) {
+                        args.rate = 999;
+                        $minRate.val(999);
+                    }
+                }
 
-            if ($.trim(args.rate) != "" && (typeof args.rate == "NaN" || args.rate < 1)) {
-                args.rate = 30;
-                $minRate.val(30);
-            } else if (args.rate > 1000 ) {
-                args.rate = 999;
-                $minRate.val(999);
-            }
+                return true;
+            }).on("blur", function (e) {
+                this.value = this.value.replace(/\D/g, '');
+                var $minRate = $(this);
+                args.rate = $minRate.val();
 
-            return true;
-        }).on("blur", function(e) {
-            this.value = this.value.replace(/\D/g,'');
-            var $minRate = $(this);
-            args.rate = $minRate.val();
-
-            if ($.trim(args.rate) == "" || typeof args.rate == "NaN" || args.rate < 1) {
-                args.rate = 30;
-                $minRate.val(30);
-            }
-        });
+                if ($.trim(args.rate) == "" || typeof args.rate == "NaN" || args.rate < 1) {
+                    args.rate = 30;
+                    $minRate.val(30);
+                }
+            });
 
         // 最小盈利金额
-        $("#minIncome").on("focus", function(e) {
+        $("#minIncome").on("focus",function (e) {
             $(this).siblings("span").removeClass().addClass("red");
             $("#minRate").siblings("span").removeClass().addClass("grey");
 
             // 盈利金额方式计算
             redType = 2;
-        }).on("keyup", function(e) {
-            this.value = this.value.replace(/\D/g,'');
-            var $minIncome = $(this);
-            args.income = $minIncome.val();
+        }).on("keyup",function (e) {
+                this.value = this.value.replace(/\D/g, '');
+                var $minIncome = $(this);
+                args.income = $minIncome.val();
 
-            if ($.trim(args.income) == "") {
-                return false;
-            }
+                if ($.trim(args.income) == "") {
+                    args.income = 0;
+                } else {
+                    if ($.trim(args.income) != "" && (isNaN(args.income) || args.income < 1)) {
+                        args.income = 100;
+                        $minIncome.val(100);
+                    }
+                }
+                return true;
+            }).on("blur", function (e) {
+                this.value = this.value.replace(/\D/g, '');
+                var $minIncome = $(this);
+                args.income = $minIncome.val();
 
-            if ($.trim(args.income) != "" && (typeof args.income == "NaN" || args.income < 1)) {
-                args.income = 100;
-                $minIncome.val(100);
-            }
-
-            return true;
-        }).on("blur", function(e) {
-            this.value = this.value.replace(/\D/g,'');
-            var $minIncome = $(this);
-            args.income = $minIncome.val();
-
-            if ($.trim(args.income) == "" || typeof args.income == "NaN" || args.income < 1) {
-                args.income = 100;
-                $minIncome.val(100);
-            }
-        });
+                if ($.trim(args.income) == "" || typeof args.income == "NaN" || args.income < 1) {
+                    args.income = 100;
+                    $minIncome.val(100);
+                }
+            });
 
         // 确定计算方式
-        $("#operate").on(pageEvent.touchStart, function(e) {
+        $("#operate").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $("#operate").on(pageEvent.activate, function(e) {
+        $("#operate").on(pageEvent.activate, function (e) {
             if ($(this).hasClass("gmBtn")) { // 购买
                 toBuy();
             } else {
@@ -324,7 +324,7 @@ define([
     /**
      * 购买付款
      */
-    var toBuy = function() {
+    var toBuy = function () {
         if (items == null || typeof items == "undefined" || items.length == 0) {
             return false;
         }
@@ -339,7 +339,7 @@ define([
 
         // 内容
         var content = "[" + modeItem.key + "]" + args.content;
-        params.content = content.replace(/[ ]/g,"");
+        params.content = content.replace(/[ ]/g, "");
 
         // 大乐透专用，0不追加，1追加
         params.addtionSupper = "0";
@@ -348,10 +348,10 @@ define([
         var details = [], totalBet = 0;
         for (var i = 0, len = items.length; i < len; i++) {
             var detail = {
-                amount: items[i].pay + "", // 当期金额
-                muls: items[i].muls + "", // 当期倍数
-                bets: args.bet + "", // 当期注数
-                issueNo: items[i].issueNo // 当期期号
+                amount:items[i].pay + "", // 当期金额
+                muls:items[i].muls + "", // 当期倍数
+                bets:args.bet + "", // 当期注数
+                issueNo:items[i].issueNo // 当期期号
             };
             totalBet += items[i].muls;
             details.push(detail);
@@ -373,33 +373,33 @@ define([
         util.showCover();
         util.showLoading();
 
-        appConfig.setMayBuyData(appConfig.SMART_LUCK_KEY, args);
+        appConfig.setLocalJson(appConfig.keyMap.SMART_LUCK_KEY, args);
 
         // 请求接口
-        digitService.toBuy(args.lotteryType, "1", params, price, function(data) {
+        digitService.toBuy(args.lotteryType, "1", params, price, function (data) {
 
             // 隐藏遮住层
             util.hideCover();
             util.hideLoading();
 
-            if (typeof data != "undefined" ) {
+            if (typeof data != "undefined") {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
                         result = data;
                         util.prompt(
-                            "十一运夺金 第 "+items[0].issueNo+" 期投注成功",
-                            "编号:"+data.lotteryNo + "<br>" + "账号余额:"+data.userBalance+" 元",
+                            "十一运夺金 第 " + items[0].issueNo + " 期投注成功",
+                            "编号:" + data.lotteryNo + "<br>" + "账号余额:" + data.userBalance + " 元",
                             "查看方案",
                             "确定",
-                            function(e) {
-                                page.initPage("digit/details", {lotteryType: args.lotteryType, requestType: "0", projectId: result.projectId}, 0);
+                            function (e) {
+                                page.initPage("digit/details", {lotteryType:args.lotteryType, requestType:"0", projectId:result.projectId}, 0);
                             },
-                            function(e) {
+                            function (e) {
                                 page.goBack();
                             }
                         );
                         // 删除缓存记录
-                        appConfig.clearMayBuyData(appConfig.SMART_LUCK_KEY);
+                        appConfig.clearLocalData(appConfig.keyMap.SMART_LUCK_KEY);
 
                     } else {
                         errorHandler.handler(data);
@@ -416,7 +416,7 @@ define([
     /**
      * 处理截止期号
      */
-    var handleEndIssue = function() {
+    var handleEndIssue = function () {
         args.count = parseInt(args.count, 10);
         // 期数检查
         var number = args.startIssue.substring(args.startIssue.length - 2);
@@ -436,7 +436,7 @@ define([
     /**
      * 显示修改条件
      */
-    var showModBox = function() {
+    var showModBox = function () {
         $(".smartModBox").show();
         showLCover();
 
@@ -447,7 +447,7 @@ define([
     /**
      * 隐藏修改条件
      */
-    var hideModBox = function() {
+    var hideModBox = function () {
         $(".smartModBox").hide();
         hideLCover();
 
@@ -458,16 +458,16 @@ define([
     /**
      * 显示遮盖层
      */
-    var showLCover = function() {
+    var showLCover = function () {
         var bodyHeight = Math.max(document.documentElement.clientHeight, document.body.offsetHeight);
-        var headerH = $(".header").height();
-        $(".lCover").css({"height": (bodyHeight - headerH) + "px"}).show();
+        var headerH = $(".iheader").height();
+        $(".lCover").css({"height":(bodyHeight - headerH) + "px"}).show();
     };
 
     /**
      * 隐藏遮盖层
      */
-    var hideLCover = function() {
+    var hideLCover = function () {
         $(".lCover").hide();
     };
 

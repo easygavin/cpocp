@@ -1,14 +1,11 @@
 <section id="jczqListView">
 
     <!--中国农业银行-->
-    <div class="header">
+    <div class="iheader">
         <h1>
             <a class="back" title="返回"></a><span class="fl" id="title"></span>
         </h1>
     </div>
-
-    <div class="box">
-        
         <!--投注列表-->
         <table cellpadding="0" cellspacing="0" width="100%" class="zckjTab">
             <colgroup>
@@ -16,11 +13,8 @@
                 <col width="15%" />
             </colgroup>
             <tbody>
-
             </tbody>
-    
         </table>
-    </div>
 
     <!--尾部-->
     <div class="footer">
@@ -28,12 +22,12 @@
             <a id="protocolA">阅读代购协议</a>
         </div>
         <div class="tzChose">
-            <i id="guessBonus" class="red fl">奖金：5.36 ~26.04</i>
+            <i id="guessBonus" class="red fl bonus">奖金：0</i>
             <i class="fr">倍</i>
             <div class="fr chosegg">
-                <i id="crossTxt" class="fl">三串1</i>
+                <i id="crossTxt" class="fl">过关方式</i>
                 <a id="crossWay" class="fl"><i></i></a>
-                <input id="timesUnit" type="text" value="1">
+                <input id="timesUnit" type="tel" value="1" maxlength="3">
             </div>
         </div>
         <div class="tzBox">
@@ -48,22 +42,16 @@
     <div class="ggbox">
         <div class="tabopition">
             <ul>
-                <li class="click">自由过关</li>
-                <li>多串过关</li>
+                <li id="tab_0" class="click">普通过关</li>
+                <li id="tab_1" style="display: none;">多串过关</li>
             </ul>
         </div>
-        <ul class="tabcon">
-            <li>3串1</li>
-            <li>3串1</li>
-            <li>3串1</li>
-            <li>3串1</li>
-            <li>3串1</li>
-            <li>3串1</li>
-            <li>3串1</li>
-            <li>3串1</li>
-            <li>3串1</li>
-            <li>3串1</li>
-            <li class="click">3串1</li>
+
+        <ul id="way_0" class="tabcon">
+
+        </ul>
+
+        <ul id="way_1" class="tabcon">
 
         </ul>
     </div>

@@ -4,13 +4,13 @@
 define([
     "text!../../views/redblue/ball.html",
     "util/Page",
-	"util/PageEvent",
+    "util/PageEvent",
     "services/DigitService",
     "util/AppConfig",
-	"util/Calculate",
-	"util/Util",
+    "util/Calculate",
+    "util/Util",
     "util/Shake"
-], function(template, page, pageEvent, digitService, appConfig, calculate, util, shake){
+], function (template, page, pageEvent, digitService, appConfig, calculate, util, shake) {
 
     // 处理返回参数
     var canBack = 0;
@@ -37,7 +37,7 @@ define([
     /**
      * 初始化
      */
-    var init = function(data, forward) {
+    var init = function (data, forward) {
         canBack = forward ? 1 : 0;
 
         // 加载模板内容
@@ -67,18 +67,18 @@ define([
         bindEvent();
 
         // 处理返回
-        page.setHistoryState({url: "redblue/ball", data: params}, 
-        		"redblue/ball", 
-        		"#redblue/ball" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
-                canBack);
+        page.setHistoryState({url:"redblue/ball", data:params},
+            "redblue/ball",
+            "#redblue/ball" + (JSON.stringify(params).length > 2 ? "?data=" + encodeURIComponent(JSON.stringify(params)) : ""),
+            canBack);
     };
 
     /**
      * 显示缓存数据
      */
-    var showBuffer = function(forward) {
+    var showBuffer = function (forward) {
         // 缓存的数据
-        bufferData = appConfig.getMayBuyData(appConfig.MAY_BUY_RED_BLUE_KEY);
+        bufferData = appConfig.getLocalJson(appConfig.keyMap.MAY_BUY_RED_BLUE_KEY);
 
         if (bufferData != null && typeof bufferData != "undefined" && bufferData.length > 0) {
             mode = bufferData[0].mode;
@@ -101,27 +101,27 @@ define([
             if (mode == "1") {
                 // 胆红
                 for (var i = 0, len = data.danReds.length; i < len; i++) {
-                    $("#danReds li .num :contains('"+data.danReds[i]+"')").addClass("click");
+                    $("#danReds li .num :contains('" + data.danReds[i] + "')").addClass("click");
                 }
 
                 // 拖红
                 for (var i = 0, len = data.tuoReds.length; i < len; i++) {
-                    $("#tuoReds li .num :contains('"+data.tuoReds[i]+"')").addClass("click");
+                    $("#tuoReds li .num :contains('" + data.tuoReds[i] + "')").addClass("click");
                 }
 
                 // 胆拖蓝
                 for (var i = 0, len = data.danTuoBlues.length; i < len; i++) {
-                    $("#danTuoBlues li .num :contains('"+data.danTuoBlues[i]+"')").addClass("click");
+                    $("#danTuoBlues li .num :contains('" + data.danTuoBlues[i] + "')").addClass("click");
                 }
             } else {
                 // 红
                 for (var i = 0, len = data.normalReds.length; i < len; i++) {
-                    $("#normalReds li .num :contains('"+data.normalReds[i]+"')").addClass("click");
+                    $("#normalReds li .num :contains('" + data.normalReds[i] + "')").addClass("click");
                 }
 
                 // 蓝
                 for (var i = 0, len = data.normalBlues.length; i < len; i++) {
-                    $("#normalBlues li .num :contains('"+data.normalBlues[i]+"')").addClass("click");
+                    $("#normalBlues li .num :contains('" + data.normalBlues[i] + "')").addClass("click");
                 }
             }
 
@@ -133,32 +133,32 @@ define([
     /**
      * 初始化显示
      */
-    var initShow = function(forward) {
+    var initShow = function (forward) {
 
         // 显示缓存数据
         showBuffer(forward);
 
         // 获取期号信息
         getIssue();
-		
-		validShake();
-		
+
+        validShake();
+
         $("#mode_" + mode).addClass("click");
         $("#" + mode + "_select").show();
-		
+
         unitTotal();
     };
-	
-	/**
-	 * 获取期号
-	 */
-	var getIssue = function() {
-		issue = {};
-        digitService.getCurrLottery(lotteryType, function(data) {
+
+    /**
+     * 获取期号
+     */
+    var getIssue = function () {
+        issue = {};
+        digitService.getCurrLottery(lotteryType, function (data) {
 
             // 隐藏加载标示
             util.hideLoading();
-            if (typeof data != "undefined" ) {
+            if (typeof data != "undefined") {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
                         issue = data;
@@ -169,31 +169,31 @@ define([
                 }
             }
         });
-	};
+    };
 
     /**
      * 处理显示期号
      */
-    var handleIssue = function() {
+    var handleIssue = function () {
         // 13139期截止时间:11-26 19:30
         var issueTxt = issue.issueNo + "期截止时间:";
-        if (issue.endTime !=null && typeof issue.endTime != "undefined"
-            && $.trim(issue.endTime) !=""){
+        if (issue.endTime != null && typeof issue.endTime != "undefined"
+            && $.trim(issue.endTime) != "") {
             issueTxt += issue.endTime.substring(issue.endTime.indexOf("-") + 1, issue.endTime.lastIndexOf(":"));
         }
 
-        $("#issueNo").text(issueTxt);
+        $("#RBBIssueNo").text(issueTxt);
     };
 
     /**
      * 绑定事件
      */
-    var bindEvent = function() {
+    var bindEvent = function () {
 
         // 摇一摇
         if (window.DeviceMotionEvent) {
             $(window).off("devicemotion");
-            $(window).on("devicemotion", function(eventData) {
+            $(window).on("devicemotion", function (eventData) {
                 if (mode == "0") {
                     shake.deviceMotionHandler(eventData, getRandomBalls);
                 }
@@ -201,14 +201,14 @@ define([
         }
 
         // 返回
-        $(".back").on(pageEvent.touchStart, function(e) {
+        $(".back").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".back").on(pageEvent.activate, function(e) {
+        $(".back").on(pageEvent.activate, function (e) {
             if (typeof index == "NaN" || index == -1) {
-                appConfig.clearMayBuyData(appConfig.MAY_BUY_RED_BLUE_KEY);
+                appConfig.clearLocalData(appConfig.keyMap.MAY_BUY_RED_BLUE_KEY);
             }
             offBind();
             if (canBack) {
@@ -220,12 +220,12 @@ define([
         });
 
         // 获取期号
-        $("#issueNo").on(pageEvent.touchStart, function(e) {
+        $("#RBBIssueNo").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $("#issueNo").on(pageEvent.activate, function(e) {
+        $("#RBBIssueNo").on(pageEvent.activate, function (e) {
 
             // 获取期号信息
             getIssue();
@@ -233,12 +233,12 @@ define([
         });
 
         // 模式选择
-        $("#modeSelect").on(pageEvent.touchStart, function(e) {
+        $("#modeSelect").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $("#modeSelect").on(pageEvent.activate, function(e) {
+        $("#modeSelect").on(pageEvent.activate, function (e) {
             if ($(this).hasClass("radioBox")) {
                 $(".popup").show();
                 // 显示遮盖层
@@ -250,18 +250,18 @@ define([
         });
 
         // 双色球机选
-        $(".shake").on(pageEvent.touchStart, function(e) {
+        $(".shake").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".shake").on(pageEvent.activate, function(e) {
+        $(".shake").on(pageEvent.activate, function (e) {
             getRandomBalls();
             return true;
         });
 
         // 选中模式
-        $(".popup li").on(pageEvent.click, function(e) {
+        $(".popup li").on(pageEvent.click, function (e) {
             var id = this.id.split("_")[1];
             var $target = $(this);
             if (!$target.hasClass("click")) {
@@ -281,15 +281,15 @@ define([
                 unitTotal();
                 // 保存模式
                 mode = id;
-				
-				validShake();
+
+                validShake();
 
             }
             return true;
         });
 
         // 普通投注红球选号
-        $("#normalReds").on(pageEvent.tap, function(e) {
+        $("#normalReds").on(pageEvent.tap, function (e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -308,7 +308,7 @@ define([
         });
 
         // 普通投注蓝球选号
-        $("#normalBlues").on(pageEvent.tap, function(e) {
+        $("#normalBlues").on(pageEvent.tap, function (e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -322,7 +322,7 @@ define([
         });
 
         // 胆拖投注胆红选号
-        $("#danReds").on(pageEvent.tap, function(e) {
+        $("#danReds").on(pageEvent.tap, function (e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -335,7 +335,7 @@ define([
                 }
                 $num.addClass("click");
                 // 移除拖红选中
-                $("#tuoReds li .num :contains('"+$num.text()+"')").removeClass("click");
+                $("#tuoReds li .num :contains('" + $num.text() + "')").removeClass("click");
             }
 
             // 计算注数，金额
@@ -344,14 +344,14 @@ define([
         });
 
         // 胆拖投注拖红选号
-        $("#tuoReds").on(pageEvent.tap, function(e) {
+        $("#tuoReds").on(pageEvent.tap, function (e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
             } else if ($num.length) {
                 $num.addClass("click");
                 // 移除胆红选中
-                $("#danReds li .num :contains('"+$num.text()+"')").removeClass("click");
+                $("#danReds li .num :contains('" + $num.text() + "')").removeClass("click");
             }
 
             // 计算注数，金额
@@ -360,7 +360,7 @@ define([
         });
 
         // 胆拖投注蓝球选号
-        $("#danTuoBlues").on(pageEvent.tap, function(e) {
+        $("#danTuoBlues").on(pageEvent.tap, function (e) {
             var $num = $(e.target).closest(".num");
             if ($num.hasClass("click")) {
                 $num.removeClass("click");
@@ -374,24 +374,24 @@ define([
         });
 
         // 清除选中号
-        $(".delete").on(pageEvent.touchStart, function(e) {
+        $(".delete").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".delete").on(pageEvent.activate, function(e) {
+        $(".delete").on(pageEvent.activate, function (e) {
             clear();
             unitTotal();
             return true;
         });
 
         // 确认
-        $(".sure").on(pageEvent.touchStart, function(e) {
+        $(".sure").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".sure").on(pageEvent.activate, function(e) {
+        $(".sure").on(pageEvent.activate, function (e) {
 
             // 缓存的数据
             bufferData = (bufferData == null || typeof bufferData == "undefined" || bufferData.length == 0) ? [] : bufferData;
@@ -412,30 +412,30 @@ define([
                 if (data.mode == "1") {
                     // 胆红
                     data.danReds = new Array();
-                    $("#danReds .click").each(function(i, item){
+                    $("#danReds .click").each(function (i, item) {
                         data.danReds.push($(item).text());
                     });
 
                     // 拖红
                     data.tuoReds = new Array();
-                    $("#tuoReds .click").each(function(i, item){
+                    $("#tuoReds .click").each(function (i, item) {
                         data.tuoReds.push($(item).text());
                     });
 
                     // 胆拖蓝
                     data.danTuoBlues = new Array();
-                    $("#danTuoBlues .click").each(function(i, item){
+                    $("#danTuoBlues .click").each(function (i, item) {
                         data.danTuoBlues.push($(item).text());
                     });
 
                 } else {
                     // 普通投注
                     data.normalReds = new Array();
-                    $("#normalReds .click").each(function(i, item){
+                    $("#normalReds .click").each(function (i, item) {
                         data.normalReds.push($(item).text());
                     });
                     data.normalBlues = new Array();
-                    $("#normalBlues .click").each(function(i, item){
+                    $("#normalBlues .click").each(function (i, item) {
                         data.normalBlues.push($(item).text());
                     });
                 }
@@ -450,9 +450,13 @@ define([
                 if (typeof index != "NaN" && index > -1) {
                     if (!ballCount) {
                         // 删除一注
-                        bufferData.splice(index,1);
+                        bufferData.splice(index, 1);
+                    } else {
+                        // 再选一注
+                        util.toast("请至少选择 1 注");
+                        return false;
                     }
-                } else if(bufferData.length > 0 && index == -1) {
+                } else if (bufferData.length > 0 && index == -1) {
                     if (ballCount) {
                         // 再选一注
                         util.toast("请至少选择 1 注");
@@ -461,7 +465,7 @@ define([
                 }
             }
 
-            appConfig.setMayBuyData(appConfig.MAY_BUY_RED_BLUE_KEY, bufferData);
+            appConfig.setLocalJson(appConfig.keyMap.MAY_BUY_RED_BLUE_KEY, bufferData);
 
             if (bufferData.length == 0) {
                 util.toast("请至少选择 1 注");
@@ -478,43 +482,54 @@ define([
         });
 
         // 右菜单
-        $(".menu").on(pageEvent.touchStart, function(e) {
+        $(".menu").on(pageEvent.touchStart, function (e) {
             pageEvent.handleTapEvent(this, this, pageEvent.activate, e);
             return true;
         });
 
-        $(".menu").on(pageEvent.activate, function(e) {
+        $(".menu").on(pageEvent.activate, function (e) {
             $(".menuBox").show();
             util.showCover();
             return true;
         });
 
         // 购彩记录
-        $(".gcBg").on(pageEvent.click, function(e) {
+        $(".gcBg").on(pageEvent.click, function (e) {
             offBind();
-            page.initPage("user/buyRecord", {lotteryTypeArray: lotteryType}, 1);
             util.hideCover();
+            if (!appConfig.checkLogin(null)) {
+                // 尚未登录，弹出提示框
+                util.prompt("", "您还未登录，请先登录", "登录", "取消",
+                    function (e) {
+                        page.initPage("login", {}, 1);
+                    },
+                    function (e) {
+                    }
+                );
+                return false;
+            }
+            page.initPage("user/buyRecord", {lotteryTypeArray:lotteryType}, 1);
             return true;
         });
 
         // 开奖信息
-        $(".kjBg").on(pageEvent.click, function(e) {
+        $(".kjBg").on(pageEvent.click, function (e) {
             offBind();
-            page.initPage("digit/history", {lottery: lotteryType}, 1);
             util.hideCover();
+            page.initPage("digit/history", {lottery:lotteryType}, 1);
             return true;
         });
 
         // 玩法介绍
-        $(".wfBg").on(pageEvent.click, function(e) {
+        $(".wfBg").on(pageEvent.click, function (e) {
             offBind();
-            page.initPage("redblue/intro", {}, 1);
             util.hideCover();
+            page.initPage("redblue/intro", {}, 1);
             return true;
         });
 
         // 关闭显示框
-        $(".cover").on(pageEvent.click, function(e) {
+        $(".cover").on(pageEvent.click, function (e) {
             $(".popup").hide();
             $(".menuBox").hide();
             util.hideCover();
@@ -525,17 +540,17 @@ define([
     /**
      * 随机一注
      */
-    var getRandomBalls = function() {
+    var getRandomBalls = function () {
         // 清空原始的选中
         clear();
-        var dcRedNos = calculate.getSrand(1,33,6);
+        var dcRedNos = calculate.getSrand(1, 33, 6);
         console.log(dcRedNos.toString());
         for (var i = 0, redLen = dcRedNos.length; i < redLen; i++) {
-            $("#normalReds li .num :contains('"+(dcRedNos[i] < 10 ? ("0" + dcRedNos[i]) : dcRedNos[i])+"')").addClass("click");
+            $("#normalReds li .num :contains('" + (dcRedNos[i] < 10 ? ("0" + dcRedNos[i]) : dcRedNos[i]) + "')").addClass("click");
         }
-        var dcBlueNo = calculate.getSrand(1,16,1);
+        var dcBlueNo = calculate.getSrand(1, 16, 1);
         console.log(dcBlueNo.toString());
-        $("#normalBlues li .num :contains('"+(dcBlueNo < 10 ? ("0" + dcBlueNo) : dcBlueNo)+"')").addClass("click");
+        $("#normalBlues li .num :contains('" + (dcBlueNo < 10 ? ("0" + dcBlueNo) : dcBlueNo) + "')").addClass("click");
 
         unitTotal();
     };
@@ -543,32 +558,32 @@ define([
     /**
      * 解除绑定
      */
-    var offBind = function() {
+    var offBind = function () {
         $(".cover").off(pageEvent.click);
     };
 
     /**
      * 验证是否显示机选
      */
-	var validShake = function() {
-		if (mode == "0") {
-			$(".shake").show();
-		}  else if (mode == "1") {
-			$(".shake").hide();
-		}
-	};
+    var validShake = function () {
+        if (mode == "0") {
+            $(".shake").show();
+        } else if (mode == "1") {
+            $(".shake").hide();
+        }
+    };
 
     /**
      * 清除
      */
     var clear = function () {
-		$("#" + mode + "_select").find(".click").removeClass("click");
+        $("#" + mode + "_select").find(".click").removeClass("click");
     };
 
     /**
      * 统计注数，消费金额
      */
-    var unitTotal = function() {
+    var unitTotal = function () {
         total = 0, pay = 0;
         if (mode == "0") {
             var dcNRed = $("#normalReds .click").length;

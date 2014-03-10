@@ -26,7 +26,7 @@ define([
             params.token = tkn;
         }
 
-        loginData = appConfig.getLocalUserInfo();
+        loginData = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         //初始化显示
         initShow();
@@ -95,7 +95,7 @@ define([
                                 var displayCode = idCode.substring(0, 12) + "******";
                                 $("#idCode").val(displayCode).attr("readonly", true);
                             }
-                            appConfig.setLocalUserTrueName(idCardName);
+                            appConfig.setLocalString(appConfig.keyMap.LOCAL_USER_TRUE_NAME_KEY, idCardName);
                             $("#bindCardID")
                                 .off(pageEvent.active)
                                 .html("返回")
@@ -151,7 +151,7 @@ define([
                     if (data != "undefined") {
                         if (data.statusCode == "0") {
                             util.toast("绑定成功");
-                            appConfig.setLocalUserTrueName(idCardName);
+                            appConfig.setLocalString(appConfig.keyMap.LOCAL_USER_TRUE_NAME_KEY, idCardName);
                             page.goBack();
                         } else {
                             util.toast(data.errorMsg);

@@ -33,7 +33,7 @@ define([
             params.token = tkn;
         }
 
-        userInfo = appConfig.getLocalUserInfo();
+        userInfo = appConfig.getLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY);
 
         // 绑定事件
         bindEvent();
@@ -180,7 +180,7 @@ define([
                 if (typeof data != "undefined") {
                     if (data.statusCode == "0") {
                         userInfo.userMobile = telephoneNumber;
-                        appConfig.setLocalUserInfo(userInfo);
+                        appConfig.setLocalJson(appConfig.keyMap.LOCAL_USER_INFO_KEY, userInfo);
                         util.toast("手机绑定成功");
                         page.goBack();
                     } else {

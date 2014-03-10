@@ -2,26 +2,26 @@ require.config({
     baseUrl:"js",
     paths:{
         text:"../lib/text.min"
-    }/*,
-    urlArgs: "1.0.0"*/
+    },
+     urlArgs: "1.0.0"
 });
 
 require([
-    "util/Util",
-    "util/Page"
-], function (util, page) {
+    "util/Page",
+    "util/Util"    
+], function (page, util) {
 
     // 页面加载完毕
-    $(document).ready(function(){
+    $(document).ready(function () {
 
-    	// 加载图标
+        // 加载图标
         util.showLoading();
-        
-    	initHomePage();
+
+        initHomePage();
         /**
          * 初始化首页
-          */
-        function initHomePage () {
+         */
+        function initHomePage() {
             // 参数处理
             var hash = location.hash;
             var hashName = "", hashData = {};
@@ -43,12 +43,12 @@ require([
 
             // 启动页面模块
             page.initPage(hashName, hashData, 0);
-        };
+        }
 
-        $(window).on("popstate", function(e) {
+        $(window).on("popstate", function (e) {
 
-            if (e.state){
-                if (e.state.url){
+            if (e.state) {
+                if (e.state.url) {
                     page.initPage(e.state.url, e.state.data, 0);
                 }
             }
