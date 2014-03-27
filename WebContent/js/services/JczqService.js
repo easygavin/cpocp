@@ -153,7 +153,7 @@ define([
             searchType:item.searchType,
             userId: item.userId,
             userKey:item.userKey,
-            matchId:item.matchId
+            matchIdArray:item.matchIdArray
         };
 
         $.ajax({

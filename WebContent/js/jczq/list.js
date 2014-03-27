@@ -581,6 +581,7 @@ define([
                     $timesUnit.val(10000);
                 }
             }
+            getTotalBet();
             // 获取最小最大奖金
             getMinMaxPrize();
             // 显示付款信息

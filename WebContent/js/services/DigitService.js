@@ -28,7 +28,7 @@ define([
     };
 
     /**
-     * 获取当前期号
+     * 获取遗留号
      * @param callback
      */
     var getLastLottery = function (lotteryType, callback) {
@@ -49,7 +49,7 @@ define([
     };
 
     /**
-     * 获取当前期号
+     * 获取幸运赛车前一/位置奖金
      * @param callback
      */
     var getRacingPosAward = function (lotteryType, playType, callback) {

@@ -26,6 +26,14 @@ define([
     //用户信息
     var user = null;
 
+    //map对象.保存状态信息
+    var dataMap;
+
+    //需要查询的赛事id...
+
+    var aliveItemIds ={} ;
+
+    var specialId  ="";
     /**
      * 初始化
      */
@@ -101,17 +109,21 @@ define([
      *查询即使比分接口,确定赛事状态..
      */
     var queryGameState = function () {
-        //item.score等于空,表明该球赛暂未返回数据..则调用及时比分接口查询..
-        if (item != null && item != "undefined" && (item.score == "" || item.score == null)) {
-            jczqService.getAliveState(item, function (data) {
-                if (typeof data != "undefined") {
-                    if (data.statusCode != "undefined" && data.statusCode == "0") {
-                        return dataMap[data.status];
+        for (var at in aliveItemIds) {
+            var item = aliveItemIds[at];
+            (function () {
+                var specialId = at;
+                jczqService.getAliveState(item, function (data) {
+                    if (typeof data != "undefined") {
+                        if (data.statusCode != "undefined" && data.statusCode == "0") {
+                            var combine  = "#"+specialId;
+                            $(combine).html(dataMap[data.datas[0].status]);
+                        }
                     }
-                }
-            });
-        }
+                });
+            })(at, item);
 
+        }
     };
 
     /**
@@ -119,13 +131,13 @@ define([
      */
     var getDetails = function () {
         jczqService.getProjectDetails(lotteryType, requestType, projectId, function (data) {
-
             // 隐藏加载标示
             util.hideLoading();
             if (typeof data != "undefined") {
                 if (typeof data.statusCode != "undefined") {
                     if (data.statusCode == "0") {
                         showDetails(data);
+                        queryGameState();
                     } else if (data.statusCode == "off") {
                         // 尚未登录
                         page.initPage("login", {}, 1);
@@ -142,7 +154,6 @@ define([
      * @param data
      */
     var showDetails = function (data) {
-
         $(".details").append($("<p></p>").text("方案编号：" + data.lotteryNo));
         $(".details").append($("<p></p>").text("发起人：" + data.createUser));
         $(".details").append($("<p></p>").text("发起时间：" + data.createDate));
@@ -169,15 +180,16 @@ define([
                 .replace(/\n/g, '<br>');
             str += "<tr>" +
                 "<td>" + content + "</td>";
-
             var score = detail[i].score;
-            if ((score == "" || score == null || score.length <= 0) && projectId != "") {
+            item ={};
+            var gliveId = detail[i].gliveId;
+            if (score == "" || score == null) {
                 item.lotteryId = "";
                 item.projectId = projectId;
                 item.searchType = 0;
                 item.matchIdArray = detail[i].gliveId;
-                var result = queryGameState();
-                str += "<td>" + result + "</td>";
+                aliveItemIds["F"+gliveId] = item;
+                str += "<td id='F" + detail[i].gliveId + "'>" + detail[i].score + "</td>";
             } else {
                 str += "<td>" + detail[i].score + "</td>";
             }
@@ -219,7 +231,7 @@ define([
             return true;
         });
     };
-    var dataMap = {
+    dataMap = {
         "0": "未开赛",
         "1": "上半场",
         "2": "中场",
